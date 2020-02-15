@@ -6,41 +6,34 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>BUUCTF Misc部分wp（一） | SCERush的博客</title>
+  <title>BUUCTF-Misc部分wp（二） | SCERush的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言最近开始刷BUUCTF，感觉题目比较基础，而且这还有许多比赛题目的复现。这里将记录一些简单的MISC题目，较难的题目将单独写出来。">
+  <meta name="description" content="涉及的知识点：    英语┭┮﹏┭┮ gnuplot的使用 steghide隐写 lsb隐写">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BUUCTF Misc部分wp（一）">
-<meta property="og:url" content="http://yoursite.com/2020/02/11/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:title" content="BUUCTF-Misc部分wp（二）">
+<meta property="og:url" content="http://yoursite.com/2020/02/12/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
 <meta property="og:site_name" content="SCERush的博客">
-<meta property="og:description" content="前言最近开始刷BUUCTF，感觉题目比较基础，而且这还有许多比赛题目的复现。这里将记录一些简单的MISC题目，较难的题目将单独写出来。">
+<meta property="og:description" content="涉及的知识点：    英语┭┮﹏┭┮ gnuplot的使用 steghide隐写 lsb隐写">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/02.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/04.1.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/04.2.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/06.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/07.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/12.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/13.1.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/13.2.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/16.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/17.1.jpg">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/17.2.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/18.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/19.1.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/19.2.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/21.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/24.1.jpg">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/24.2.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/28.png">
-<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/29.png">
-<meta property="article:published_time" content="2020-02-11T06:06:52.000Z">
-<meta property="article:modified_time" content="2020-02-12T12:51:20.212Z">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/2020-02-12220149.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/2020-02-12220621.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/2020-02-12220948.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200212222359.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200212222614.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200212223159.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200212153055.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200212153143.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200212225509.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200212230900.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200215153034.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200215153230.png">
+<meta property="article:published_time" content="2020-02-12T13:57:01.000Z">
+<meta property="article:modified_time" content="2020-02-15T07:46:15.917Z">
 <meta property="article:author" content="SCERush">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="MISC">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://q5j5wwg9n.bkt.clouddn.com/02.png">
+<meta name="twitter:image" content="http://q5j5wwg9n.bkt.clouddn.com/2020-02-12220149.png">
   
     <link rel="alternative" href="/atom.xml" title="SCERush的博客" type="application/atom+xml">
   
@@ -160,60 +153,47 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-BUUCTF-Misc部分wp（一）" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-BUUCTF-Misc部分wp（二）" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      BUUCTF Misc部分wp（一）
+      BUUCTF-Misc部分wp（二）
     </h1>
   
 
         
-        <a href="/2020/02/11/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%B8%80%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-02-11T06:06:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-11</time>
+        <a href="/2020/02/12/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%BA%8C%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2020-02-12T13:57:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-12</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近开始刷<a href="https://buuoj.cn/" target="_blank" rel="noopener">BUUCTF</a>，感觉题目比较基础，而且这还有许多比赛题目的复现。<br>这里将记录一些简单的MISC题目，较难的题目将单独写出来。</p>
+        <p>涉及的知识点：  </p>
+<ul>
+<li>英语┭┮﹏┭┮</li>
+<li>gnuplot的使用</li>
+<li>steghide隐写</li>
+<li>lsb隐写</li>
+</ul>
 <a id="more"></a>
-
-<h2 id="1-金三胖"><a href="#1-金三胖" class="headerlink" title="1.金三胖"></a>1.金三胖</h2><p>题目给出了一张gif图，放入Stegsolve中逐帧查看，得到flag</p>
-<h2 id="2-二维码"><a href="#2-二维码" class="headerlink" title="2.二维码"></a>2.二维码</h2><p>一张二维码，首先扫描一下，明显不是flag，在kali中binwalk分析一波<br><img src="http://q5j5wwg9n.bkt.clouddn.com/02.png" alt=""><br>发现一个压缩包，使用foremost命令或者binwalk -e命令将压缩包提取出来发现是一个密码为四位数字的压缩包<br>fcrackzip -b -c1 -l 4 -u爆破得到flag</p>
-<h2 id="3-N种解决方法"><a href="#3-N种解决方法" class="headerlink" title="3.N种解决方法"></a>3.N种解决方法</h2><p>下载后发现是一个exe文件，但打不开，使用任意一个文本编译器打开发现是将图片转base64了，把内容复制再转回图片<a href="http://tool.chinaz.com/tools/imgtobase" target="_blank" rel="noopener" title="http://tool.chinaz.com/tools/imgtobase">http://tool.chinaz.com/tools/imgtobase</a>，是一个二维码，扫码得到flag</p>
-<h2 id="4-大白"><a href="#4-大白" class="headerlink" title="4.大白"></a>4.大白</h2><p>题目说屏幕太小了<br><img src="http://q5j5wwg9n.bkt.clouddn.com/04.1.png" alt="图片"><br>估计是改了图片长宽，用winhex打开图片，将01 00改为02 00（对于png文件，其第二行第六列是高度位，改这一位即可）<br><img src="http://q5j5wwg9n.bkt.clouddn.com/04.2.png" alt="图片"><br>得到flag</p>
-<h2 id="5-基础破解"><a href="#5-基础破解" class="headerlink" title="5.基础破解"></a>5.基础破解</h2><p>暴力破解，使用ARCHPR破解，得到flag</p>
-<h2 id="6-你竟然赶我走"><a href="#6-你竟然赶我走" class="headerlink" title="6.你竟然赶我走"></a>6.你竟然赶我走</h2><p>winhex下分析，发现flag<br><img src="http://q5j5wwg9n.bkt.clouddn.com/06.png" alt="图片">  </p>
-<h2 id="7-LSB"><a href="#7-LSB" class="headerlink" title="7.LSB"></a>7.LSB</h2><p>看到LSB，将图片放入Stegsolve中Data Extract分析<br><img src="http://q5j5wwg9n.bkt.clouddn.com/07.png" alt="图片"><br>保存为png后是一张二维码，扫码得到flag</p>
-<h2 id="8-乌镇峰会种图"><a href="#8-乌镇峰会种图" class="headerlink" title="8.乌镇峰会种图"></a>8.乌镇峰会种图</h2><p>同样是winhex下分析，发现flag</p>
-<h2 id="9-rar"><a href="#9-rar" class="headerlink" title="9.rar"></a>9.rar</h2><p>ARCHPR破解，得到flag</p>
-<h2 id="10-ningen"><a href="#10-ningen" class="headerlink" title="10.ningen"></a>10.ningen</h2><p>同之前的二维码一样解法</p>
-<h2 id="11-文件中的秘密"><a href="#11-文件中的秘密" class="headerlink" title="11.文件中的秘密"></a>11.文件中的秘密</h2><p>winhex下分析，发现flag</p>
-<h2 id="12-wireshark"><a href="#12-wireshark" class="headerlink" title="12.wireshark"></a>12.wireshark</h2><p>题目给出的是pcap流量包，使用wireshark打开查看http的包<br><img src="http://q5j5wwg9n.bkt.clouddn.com/12.png" alt="图片"><br>搜索flag</p>
-<h2 id="13-镜子里面的世界"><a href="#13-镜子里面的世界" class="headerlink" title="13.镜子里面的世界"></a>13.镜子里面的世界</h2><p>将图片放入Stegsolve中，发现Red、Green和Blue的0通道的图片的最上端有东西<br><img src="http://q5j5wwg9n.bkt.clouddn.com/13.1.png" alt="图片"><br>接下来用Data Extract查看这三个通道结合起来的东西，发现flag<br><img src="http://q5j5wwg9n.bkt.clouddn.com/13.2.png" alt="图片">  </p>
-<h2 id="14-小明的保险箱"><a href="#14-小明的保险箱" class="headerlink" title="14.小明的保险箱"></a>14.小明的保险箱</h2><p>同之前的二维码一样解法</p>
-<h2 id="15-爱因斯坦"><a href="#15-爱因斯坦" class="headerlink" title="15.爱因斯坦"></a>15.爱因斯坦</h2><p>同样是binwalk分析后分离出压缩包，不过解压密码在图片备注中</p>
-<h2 id="16-被嗅探的流量"><a href="#16-被嗅探的流量" class="headerlink" title="16.被嗅探的流量"></a>16.被嗅探的流量</h2><p>使用wireshark追踪TCP流，查找得到flag<br><img src="http://q5j5wwg9n.bkt.clouddn.com/16.png" alt="图片">  </p>
-<h2 id="17-假如给我三天光明"><a href="#17-假如给我三天光明" class="headerlink" title="17.假如给我三天光明"></a>17.假如给我三天光明</h2><p>给了一张图和一个压缩包，图片下估计为盲文，猜测为压缩包密码<br><img src="http://q5j5wwg9n.bkt.clouddn.com/17.1.jpg" alt="图片"><br>盲文解密为：kmdonowg，解压出一段音频，一听为摩斯密码，使用Audacity分析<br><img src="http://q5j5wwg9n.bkt.clouddn.com/17.2.png" alt="图片"><br>摩斯解密，得flag</p>
-<h2 id="18-easycap"><a href="#18-easycap" class="headerlink" title="18.easycap"></a>18.easycap</h2><p>wireshark追踪TCP流，直接得到flag<br><img src="http://q5j5wwg9n.bkt.clouddn.com/18.png" alt="图片">  </p>
-<h2 id="19-FLAG"><a href="#19-FLAG" class="headerlink" title="19.FLAG"></a>19.FLAG</h2><p>winhex，binwalk后无结果，将图片放入Stegsolve中<br><img src="http://q5j5wwg9n.bkt.clouddn.com/19.1.png" alt="图片"><br>保存为zip文件，解压后为.elf文件，kali运行得flag<br><img src="http://q5j5wwg9n.bkt.clouddn.com/19.2.png" alt="图片">  </p>
-<h2 id="20-另外一个世界"><a href="#20-另外一个世界" class="headerlink" title="20.另外一个世界"></a>20.另外一个世界</h2><p>winhex下发现一串二进制码，估计是ascii码，8个一组，翻译后得到flag</p>
-<h2 id="21-荷兰宽带数据泄露"><a href="#21-荷兰宽带数据泄露" class="headerlink" title="21.荷兰宽带数据泄露"></a>21.荷兰宽带数据泄露</h2><p>下载解压后得到一个路由器配置文件，使用RouterPassView打开后搜索不到flag，再试试username或者password，结果flag是username<br><img src="http://q5j5wwg9n.bkt.clouddn.com/21.png" alt="图片">  </p>
-<h2 id="22-隐藏的钥匙"><a href="#22-隐藏的钥匙" class="headerlink" title="22.隐藏的钥匙"></a>22.隐藏的钥匙</h2><p>winhex下打开文件，搜索发现flag是base64编码，在线解码一下得到flag</p>
-<h2 id="23-来首歌吧"><a href="#23-来首歌吧" class="headerlink" title="23.来首歌吧"></a>23.来首歌吧</h2><p>得到一段音频，使用Audacity分析，发现摩斯密码，解码得到flag</p>
-<h2 id="24-后门查杀"><a href="#24-后门查杀" class="headerlink" title="24.后门查杀"></a>24.后门查杀</h2><p>webshell会报病毒，随便拿杀毒软件一个扫描一下，就得到目的文件<br><img src="http://q5j5wwg9n.bkt.clouddn.com/24.1.jpg" alt="图片"><br><img src="http://q5j5wwg9n.bkt.clouddn.com/24.2.png" alt="图片"><br>文件打开就得到flag</p>
-<h2 id="25-神秘龙卷风"><a href="#25-神秘龙卷风" class="headerlink" title="25.神秘龙卷风"></a>25.神秘龙卷风</h2><p>解压得到一压缩包，提示说密码四位数，ARCHPR破解，打开文件发现是Brainfuck编码，<a href="https://www.splitbrain.org/services/ook" target="_blank" rel="noopener">在线解码</a></p>
-<h2 id="26-面具下的flag"><a href="#26-面具下的flag" class="headerlink" title="26.面具下的flag"></a>26.面具下的flag</h2><p>解压得到的图片binwalk分析发现压缩包，foremost解压后得到一个flag.vmdk的文件（老实说vmdk我也没怎么见过，于是就看了看网上的wp），使用7z解压  </p>
-<pre><code>7z x flag.vmdk</code></pre><p>解压后得到flag的两部分，ook与Brainfuck<a href="https://www.splitbrain.org/services/ook" target="_blank" rel="noopener">在线解码</a><br>（不太明白为什么7z能解压vmdk文件，而且有趣的是我在Windows下解压不能解压出flag后半段密码，在kali下却能。。。）</p>
-<h2 id="27-webshell后门"><a href="#27-webshell后门" class="headerlink" title="27.webshell后门"></a>27.webshell后门</h2><p>和后门查杀那题一样，杀毒软件一扫完事<del>~</del></p>
-<h2 id="28-被劫持的神秘礼物"><a href="#28-被劫持的神秘礼物" class="headerlink" title="28.被劫持的神秘礼物"></a>28.被劫持的神秘礼物</h2><p>wireshark打开查询TCP流，发现账号密码，串一起再md5<br><img src="http://q5j5wwg9n.bkt.clouddn.com/28.png" alt="图片"></p>
-<h2 id="29-刷新过的图片"><a href="#29-刷新过的图片" class="headerlink" title="29.刷新过的图片"></a>29.刷新过的图片</h2><p>（知识盲区，唉<del>~</del>）<br>F5隐写，参考论文：<a href="https://wenku.baidu.com/view/c9150e29b4daa58da0114a39.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/c9150e29b4daa58da0114a39.html</a><br>解题时就直接使用：F5-steganography<br><img src="http://q5j5wwg9n.bkt.clouddn.com/29.png" alt="图片"><br>解压出来一个output.txt，打开一看PK开头，估计是zip，改后缀名，解压后得到flag</p>
-<h2 id="30-穿越时空的思恋"><a href="#30-穿越时空的思恋" class="headerlink" title="30.穿越时空的思恋"></a>30.穿越时空的思恋</h2><p>又是一段音频，Audacity分析，发现摩斯密码，解码得到flag</p>
+<hr>
+<h1 id="snake"><a href="#snake" class="headerlink" title="snake"></a>snake</h1><p>得到一张图片，发现zip，foremost解压<br><img src="http://q5j5wwg9n.bkt.clouddn.com/2020-02-12220149.png" alt="图片"><br>得到密钥和一份已加密的文件，将密钥base64解码后  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">What is Nicki Minaj&#39;s favorite song that refers to snakes?</span><br></pre></td></tr></table></figure>
+<p><img src="http://q5j5wwg9n.bkt.clouddn.com/2020-02-12220621.png" alt="图片"><br>密钥就是anaconda，那么关于蛇的加密方式就是serpent加密（也是关于蛇的单词┭┮﹏┭┮，记得在密码学课上讲过，好像是AES竞选之一，但忘完了(⊙o⊙)…）<br><img src="http://q5j5wwg9n.bkt.clouddn.com/2020-02-12220948.png" alt="图片"><br>在线解密：<a href="http://serpent.online-domain-tools.com/" target="_blank" rel="noopener">http://serpent.online-domain-tools.com/</a>  </p>
+<h1 id="梅花香自苦寒来"><a href="#梅花香自苦寒来" class="headerlink" title="梅花香自苦寒来"></a>梅花香自苦寒来</h1><p>winhex下发现大量数据，猜测是hex编码<br><img src="http://q5j5wwg9n.bkt.clouddn.com/20200212222359.png" alt="图片"><br><img src="http://q5j5wwg9n.bkt.clouddn.com/20200212222614.png" alt="图片"><br>随便使用一个16进制编译器将这些编码保存，我这使用的是HxD<br>然后写脚本将它们转成ASCII码（个人比较懒，直接<a href="http://stool.chinaz.com/hex" target="_blank" rel="noopener">在线解码</a>了）<br><img src="http://q5j5wwg9n.bkt.clouddn.com/20200212223159.png" alt="tp"><br>然后发现是一大堆坐标，使用gnuplot绘制图片，首先还是要写脚本将坐标转成gnuplot能识别的形式（除去“（”，“，”和“）”）  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'1.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> a:</span><br><span class="line">	a = a.read()</span><br><span class="line">b = open(<span class="string">'2.txt'</span>,<span class="string">'w'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> f.split(<span class="string">'\n'</span>):</span><br><span class="line">	b.write(i.lstrip(<span class="string">'('</span>).rstrip(<span class="string">')'</span>).replace(<span class="string">','</span>,<span class="string">' '</span>)+<span class="string">'\n'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="http://q5j5wwg9n.bkt.clouddn.com/20200212153055.png" alt="tp"><br><img src="http://q5j5wwg9n.bkt.clouddn.com/20200212153143.png" alt="tp"><br>最后扫码得到flag</p>
+<h1 id="九连环"><a href="#九连环" class="headerlink" title="九连环"></a>九连环</h1><p>binwalk先分析发现zip，解压出来发现一张图片需要密码，而压缩包不用，用winhex打开发现是一个伪加密（<a href="https://blog.csdn.net/qq_26187985/article/details/83654197" target="_blank" rel="noopener">伪加密具体详情</a>），此处将01 08改为00 08<br><img src="http://q5j5wwg9n.bkt.clouddn.com/20200212225509.png" alt="tp"><br>解压出的图片应该就是flag压缩包密码的线索，然后对这个图片各种分析无果，最后去看了其他大佬的wp，才知道一个隐写神器：steghide（<a href="https://blog.csdn.net/Blood_Seeker/article/details/81837571" target="_blank" rel="noopener">详情</a>）  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将secret.txt文件隐藏到a.jpg中：</span><br><span class="line">#steghide embed -cf a.jpg -ef secret.txt -p 123</span><br><span class="line">（-p表示密码）</span><br><span class="line">从a.jpg解出secret.txt：</span><br><span class="line">#steghide extract -sf a.jpg -p 123</span><br></pre></td></tr></table></figure>
+<p><img src="http://q5j5wwg9n.bkt.clouddn.com/20200212230900.png" alt="tp"><br>这题没有说要密码，直接提取出ko.txt，解压后得到flag</p>
+<h1 id="弱口令"><a href="#弱口令" class="headerlink" title="弱口令"></a>弱口令</h1><p>本以为真的是弱口令，找了个字典爆破，爆破不出来，然后打开压缩包发现注释（看了好久。。。）<br><img src="http://q5j5wwg9n.bkt.clouddn.com/20200215153034.png" alt="tp"><br><img src="http://q5j5wwg9n.bkt.clouddn.com/20200215153230.png" alt="tp"><br>保存到sublime，是摩斯密码，解密后发现还是打不开压缩包，把字母换成大写就打开了，然后得到一张图片。。。<br>看了半天也分析不出来个啥，就去看了看wp，原来是lsb隐写，那就直接GitHub上的一个工具<a href="https://github.com/livz/cloacked-pixel" target="_blank" rel="noopener">https://github.com/livz/cloacked-pixel</a>  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python lsb.py extract 女神.png 0.txt 123456</span><br><span class="line">弱密码猜123456</span><br></pre></td></tr></table></figure>
+<p>得到0.txt打开即有flag</p>
 
       
 
@@ -308,7 +288,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/02/11/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%B8%80%EF%BC%89/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/02/12/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%BA%8C%EF%BC%89/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -323,8 +303,8 @@
 <nav id="article-nav">
   
   
-    <a href="/2020/01/16/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
+    <a href="/2020/02/05/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%B8%80%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">BUUCTF Misc部分wp（一）</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -351,7 +331,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-金三胖"><span class="toc-number">1.1.</span> <span class="toc-text">1.金三胖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-二维码"><span class="toc-number">1.2.</span> <span class="toc-text">2.二维码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-N种解决方法"><span class="toc-number">1.3.</span> <span class="toc-text">3.N种解决方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-大白"><span class="toc-number">1.4.</span> <span class="toc-text">4.大白</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-基础破解"><span class="toc-number">1.5.</span> <span class="toc-text">5.基础破解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-你竟然赶我走"><span class="toc-number">1.6.</span> <span class="toc-text">6.你竟然赶我走</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-LSB"><span class="toc-number">1.7.</span> <span class="toc-text">7.LSB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-乌镇峰会种图"><span class="toc-number">1.8.</span> <span class="toc-text">8.乌镇峰会种图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-rar"><span class="toc-number">1.9.</span> <span class="toc-text">9.rar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-ningen"><span class="toc-number">1.10.</span> <span class="toc-text">10.ningen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-文件中的秘密"><span class="toc-number">1.11.</span> <span class="toc-text">11.文件中的秘密</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-wireshark"><span class="toc-number">1.12.</span> <span class="toc-text">12.wireshark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-镜子里面的世界"><span class="toc-number">1.13.</span> <span class="toc-text">13.镜子里面的世界</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-小明的保险箱"><span class="toc-number">1.14.</span> <span class="toc-text">14.小明的保险箱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-爱因斯坦"><span class="toc-number">1.15.</span> <span class="toc-text">15.爱因斯坦</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-被嗅探的流量"><span class="toc-number">1.16.</span> <span class="toc-text">16.被嗅探的流量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-假如给我三天光明"><span class="toc-number">1.17.</span> <span class="toc-text">17.假如给我三天光明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#18-easycap"><span class="toc-number">1.18.</span> <span class="toc-text">18.easycap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#19-FLAG"><span class="toc-number">1.19.</span> <span class="toc-text">19.FLAG</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20-另外一个世界"><span class="toc-number">1.20.</span> <span class="toc-text">20.另外一个世界</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#21-荷兰宽带数据泄露"><span class="toc-number">1.21.</span> <span class="toc-text">21.荷兰宽带数据泄露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#22-隐藏的钥匙"><span class="toc-number">1.22.</span> <span class="toc-text">22.隐藏的钥匙</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#23-来首歌吧"><span class="toc-number">1.23.</span> <span class="toc-text">23.来首歌吧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#24-后门查杀"><span class="toc-number">1.24.</span> <span class="toc-text">24.后门查杀</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#25-神秘龙卷风"><span class="toc-number">1.25.</span> <span class="toc-text">25.神秘龙卷风</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#26-面具下的flag"><span class="toc-number">1.26.</span> <span class="toc-text">26.面具下的flag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#27-webshell后门"><span class="toc-number">1.27.</span> <span class="toc-text">27.webshell后门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#28-被劫持的神秘礼物"><span class="toc-number">1.28.</span> <span class="toc-text">28.被劫持的神秘礼物</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#29-刷新过的图片"><span class="toc-number">1.29.</span> <span class="toc-text">29.刷新过的图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#30-穿越时空的思恋"><span class="toc-number">1.30.</span> <span class="toc-text">30.穿越时空的思恋</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#snake"><span class="toc-number">1.</span> <span class="toc-text">snake</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#梅花香自苦寒来"><span class="toc-number">2.</span> <span class="toc-text">梅花香自苦寒来</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#九连环"><span class="toc-number">3.</span> <span class="toc-text">九连环</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#弱口令"><span class="toc-number">4.</span> <span class="toc-text">弱口令</span></a></li></ol>
                     </div>
                 </span>
             </div>
