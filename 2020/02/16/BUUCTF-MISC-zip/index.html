@@ -6,15 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020/1 | SCERush</title>
+  <title>BUUCTF MISC zip | SCERush</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="SCERush">
-<meta property="og:url" content="http://yoursite.com/archives/2020/01/index.html">
+  <meta name="description" content="前言在刷BUU时碰到这题(题目地址)，题目给出了许多压缩包，但是没有一点头绪，看了看别人的wp才知道是crc爆破，在此记录一下这个知识点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUUCTF MISC zip">
+<meta property="og:url" content="http://yoursite.com/2020/02/16/BUUCTF-MISC-zip/index.html">
 <meta property="og:site_name" content="SCERush">
+<meta property="og:description" content="前言在刷BUU时碰到这题(题目地址)，题目给出了许多压缩包，但是没有一点头绪，看了看别人的wp才知道是crc爆破，在此记录一下这个知识点。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200216140622.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200216141747.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200216142025.png">
+<meta property="og:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200216142730.png">
+<meta property="article:published_time" content="2020-02-16T05:53:15.000Z">
+<meta property="article:modified_time" content="2020-02-16T06:31:30.828Z">
 <meta property="article:author" content="SCERush">
+<meta property="article:tag" content="MISC">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://q5j5wwg9n.bkt.clouddn.com/20200216140622.png">
   
     <link rel="alternative" href="/atom.xml" title="SCERush" type="application/atom+xml">
   
@@ -134,49 +144,195 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-BUUCTF-MISC-zip" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/01/16/hello-world/" class="archive-article-date">
-  	<time datetime="2020-01-16T15:24:40.586Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/01/16/hello-world/">Hello World</a>
+    <h1 class="article-title" itemprop="name">
+      BUUCTF MISC zip
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
+        
+        <a href="/2020/02/16/BUUCTF-MISC-zip/" class="archive-article-date">
+  	<time datetime="2020-02-16T05:53:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在刷BUU时碰到这题(<a href="https://buuoj.cn/challenges#zip" target="_blank" rel="noopener">题目地址</a>)，题目给出了许多压缩包，但是没有一点头绪，看了看别人的wp才知道是crc爆破，在此记录一下这个知识点。</p>
+<a id="more"></a>
 
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>CRC全称Cyclic Redundancy Check，也就是循环冗余校验码，是一种能力相当强的检错、纠错码，并且实现编码和检码的电路比较简单，常用于串行传送（二进制位串沿一条信号线逐位传送）的辅助存储器与主机的数据通信和计算机网络中。<br>总而言之，就是每一个文件都有它唯一的CRC32值，即便数据中一个bit发生变化，也会导致CRC32值不同。若是知道一段数据的长度和CRC32值，便可穷举数据，与其CRC32对照，以此达到暴力猜解的目的。但通常只适用于较小文本文件。<br><img src="http://q5j5wwg9n.bkt.clouddn.com/20200216140622.png" alt="tp"><br>自己写的脚本总出错，于是借用了大佬的脚本<a href="https://blog.csdn.net/u011377996/article/details/79360820" target="_blank" rel="noopener">https://blog.csdn.net/u011377996/article/details/79360820</a>  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CrackCrc</span><span class="params">(crc)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> dic: </span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> dic:</span><br><span class="line">                <span class="keyword">for</span> h <span class="keyword">in</span> dic:</span><br><span class="line">                    s = i + j + k + h</span><br><span class="line">                    <span class="keyword">if</span> crc == (binascii.crc32(s.encode())):</span><br><span class="line">                        f.write(s)</span><br><span class="line">                        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CrackZip</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">68</span>):</span><br><span class="line">            file = <span class="string">'out'</span>+str(i)+<span class="string">'.zip'</span></span><br><span class="line">            crc = zipfile.ZipFile(file,<span class="string">'r'</span>).getinfo(<span class="string">'data.txt'</span>).CRC</span><br><span class="line">            CrackCrc(crc)</span><br><span class="line"></span><br><span class="line">dic = string.ascii_letters + string.digits + <span class="string">'+/='</span></span><br><span class="line"></span><br><span class="line">f = open(<span class="string">'out.txt'</span>,<span class="string">'w'</span>)</span><br><span class="line">CrackZip()</span><br><span class="line">print(<span class="string">"CRC32碰撞完成"</span>)</span><br><span class="line">f.close</span><br></pre></td></tr></table></figure>
+<p>碰撞完成后得到一串base64编码，解码一看，要修复文件<br><img src="http://q5j5wwg9n.bkt.clouddn.com/20200216141747.png" alt="tp"><br>查了点资料后发现这是一个rar压缩包<a href="https://blog.csdn.net/vevenlcf/article/details/51538837" target="_blank" rel="noopener">https://blog.csdn.net/vevenlcf/article/details/51538837</a>，修改一下文件，在文件前面加上补上52 61 72 21 1A 07 00 后保存<br><img src="http://q5j5wwg9n.bkt.clouddn.com/20200216142025.png" alt="tp"></p>
+<p><img src="http://q5j5wwg9n.bkt.clouddn.com/20200216142730.png" alt="tp"><br>打开压缩包一看，在备注处看到flag</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MISC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/02/16/BUUCTF-MISC-zip/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/02/21/BUUCTF-Crypto%E9%83%A8%E5%88%86wp/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          BUUCTF Crypto部分wp
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2020/02/12/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%BA%8C%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">BUUCTF Misc部分wp（二）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#正文"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -199,8 +355,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
