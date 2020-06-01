@@ -162,7 +162,6 @@
       
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近开始刷<a href="https://buuoj.cn/" target="_blank" rel="noopener">BUUCTF</a>，感觉题目比较基础，而且这还有许多比赛题目的复现。<br>这里将记录一些简单的MISC题目，较难的题目将单独写出来。</p>
 <a id="more"></a>
-
 <h2 id="1-金三胖"><a href="#1-金三胖" class="headerlink" title="1.金三胖"></a>1.金三胖</h2><p>题目给出了一张gif图，放入Stegsolve中逐帧查看，得到flag</p>
 <h2 id="2-二维码"><a href="#2-二维码" class="headerlink" title="2.二维码"></a>2.二维码</h2><p>一张二维码，首先扫描一下，明显不是flag，在kali中binwalk分析一波<br>发现一个压缩包，使用foremost命令或者binwalk -e命令将压缩包提取出来发现是一个密码为四位数字的压缩包<br>fcrackzip -b -c1 -l 4 -u爆破得到flag</p>
 <h2 id="3-N种解决方法"><a href="#3-N种解决方法" class="headerlink" title="3.N种解决方法"></a>3.N种解决方法</h2><p>下载后发现是一个exe文件，但打不开，使用任意一个文本编译器打开发现是将图片转base64了，把内容复制再转回图片<a href="http://tool.chinaz.com/tools/imgtobase" target="_blank" rel="noopener" title="http://tool.chinaz.com/tools/imgtobase">http://tool.chinaz.com/tools/imgtobase</a>，是一个二维码，扫码得到flag</p>
@@ -188,12 +187,10 @@
 <h2 id="23-来首歌吧"><a href="#23-来首歌吧" class="headerlink" title="23.来首歌吧"></a>23.来首歌吧</h2><p>得到一段音频，使用Audacity分析，发现摩斯密码，解码得到flag</p>
 <h2 id="24-后门查杀"><a href="#24-后门查杀" class="headerlink" title="24.后门查杀"></a>24.后门查杀</h2><p>webshell会报病毒，随便拿杀毒软件一个扫描一下，就得到目的文件<br>文件打开就得到flag</p>
 <h2 id="25-神秘龙卷风"><a href="#25-神秘龙卷风" class="headerlink" title="25.神秘龙卷风"></a>25.神秘龙卷风</h2><p>解压得到一压缩包，提示说密码四位数，ARCHPR破解，打开文件发现是Brainfuck编码，<a href="https://www.splitbrain.org/services/ook" target="_blank" rel="noopener">在线解码</a></p>
-<h2 id="26-面具下的flag"><a href="#26-面具下的flag" class="headerlink" title="26.面具下的flag"></a>26.面具下的flag</h2><p>解压得到的图片binwalk分析发现压缩包，foremost解压后得到一个flag.vmdk的文件（老实说vmdk我也没怎么见过，于是就看了看网上的wp），使用7z解压  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7z x flag.vmdk</span><br></pre></td></tr></table></figure>
-<p>解压后得到flag的两部分，ook与Brainfuck<a href="https://www.splitbrain.org/services/ook" target="_blank" rel="noopener">在线解码</a><br>（不太明白为什么7z能解压vmdk文件，而且有趣的是我在Windows下解压不能解压出flag后半段密码，在kali下却能。。。）</p>
-<h2 id="27-webshell后门"><a href="#27-webshell后门" class="headerlink" title="27.webshell后门"></a>27.webshell后门</h2><p>和后门查杀那题一样，杀毒软件一扫完事<del>~</del></p>
+<h2 id="26-面具下的flag"><a href="#26-面具下的flag" class="headerlink" title="26.面具下的flag"></a>26.面具下的flag</h2><p>解压得到的图片binwalk分析发现压缩包，foremost解压后得到一个flag.vmdk的文件（老实说vmdk我也没怎么见过，于是就看了看网上的wp），使用7z解压<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7z x flag.vmdk</span><br></pre></td></tr></table></figure><br>解压后得到flag的两部分，ook与Brainfuck<a href="https://www.splitbrain.org/services/ook" target="_blank" rel="noopener">在线解码</a><br>（不太明白为什么7z能解压vmdk文件，而且有趣的是我在Windows下解压不能解压出flag后半段密码，在kali下却能。。。）</p>
+<h2 id="27-webshell后门"><a href="#27-webshell后门" class="headerlink" title="27.webshell后门"></a>27.webshell后门</h2><p>和后门查杀那题一样，杀毒软件一扫完事~~~</p>
 <h2 id="28-被劫持的神秘礼物"><a href="#28-被劫持的神秘礼物" class="headerlink" title="28.被劫持的神秘礼物"></a>28.被劫持的神秘礼物</h2><p>wireshark打开查询TCP流，发现账号密码，串一起再md5  </p>
-<h2 id="29-刷新过的图片"><a href="#29-刷新过的图片" class="headerlink" title="29.刷新过的图片"></a>29.刷新过的图片</h2><p>（知识盲区，唉<del>~</del>）<br>F5隐写，参考论文：<a href="https://wenku.baidu.com/view/c9150e29b4daa58da0114a39.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/c9150e29b4daa58da0114a39.html</a><br>解题时就直接使用：F5-steganography<br>解压出来一个output.txt，打开一看PK开头，估计是zip，改后缀名，解压后得到flag</p>
+<h2 id="29-刷新过的图片"><a href="#29-刷新过的图片" class="headerlink" title="29.刷新过的图片"></a>29.刷新过的图片</h2><p>（知识盲区，唉~~~）<br>F5隐写，参考论文：<a href="https://wenku.baidu.com/view/c9150e29b4daa58da0114a39.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/c9150e29b4daa58da0114a39.html</a><br>解题时就直接使用：F5-steganography<br>解压出来一个output.txt，打开一看PK开头，估计是zip，改后缀名，解压后得到flag</p>
 <h2 id="30-穿越时空的思恋"><a href="#30-穿越时空的思恋" class="headerlink" title="30.穿越时空的思恋"></a>30.穿越时空的思恋</h2><p>又是一段音频，Audacity分析，发现摩斯密码，解码得到flag</p>
 
       
@@ -585,5 +582,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
 
 </div>
   </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

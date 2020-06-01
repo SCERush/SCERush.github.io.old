@@ -167,20 +167,14 @@
 <li>steghide隐写</li>
 <li>lsb隐写</li>
 </ul>
-<a id="more"></a>
-<hr>
-<h1 id="snake"><a href="#snake" class="headerlink" title="snake"></a>snake</h1><p>得到一张图片，发现zip，foremost解压<br>得到密钥和一份已加密的文件，将密钥base64解码后  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">What is Nicki Minaj&#39;s favorite song that refers to snakes?</span><br></pre></td></tr></table></figure>
-<p>密钥就是anaconda，那么关于蛇的加密方式就是serpent加密（也是关于蛇的单词┭┮﹏┭┮，记得在密码学课上讲过，好像是AES竞选之一，但忘完了(⊙o⊙)…）<br>在线解密：<a href="http://serpent.online-domain-tools.com/" target="_blank" rel="noopener">http://serpent.online-domain-tools.com/</a>  </p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h1 id="snake"><a href="#snake" class="headerlink" title="snake"></a>snake</h1><p>得到一张图片，发现zip，foremost解压<br>得到密钥和一份已加密的文件，将密钥base64解码后<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">What is Nicki Minaj&#39;s favorite song that refers to snakes?</span><br></pre></td></tr></table></figure><br>密钥就是anaconda，那么关于蛇的加密方式就是serpent加密（也是关于蛇的单词┭┮﹏┭┮，记得在密码学课上讲过，好像是AES竞选之一，但忘完了(⊙o⊙)…）<br>在线解密：<a href="http://serpent.online-domain-tools.com/" target="_blank" rel="noopener">http://serpent.online-domain-tools.com/</a>  </p>
 <h1 id="梅花香自苦寒来"><a href="#梅花香自苦寒来" class="headerlink" title="梅花香自苦寒来"></a>梅花香自苦寒来</h1><p>winhex下发现大量数据，猜测是hex编码<br>随便使用一个16进制编译器将这些编码保存，我这使用的是HxD<br>然后写脚本将它们转成ASCII码（个人比较懒，直接<a href="http://stool.chinaz.com/hex" target="_blank" rel="noopener">在线解码</a>了）<br>然后发现是一大堆坐标，使用gnuplot绘制图片，首先还是要写脚本将坐标转成gnuplot能识别的形式（除去“（”，“，”和“）”）  </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'1.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> a:</span><br><span class="line">	a = a.read()</span><br><span class="line">b = open(<span class="string">'2.txt'</span>,<span class="string">'w'</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> f.split(<span class="string">'\n'</span>):</span><br><span class="line">	b.write(i.lstrip(<span class="string">'('</span>).rstrip(<span class="string">')'</span>).replace(<span class="string">','</span>,<span class="string">' '</span>)+<span class="string">'\n'</span>)</span><br></pre></td></tr></table></figure>
 <p>最后扫码得到flag</p>
 <h1 id="九连环"><a href="#九连环" class="headerlink" title="九连环"></a>九连环</h1><p>binwalk先分析发现zip，解压出来发现一张图片需要密码，而压缩包不用，用winhex打开发现是一个伪加密（<a href="https://blog.csdn.net/qq_26187985/article/details/83654197" target="_blank" rel="noopener">伪加密具体详情</a>），此处将01 08改为00 08<br>解压出的图片应该就是flag压缩包密码的线索，然后对这个图片各种分析无果，最后去看了其他大佬的wp，才知道一个隐写神器：steghide（<a href="https://blog.csdn.net/Blood_Seeker/article/details/81837571" target="_blank" rel="noopener">详情</a>）  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将secret.txt文件隐藏到a.jpg中：</span><br><span class="line">#steghide embed -cf a.jpg -ef secret.txt -p 123</span><br><span class="line">（-p表示密码）</span><br><span class="line">从a.jpg解出secret.txt：</span><br><span class="line">#steghide extract -sf a.jpg -p 123</span><br></pre></td></tr></table></figure>
 <p>这题没有说要密码，直接提取出ko.txt，解压后得到flag</p>
-<h1 id="弱口令"><a href="#弱口令" class="headerlink" title="弱口令"></a>弱口令</h1><p>本以为真的是弱口令，找了个字典爆破，爆破不出来，然后打开压缩包发现注释（看了好久。。。）<br>保存到sublime，是摩斯密码，解密后发现还是打不开压缩包，把字母换成大写就打开了，然后得到一张图片。。。<br>看了半天也分析不出来个啥，就去看了看wp，原来是lsb隐写，那就直接GitHub上的一个工具<a href="https://github.com/livz/cloacked-pixel" target="_blank" rel="noopener">https://github.com/livz/cloacked-pixel</a>  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python lsb.py extract 女神.png 0.txt 123456</span><br><span class="line">弱密码猜123456</span><br></pre></td></tr></table></figure>
-<p>得到0.txt打开即有flag</p>
+<h1 id="弱口令"><a href="#弱口令" class="headerlink" title="弱口令"></a>弱口令</h1><p>本以为真的是弱口令，找了个字典爆破，爆破不出来，然后打开压缩包发现注释（看了好久。。。）<br>保存到sublime，是摩斯密码，解密后发现还是打不开压缩包，把字母换成大写就打开了，然后得到一张图片。。。<br>看了半天也分析不出来个啥，就去看了看wp，原来是lsb隐写，那就直接GitHub上的一个工具<a href="https://github.com/livz/cloacked-pixel" target="_blank" rel="noopener">https://github.com/livz/cloacked-pixel</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python lsb.py extract 女神.png 0.txt 123456</span><br><span class="line">弱密码猜123456</span><br></pre></td></tr></table></figure><br>得到0.txt打开即有flag</p>
 
       
 
@@ -327,7 +321,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#snake"><span class="toc-number">1.</span> <span class="toc-text">snake</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#梅花香自苦寒来"><span class="toc-number">2.</span> <span class="toc-text">梅花香自苦寒来</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#九连环"><span class="toc-number">3.</span> <span class="toc-text">九连环</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#弱口令"><span class="toc-number">4.</span> <span class="toc-text">弱口令</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#snake"><span class="toc-number"></span> <span class="toc-text">snake</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#梅花香自苦寒来"><span class="toc-number"></span> <span class="toc-text">梅花香自苦寒来</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#九连环"><span class="toc-number"></span> <span class="toc-text">九连环</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#弱口令"><span class="toc-number"></span> <span class="toc-text">弱口令</span></a>
                     </div>
                 </span>
             </div>
@@ -576,5 +570,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
 
 </div>
   </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
