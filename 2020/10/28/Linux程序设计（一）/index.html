@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NEU,Linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="课程笔记，随便记记 对应PPT 1-2章">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux程序设计（一）">
+<meta property="og:url" content="http://yoursite.com/2020/10/28/Linux%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="SCERush">
+<meta property="og:description" content="课程笔记，随便记记 对应PPT 1-2章">
+<meta property="article:published_time" content="2020-10-28T12:28:06.000Z">
+<meta property="article:modified_time" content="2020-10-28T12:40:57.211Z">
+<meta property="article:author" content="SCERush">
+<meta property="article:tag" content="NEU">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/10/28/Linux程序设计（一）/"/>
+
+
+
+
+
+  <title>Linux程序设计（一） | SCERush</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SCERush</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/28/Linux%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SCERush">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SCERush">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux程序设计（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-28T20:28:06+08:00">
+                2020-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  6.8k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  26
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>课程笔记，随便记记</p>
+<p>对应PPT 1-2章</p>
+<a id="more"></a>
+<h1 id="INTRODUCTION"><a href="#INTRODUCTION" class="headerlink" title="INTRODUCTION"></a>INTRODUCTION</h1><h2 id="Linux简介"><a href="#Linux简介" class="headerlink" title="Linux简介"></a>Linux简介</h2><h3 id="An-Introduction-to-UNIX-Linux-and-GNU"><a href="#An-Introduction-to-UNIX-Linux-and-GNU" class="headerlink" title="An Introduction to UNIX, Linux, and GNU"></a>An Introduction to UNIX, Linux, and GNU</h3><p>Unix操作系统最初是由贝尔实验室开发的，当时的贝尔实验室是电信业巨头—-AT&amp;T(美国电报电话公司)旗下的一员。</p>
+<p>UNIX是在20世纪70年代为DEC（数字设备公司）的PDP系列计算机开发的。</p>
+<h3 id="UNIX-Philosophy"><a href="#UNIX-Philosophy" class="headerlink" title="UNIX Philosophy"></a>UNIX Philosophy</h3><ul>
+<li><p>Simplicity(简单性)</p>
+</li>
+<li><p>Focus(集中性)</p>
+</li>
+<li><p>Reusable Components(可重用组件)</p>
+</li>
+<li><p>Filters(过滤器)</p>
+</li>
+<li><p>Open File Formats(开放的文件格式)</p>
+</li>
+<li><p>Flexibility(灵活性)</p>
+</li>
+</ul>
+<h3 id="What-Is-Linux"><a href="#What-Is-Linux" class="headerlink" title="What Is Linux?"></a>What Is Linux?</h3><p>Linux是类UNIX内核（操作系统的低级内核）的免费分布式实现。<br>Linux是由赫尔辛基大学的Linus Torvalds在互联网上的UNIX程序员的帮助下开发的。<br>现在，使用许多不同类型的CPU的Linux版本可用于各种计算机系统。</p>
+<h3 id="发行版简介"><a href="#发行版简介" class="headerlink" title="发行版简介"></a>发行版简介</h3><p>分发通常在CD-ROM上，它不仅包含内核，还包含许多其他编程工具和实用程序。</p>
+<p>发行版通常附带安装程序和附加文档，以帮助您安装自己的Linux系统。</p>
+<p>一些著名的发行版（尤其是在Intelx86和奔腾系列处理器上）是Red Hat Linux、SuSE Linux和Debian GNU/Linux。</p>
+<h2 id="Linux编程"><a href="#Linux编程" class="headerlink" title="Linux编程"></a>Linux编程</h2><p>Linux系统可以使用大量的编程语言，其中许多语言都是免费的，可以从CD-ROM集合或Internet上的FTP存档站点获得。</p>
+<p>下面是Linux程序员可用的编程语言的部分列表：</p>
+<p>Ada、 C /C++、Eiffel 、 Forth 、 Fortran、Icon 、 Java JavaScript.</p>
+<h3 id="Linux程序"><a href="#Linux程序" class="headerlink" title="Linux程序"></a>Linux程序</h3><p>Linux应用程序由两种特殊类型的文件：可执行文件和脚本。</p>
+<ul>
+<li><p>可执行文件是可由计算机直接运行的程序；</p>
+</li>
+<li><p>脚本是另一个程序（解释器）要遵循的指令集合。（脚本文件类似于Windows中的.bat文件、.cmd文件）</p>
+</li>
+</ul>
+<h3 id="C程序"><a href="#C程序" class="headerlink" title="C程序"></a>C程序</h3><p>常用gcc选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-ansi        只支持ANSI标准的C语法。</span><br><span class="line">-c           只编译，不连接成为可执行文件。编译器只是由输入的.c等源代码文件生成.o为后缀的目标文件，通常用于编译不包含主程序的子程序文件。</span><br><span class="line">-E           只运行C预编译器。</span><br><span class="line">-g           生成调试信息，GNU调试器可利用该信息。</span><br><span class="line">-S           停止于编译步骤之后，不进行汇编步骤，最后的输出文件类型为汇编源代码文件。GCC 产生的汇编语言文件的缺省扩展名是 .s 。</span><br><span class="line">-O1          让gcc对源代码进行基本优化，这些优化在大多数情况下都会使程序执行得更快。</span><br><span class="line">-O2          让gcc产生尽可能小和尽可能快的代码，-O2选项将使编译的速度比使用-O1时慢，但通常产生的代码执行速度会更快。</span><br><span class="line">-o FILE      确定输出文件的名称为FILE，同时这个名称不能和源文件同名。如果不给出这个选项，gcc就给出系统预设的可执行文件a.out。 </span><br><span class="line">-Wall        生成所有警告信息。</span><br><span class="line">-w           不生成任何警告信息。</span><br><span class="line">-IDIRECTORY  指定额外的头文件搜索路径DIRECTORY。 </span><br><span class="line">-LDIRECTORY  指定额外的函数库搜索路径DIRECTORY。</span><br></pre></td></tr></table></figure>
+<h2 id="开发系统路线图"><a href="#开发系统路线图" class="headerlink" title="开发系统路线图"></a>开发系统路线图</h2><h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><ul>
+<li><p>系统提供的用于一般用途的应用程序，包括程序开发，可以在 <code>/usr/bin</code> 中找到。</p>
+</li>
+<li><p>系统管理员为特定主机或本地网络添加的应用程序通常位于 <code>/usr/local/bin</code> 或 <code>/opt</code> 中。</p>
+</li>
+<li><p>功能特性和编程系统可能有自己的目录结构和程序目录。</p>
+</li>
+</ul>
+<h3 id="头文件"><a href="#头文件" class="headerlink" title="头文件"></a>头文件</h3><ul>
+<li><p>对于C，它们几乎总是位于 <code>/usr/include</code> 及其子目录中。</p>
+</li>
+<li><p>其他编程系统也将包括存储在目录中的文件，这些文件由适当的编译器自动搜索。</p>
+</li>
+<li><p>通过向C编译器指定-I标志，我们可以在子目录或非标准位置使用include文件。例如，</p>
+</li>
+</ul>
+<p><code>$gcc-I/usr/openwin/include fred.c</code></p>
+<h3 id="库文件"><a href="#库文件" class="headerlink" title="库文件"></a>库文件</h3><ul>
+<li><p>库是为可重用而编写的预编译函数的集合。通常，它们由一组相关函数组成，以执行一个共同的任务。</p>
+</li>
+<li><p>标准系统库通常存储在 <code>/lib</code> 和 <code>/usr/lib</code> 中。</p>
+</li>
+<li><p>库文件名总是以lib开头。名称的最后一部分以点开头，并指定库的类型：</p>
+<ul>
+<li><p>.a用于传统的静态库</p>
+</li>
+<li><p>.so用于共享库</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="静态库"><a href="#静态库" class="headerlink" title="静态库"></a>静态库</h3><ul>
+<li><p>当程序需要使用存储在库中的函数时，它包含一个声明该函数的头文件。</p>
+</li>
+<li><p>把程序和链接器结合成一个程序库和一个可执行程序。</p>
+</li>
+<li><p>静态库，也被称为archives（归档文件）的名称，通常以.a结尾。</p>
+</li>
+<li><p>我们可以很容易地用我们自己的程序库来创建和维护gcc的静态库。</p>
+</li>
+</ul>
+<h3 id="共享库"><a href="#共享库" class="headerlink" title="共享库"></a>共享库</h3><ul>
+<li>共享库与静态库存储在相同的位置，但共享库具有不同的文件名后缀。</li>
+<li>系统可以安排一个共享库的单个副本同时供多个应用程序使用，并只在磁盘上存储一次。</li>
+<li>另一个好处是共享库可以独立于依赖它的应用程序进行更新。</li>
+<li>通过运行ldd，我们可以看到程序需要哪些共享库。</li>
+</ul>
+<h2 id="Linux命令摘要"><a href="#Linux命令摘要" class="headerlink" title="Linux命令摘要"></a>Linux命令摘要</h2><h3 id="Starting-amp-Stopping"><a href="#Starting-amp-Stopping" class="headerlink" title="Starting &amp; Stopping"></a>Starting &amp; Stopping</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">shutdown -h now   现在关闭系统，不要重新启动</span><br><span class="line">halt              停止所有进程-同上</span><br><span class="line">shutdown -r 5     5分钟后关闭系统并重新启动</span><br><span class="line">shutdown -r now   现在关闭系统并重新启动</span><br><span class="line">reboot            停止所有进程，然后重新启动-同上</span><br><span class="line">startx            启动X系统</span><br></pre></td></tr></table></figure>
+<h3 id="Files-and-Directory"><a href="#Files-and-Directory" class="headerlink" title="Files and Directory"></a>Files and Directory</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;home          进入目录&#39;&#x2F; home’</span><br><span class="line">cd ..             返回上一级目录</span><br><span class="line">cd                进入根目录</span><br><span class="line">pwd               显示工作目录的路径</span><br><span class="line">ls –l             显示文件和目录的详细信息</span><br><span class="line">mkdir dir1        创建一个名叫&#39;dir1&#39;的</span><br><span class="line">ln –s file1 lnk1  创建指向文件或目录的符号链接（软链接）</span><br><span class="line">ln file1 lnk1     创建指向文件或目录的物理链接</span><br><span class="line">touch –t 0712250000 fileditest</span><br><span class="line">                  修改文件或目录的时间戳-（YYMMDDhhmm）</span><br></pre></td></tr></table></figure>
+<h3 id="Finding-files-and-text-within-files"><a href="#Finding-files-and-text-within-files" class="headerlink" title="Finding files and text within files"></a>Finding files and text within files</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find &#x2F; -name fname          从根目录开始，查找名为fname的文件</span><br><span class="line">find &#x2F; -name “*fname*”      从根目录开始，查找包含字符串fname的文件</span><br><span class="line">locate missingfilename      使用locate命令查找一个名为missingfilename的文件-假设您已经使用了updatedb命令（请参见下一个）</span><br><span class="line">updatedb                    在附加到linux根目录的所有文件系统上创建或更新文件数据库</span><br><span class="line">which missingfilename       显示包含名为missingfilename的可执行文件的子目录</span><br><span class="line">grep textstringtofind &#x2F;dir  从名为dir的目录开始，查找并列出所有包含textstringtofind的文件</span><br></pre></td></tr></table></figure>
+<h3 id="Moving-copying-deleting-amp-viewing-files"><a href="#Moving-copying-deleting-amp-viewing-files" class="headerlink" title="Moving, copying, deleting &amp; viewing files"></a>Moving, copying, deleting &amp; viewing files</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ls -l                       使用长格式列出当前目录中的文件</span><br><span class="line">ls -F                       列出当前目录中的文件并指示文件类型</span><br><span class="line">ls -laC                     以长格式列出当前目录中的所有文件，并按列显示</span><br><span class="line">rm name                     删除名为名称的文件或目录</span><br><span class="line">rm -rf name                 杀死整个目录，包括文件和子目录</span><br><span class="line">cp filename &#x2F;home&#x2F;dirname   将名为filename的文件复制到&#x2F;home&#x2F;dirname目录</span><br><span class="line">mv filename &#x2F;home&#x2F;dirname   将名为filename的文件移动到&#x2F;home&#x2F;dirname目录</span><br><span class="line">cat filetoview              显示名为filetoview的文件</span><br><span class="line">man -k keyword              显示包含keyword的手册页</span><br><span class="line">more filetoview             显示名为filetoview一次查看一页的文件，使用空格进入下一页</span><br><span class="line">head filetoview             显示名为filetoview的文件的前10行</span><br><span class="line">head -20 filetoview         显示名为filetoview的文件的前20行</span><br><span class="line">tail filetoview             显示名为filetoview的文件的最后10行</span><br><span class="line">tail -20 filetoview         显示名为filetoview的文件的最后20行</span><br></pre></td></tr></table></figure>
+<h3 id="Installing-software-for-Linux"><a href="#Installing-software-for-Linux" class="headerlink" title="Installing software for Linux"></a>Installing software for Linux</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rpm -ihv name.rpm      安装名为name的rpm包</span><br><span class="line">rpm -Uhv name.rpm      升级名为name的rpm包</span><br><span class="line">rpm -e package         删除名为package的rpm包</span><br><span class="line">rpm -l package         列出包中名为package的文件</span><br><span class="line">rpm -ql package        列出这些文件并声明包的已安装版本</span><br><span class="line">rpm -i --force package 重新安装名为name的rpm软件包，删除了其中的部分（不是使用rpm-e删除）</span><br><span class="line">tar -zxvf archive.tar.gz or tar -zxvf archive.tgz</span><br><span class="line">	                   解压缩包含压缩文件的存档文件中的文件</span><br><span class="line">.&#x2F;configure            执行脚本，准备要编译的已安装文件</span><br></pre></td></tr></table></figure>
+<h3 id="User-Administration"><a href="#User-Administration" class="headerlink" title="User Administration"></a>User Administration</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adduser accountname   创建一个名为accountname的新用户</span><br><span class="line">passwd accountname    为帐号命名一个新密码</span><br><span class="line">groupadd group_name   创建一个新组</span><br><span class="line">groupdel group_name   删除群组</span><br><span class="line">su                    从当前登录名以超级用户身份登录</span><br><span class="line">exit                  停止成为超级用户并恢复为普通用户</span><br></pre></td></tr></table></figure>
+<h3 id="文件权限"><a href="#文件权限" class="headerlink" title="文件权限"></a>文件权限</h3><p>使用命令 <code>ls -l</code> ，会出现文件权限信息，例如：<code>drwxr-xr-x</code></p>
+<p><strong>Read = 4   Write = 2   Execute = 1</strong></p>
+<p>通过为每个用户类型提供 <code>chmod</code> 命令和适当的八进制代码，可以更改文件许可权。 例如 <code>chmod 7 6 4 filename</code> 将使文件名为R + W + X的文件名为所有者，R + W为组，其他为R。</p>
+<p><code>chmod 7 5 5</code> 拥有者的完全权限，拥有对群组和其他人的读取和执行访问权限。</p>
+<p><code>chmod +x filename</code> 使名为filename的文件对所有用户可执行。</p>
+<h3 id="Process-Management"><a href="#Process-Management" class="headerlink" title="Process Management"></a>Process Management</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ps             显示您当前活动的进程</span><br><span class="line">top            显示所有正在运行的进程</span><br><span class="line">kill pid       杀死进程ID pid</span><br><span class="line">killall proc   杀死所有名为proc的进程</span><br><span class="line">bg             列出已停止或后台作业；在后台恢复已停止的作业</span><br><span class="line">fg             将最新工作带到前台</span><br><span class="line">fg n           将工作n带到前台</span><br></pre></td></tr></table></figure>
+<h3 id="System-Info"><a href="#System-Info" class="headerlink" title="System Info"></a>System Info</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">date                显示当前日期和时间 E.G date 041217002007.00</span><br><span class="line">cal                 显示本月的日历</span><br><span class="line">uptime              显示当前正常运行时间</span><br><span class="line">w                   显示在线用户</span><br><span class="line">whoami              显示您的登录身份</span><br><span class="line">finger user         显示用户信息</span><br><span class="line">uname -a            显示内核信息</span><br><span class="line">cat &#x2F;proc&#x2F;cpuinfo   cpu信息</span><br><span class="line">cat &#x2F;proc&#x2F;meminfo   内存信息</span><br><span class="line">man command         显示命令手册</span><br><span class="line">df                  显示磁盘使用情况</span><br><span class="line">du                  显示目录空间使用情况</span><br><span class="line">free                显示内存和交换使用情况</span><br><span class="line">whereis app         显示app的可能位置</span><br><span class="line">which app           显示默认情况下将运行哪个应用</span><br></pre></td></tr></table></figure>
+<h2 id="Vi使用指南"><a href="#Vi使用指南" class="headerlink" title="Vi使用指南"></a>Vi使用指南</h2><p>Vi是一个流行的文本编辑器，保证在所有Linux和Unix发行版上都能使用，它非常适合从命令行快速编辑配置文件。</p>
+<p>有两种方法可以启动Vi：</p>
+<ul>
+<li><p>vi—-打开未命名的空白文件。</p>
+</li>
+<li><p>vi filename—-开始编辑空白命名文档或打开文件进行编辑。</p>
+</li>
+</ul>
+<p>Vi有3种模式：</p>
+<ul>
+<li>命令模式</li>
+<li>插入模式</li>
+<li>末行模式</li>
+</ul>
+<p>Vi以命令模式开始。</p>
+<ul>
+<li>在命令模式下按 <code>i</code> 进入插入模式。</li>
+<li>按 <code>Esc</code> 返回命令模式</li>
+<li>按 <code>:</code> 从命令模式到末行模式</li>
+</ul>
+<h3 id="Insert-Replace-mode"><a href="#Insert-Replace-mode" class="headerlink" title="Insert/Replace mode"></a>Insert/Replace mode</h3><p>像在任何文本编辑器中一样输入。</p>
+<h3 id="Command-mode-Last-line-mode"><a href="#Command-mode-Last-line-mode" class="headerlink" title="Command mode/Last-line mode"></a>Command mode/Last-line mode</h3><ol>
+<li>保存</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:w            将已命名的文件写入磁盘</span><br><span class="line">:w filename   保存未命名的文档或使用新的文件名保存文档。 </span><br><span class="line">:w!           覆盖现有文件（而不是正在编辑的文件）所需的文件名。</span><br></pre></td></tr></table></figure>
+<ol>
+<li>退出</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:q    退出Vi，但仅当文档未被修改时</span><br><span class="line">:q!   不保存文档就退出Vi</span><br><span class="line">:wq   保存文档并退出Vi</span><br></pre></td></tr></table></figure>
+<ol>
+<li>打开</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:e filename   打开文件进行编辑，或开始新的命名文档</span><br><span class="line">:r filename   在当前行和下一行之间添加文件filename的内容</span><br></pre></td></tr></table></figure>
+<ol>
+<li>移动</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[PageUp]    上移1页。在前面加上一个数字可以向上移动那么多页</span><br><span class="line">[PageDn]    下移1页。在前面加一个数字可以向下移动那么多页</span><br><span class="line">gg          移到文档开头</span><br><span class="line">G           移到文档末尾</span><br><span class="line">:n          移动到特定行的开头</span><br></pre></td></tr></table></figure>
+<ol>
+<li>撤销和重做</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">u         撤消</span><br><span class="line">[Ctrl]r   恢复</span><br></pre></td></tr></table></figure>
+<ol>
+<li>删除（剪切）</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dd           删除（剪切）当前行</span><br><span class="line">Ndd          删除（剪切）当前行加上下面的n-1行</span><br><span class="line">x or [Del]   删除（剪切）当前字符</span><br></pre></td></tr></table></figure>
+<ol>
+<li>拖拉（复制）并粘贴</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yy or Y     拖拉（复制）当前行</span><br><span class="line">nyy or nY   拖拉（复制）当前行和下面的n-1行</span><br><span class="line">p           在当前行和下一行之间粘贴文本</span><br><span class="line">np          在当前行和下一行之间粘贴文本n次</span><br><span class="line">P           在当前行和上一行之间粘贴文本</span><br><span class="line">nP          在当前行和上一行之间粘贴文本，n次</span><br></pre></td></tr></table></figure>
+<ol>
+<li>搜索</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;text   从光标中查找下一个文本实例，其中text是要查找的字符串。如果找不到任何内容，那么Vi将从文档的开始处折回光标</span><br><span class="line">?text   与上面相同，但搜索方向相反</span><br><span class="line">n       下一次出现（在任一方向）</span><br><span class="line">N       上一次发生</span><br></pre></td></tr></table></figure>
+<ol>
+<li>替换</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">:s&#x2F;old&#x2F;new     用new替换old的下一个实例</span><br><span class="line">:s&#x2F;old&#x2F;new&#x2F;g   用new替换old的所有实例</span><br><span class="line">rcharacter     用字符替换当前字符</span><br><span class="line">nrcharacter    将当前字符加上下一个n-1个字符替换为字符</span><br></pre></td></tr></table></figure>
+<h1 id="Debugging-and-Make"><a href="#Debugging-and-Make" class="headerlink" title="Debugging and Make"></a>Debugging and Make</h1><h2 id="错误类型"><a href="#错误类型" class="headerlink" title="错误类型"></a>错误类型</h2><p>功能定义错误：如果程序的功能被错误地定义了，它就肯定不能完成预定的工作。所以，在开始设计之前，你必须确认自己知道并理解这个程序究竟是用来干什么的。</p>
+<p>设计规划错误：无论程序的规模大小，在创建它们之前都需要有一个设计规划的阶段。对程序员来说，一定要花点时间思考：如何构造程序，需要什么样的数据结构，它又应该如何在程序中使用。</p>
+<p>代码编写错误：当然，每个人都会出现键入错误。在程序中遇到错误时，要重新阅读源代码或与其他人进行讨论。</p>
+<p>可以试着在纸上执行程序的核心代码，这个过程被称为干运行。针对那些重要的例程，先记下它们的输入值，然后逐步手工计算出结果。</p>
+<h2 id="一般调试技术"><a href="#一般调试技术" class="headerlink" title="一般调试技术"></a>一般调试技术</h2><p>一般方法是先运行程序并观察其输出结果，如果不能正常工作，我们就需要决定应该采取哪些措施。</p>
+<p>（1）可以修改程序然后重新尝试（代码检查－试运行－出错法）</p>
+<p>（2）在程序中增加一些语句以获得更多关于程序内部运行情况的信息（取样法）</p>
+<p>（3）可以直接检查程序的运行情况（受控执行法）</p>
+<p>调试的5个阶段</p>
+<p>Testing(测试): 找出存在哪些缺陷或错误</p>
+<p>Stabilization(固化): 使错误可重现</p>
+<p>Localization(定位): 标识负责的代码行</p>
+<p>Correction(纠正): 修复代码</p>
+<p>Verification(验证): 确保修复程序有效</p>
+<h3 id="取样法"><a href="#取样法" class="headerlink" title="取样法"></a>取样法</h3><p>检测是向程序中添加代码，目的是收集有关程序运行时行为的更多信息。<br>添加 <code>printf</code> 调用以在程序执行的不同阶段打印出变量的值是很常见的。<br>但是我们应该知道，只要更改程序，该过程就需要进行额外的编辑和编译，当然，在修复错误之后，我们将需要删除代码。</p>
+<p>第一种技巧是用C语言的预处理器有选择的包括取样代码，这样只需重新编译程序就可以达到包含或去除调试代码的目的。<br>我们可以使用编译器标志 <code>-DDEBUG</code> 来编译程序，以定义DEBUG符号并包括多余的代码，也可以不排除它。</p>
+<p>C语言预处理器定义的一些宏可以帮助我们进行调试。这些宏在扩展后会提供当前编译操作的相关信息。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Macro</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__LINE__</td>
+<td>A decimal representing the current line number</td>
+</tr>
+<tr>
+<td>__FILE__</td>
+<td>A string representing the current file name</td>
+</tr>
+<tr>
+<td>__DATE__</td>
+<td>A string of the form “Mmm dd yyyy”,the current date</td>
+</tr>
+<tr>
+<td>__TIME__</td>
+<td>A string of the form”hh:mm:ss”,the current time</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="使用GDB调试"><a href="#使用GDB调试" class="headerlink" title="使用GDB调试"></a>使用GDB调试</h2><p>gdb本身是一个基于文本的应用程序，但是它确实提供了一些捷径来帮助执行重复性任务。<br>许多版本具有历史记录的命令行编辑，因此您可以向后滚动并再次执行相同的命令（尝试使用光标键）。<br>所有版本都支持“空命令”。 按Enter键将再次执行最后一个命令。 当使用step或next命令逐行浏览程序时，此功能特别有用。</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/niyaozuozuihao/article/details/91802994" target="_blank" rel="noopener">linux下gdb调试方法与技巧整理</a></p>
+</blockquote>
+<h2 id="多个源文件的问题"><a href="#多个源文件的问题" class="headerlink" title="多个源文件的问题"></a>多个源文件的问题</h2><p>在编写小型程序时，许多人只需在编辑后通过重新编译所有文件即可重建其应用程序。<br>但是，对于较大的程序，这种简单方法的一些问题变得很明显。 编辑-编译-测试周期的时间将增加。<br>当只更改了一个文件时，即使是最有耐心的程序员也希望避免重新编译所有文件。<br>当创建多个头文件并将其包含在不同的源文件中时，可能会出现更困难的问题。</p>
+<h2 id="make命令和Makefiles"><a href="#make命令和Makefiles" class="headerlink" title="make命令和Makefiles"></a>make命令和Makefiles</h2><p>您必须提供一个文件，告诉您如何构造您的应用程序。 该文件称为makefile。<br>生成文件最常与项目的其他源文件位于同一目录中。<br>如果您有一个大型项目，则可以选择对项目的不同部分使用单独的Makefile对其进行管理。<br>make命令和makefile的组合为管理项目提供了非常强大的工具。</p>
+<h3 id="The-Syntax-of-Makefiles"><a href="#The-Syntax-of-Makefiles" class="headerlink" title="The Syntax of Makefiles"></a>The Syntax of Makefiles</h3><p>一个makefile由一组依赖关系和规则组成。</p>
+<ul>
+<li>依赖项具有目标（要创建的文件）和依赖项依赖的一组源文件。</li>
+<li>规则描述了如何从相关文件中创建目标。</li>
+<li>通常，目标是单个可执行文件。</li>
+</ul>
+<p>make文件由make命令读取，该命令确定要创建的目标文件，然后比较源文件的日期和时间，以决定需要调用哪些规则来构造目标。<br>通常，必须先创建其他中间目标，然后才能制定最终目标。<br>make命令使用makefile来确定目标的生成顺序以及要调用的规则的正确顺序。</p>
+<h3 id="Options-and-Parameters-to-make"><a href="#Options-and-Parameters-to-make" class="headerlink" title="Options and Parameters to make"></a>Options and Parameters to make</h3><p>make程序本身有几个选项。 三种最常用的是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-k           它告诉make在发现错误时继续进行。</span><br><span class="line">-n           它告诉make打印出实际上会执行的操作。</span><br><span class="line">-f &lt;文件名&gt;   它允许您告诉make将哪个文件用作其makefile。</span><br></pre></td></tr></table></figure>
+<p>要告诉make建立一个特定的目标，您可以传递目标名称作为参数。 如果不这样做，make会尝试创建makefile中列出的第一个目标。<br>许多程序员将所有目标都指定为其makefile中的第一个目标，然后将其他目标列为所有目标的依赖项。<br>当没有指定目标时，此约定使makefile在默认情况下应尝试构建的目标明确。</p>
+<ol>
+<li>Dependencies(依赖关系)</li>
+</ol>
+<p>依赖关系指定最终应用程序中的每个文件与源文件的关系。<br>在makefile中，我们通过编写目标名称，冒号，空格或制表符，然后用空格或制表符分隔的用于创建目标文件的文件列表来编写这些规则。</p>
+<p> 我们的示例的依赖项列表是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">myapp: main.o 2.o 3.o</span><br><span class="line">main.o: main.c a.h</span><br><span class="line">2.o: 2.c a.h b.h</span><br><span class="line">3.o: 3.c b.h c.h</span><br></pre></td></tr></table></figure>
+<p>这表示myapp依赖于main.o，2.o和3.o，main.o依赖于main.c和a.h，依此类推。<br>这组依赖关系提供了一个层次结构，显示了源文件之间的关系。<br>如果我们希望制作多个文件，则可以全部使用phony目标。 假设我们的应用程序由二进制文件myapp和手册页myapp.1组成。 </p>
+<p>我们可以用以下行来指定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all: myapp myapp.l</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Rules(规则)</li>
+</ol>
+<p>makefile的第二部分指定描述如何创建目标的规则。</p>
+<p>在上一节的示例中，在make命令确定2.o需要重建之后，应使用哪个命令？<br>如果我们需要指定一个include目录或设置符号信息选项以进行以后的调试该怎么办？<br>我们可以通过在makefile中指定显式规则来做到这一点。</p>
+<p>大多数规则由一个简单的命令组成，该命令可以在命令行中键入。 对于我们的示例，我们将创建第一个makefile，</p>
+<p>Makefile1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">myapp: main.o 2.o 3.o</span><br><span class="line">   gcc -o myapp main.o 2.o 3.o</span><br><span class="line">main.o: main.c a.h</span><br><span class="line">   gcc -c main.c</span><br><span class="line">2.o: 2.c a.h b.h</span><br><span class="line">   gcc -c 2.c</span><br><span class="line">3.o: 3.c b.h c.h</span><br><span class="line">   gcc -c 3.c</span><br></pre></td></tr></table></figure>
+<p>我们使用-f选项调用make命令，因为我们的makefile没有通常的默认名称makefile或Makefile。<br>如果我们在不包含源代码的目录中调用此代码，则会收错误消息。</p>
+<h3 id="Comments-in-a-Makefile"><a href="#Comments-in-a-Makefile" class="headerlink" title="Comments in a Makefile"></a>Comments in a Makefile</h3><p>生成文件中的注释以＃开头，并继续到该行的末尾。<br>像在C源文件中一样，makefile中的注释可以帮助作者和其他人了解编写文件时的意图。</p>
+<h3 id="Macros-宏-in-a-Makefile"><a href="#Macros-宏-in-a-Makefile" class="headerlink" title="Macros(宏) in a Makefile"></a>Macros(宏) in a Makefile</h3><p>但是，对于包含大量文件的项目，它们也往往很大且不灵活。<br>我们通过写入MACRONAME = value来在makefile中定义一个宏，然后通过写入 $(MACRONAME) 或 $ {MACRONAME}来访问MACRONAME的值。<br>通过将行的其余部分保留在=空白之后，可以将宏的值设置为blank（空）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">all: myapp</span><br><span class="line"># Which compiler</span><br><span class="line">CC &#x3D; gcc</span><br><span class="line"># Where are include files kept</span><br><span class="line">INCLUDE &#x3D; .</span><br><span class="line"># Options for development</span><br><span class="line">CFLAGS &#x3D; -g -Wall -ansi</span><br><span class="line"># Options for release</span><br><span class="line"># CFLAGS &#x3D; -O -Wall -ansi</span><br><span class="line">myapp: main.o 2.o 3.o</span><br><span class="line">   $(CC) -O myapp main.o 2.o 3.o</span><br><span class="line">main.o: main.c a.h</span><br><span class="line">   $(CC) -I$(INCLUDE) $(CFLAGS) -c main.c</span><br><span class="line">2.o: 2.c a.h b.h</span><br><span class="line">   $(CC) -I$(INCLUDE) $(CFLAGS) -c 2.c</span><br><span class="line">3.o: 3.c b.h c.h</span><br><span class="line">   $(CC) -I$(INCLUDE) $(CFLAGS) -c 3.c</span><br></pre></td></tr></table></figure>
+<p>实际上，make具有几个特殊的内部宏，您可以使用这些宏使makefile更加简洁。<br>这些宏中的每一个仅在使用前就展开，因此宏的含义可能会随着Makefile的进行而变化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$^ List of prerequisites of the current</span><br><span class="line">$@ Name of the current target</span><br><span class="line">$&lt; Name of the first prerequisite</span><br></pre></td></tr></table></figure>
+<h3 id="Multiple-Targets"><a href="#Multiple-Targets" class="headerlink" title="Multiple Targets"></a>Multiple Targets</h3><p>通常，制作多个目标文件或将几组命令收集到一个位置通常很有用。 我们可以扩展我们的makefile文件来做到这一点。<br>让我们添加一个“清除”选项以删除不需要的对象，并添加一个“安装”选项以将完成的应用程序移动到另一个目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">all: myapp</span><br><span class="line"># Which compiler</span><br><span class="line">CC &#x3D; gcc</span><br><span class="line"># Where to install</span><br><span class="line">INSTDIR &#x3D; &#x2F;usr&#x2F;local&#x2F;bin</span><br><span class="line"># Where are include files kept</span><br><span class="line">INCLUDE &#x3D; .</span><br><span class="line"># Options for development</span><br><span class="line">CFLAGS &#x3D; -g -Wall -ansi</span><br><span class="line"># Options for release</span><br><span class="line"># CFLAGS &#x3D; -O -Wall -ansi</span><br><span class="line">myapp: main.o 2.o 3.o</span><br><span class="line">   $(CC) -O myapp main.o 2.o 3.o</span><br><span class="line">main.o: main.c a.h</span><br><span class="line">   $(CC) -I$(INCLUDE) $(CFLAGS) -c main.c</span><br><span class="line">2.o: 2.c a.h b.h</span><br><span class="line">   $(CC) -I$(INCLUDE) $(CFLAGS) -c 2.c</span><br><span class="line">3.o: 3.c b.h c.h</span><br><span class="line">   $(CC) -I$(INCLUDE) $(CFLAGS) -c 3.c</span><br></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">clean:</span><br><span class="line">   -rm main.o 2.o 3.o</span><br><span class="line">install: myapp</span><br><span class="line">   @if [ -d $(INSTDIR) ]; \</span><br><span class="line">      then \</span><br><span class="line">      cp myapp $(INSTDIR); \</span><br><span class="line">      chmod a+x $(INSTDIR)&#x2F;myapp; \</span><br><span class="line">      chmod og-w $(INSTDIR)&#x2F;myapp; \</span><br><span class="line">      echo &quot;Installed in $(INSTDIR)&quot;; \</span><br><span class="line">   else \</span><br><span class="line">      echo &quot;Sorry, $(INSTDIR) does not exist&quot;; \</span><br><span class="line">   fi</span><br></pre></td></tr></table></figure>
+<p>首先，当我们执行make而不指定目标时，默认行为是构建目标myapp。<br>下一个要点与清洁和安装这两个附加目标有关。 该命令以-开头，它告诉make忽略命令的结果。<br>安装目标取决于myapp，因此要知道在执行其他安装命令之前，它必须先创建myapp。<br>该命令以@符号开头，告诉make在执行规则之前不要在标准输出上打印命令。</p>
+<p>安装目标一个接一个地执行几个命令，以将应用程序安装在其最终的存放位置。 在执行下一个命令之前，它不会检查每个命令是否成功。<br>如果仅在前一个命令成功后才执行后续命令非常重要，那么我们可以编写由&amp;&amp;连接的命令，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@if [ -d $(INSTDIR) ]; \</span><br><span class="line">   then \</span><br><span class="line">   cp myapp $(INSTDIR) &amp;&amp; \</span><br><span class="line">   chmod a+x $(INSTDIR)&#x2F;myapp &amp;&amp; \</span><br><span class="line">   chmod og-w $(INSTDIR)&#x2F;myapp &amp;&amp; \</span><br><span class="line">   echo &quot;Installed in $(INSTDIR)&quot;; \</span><br><span class="line">else \</span><br><span class="line">   echo &quot;Sorry, $(INSTDIR) does not exist&quot;; false; \</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<h3 id="Suffix-and-Pattern-Rules"><a href="#Suffix-and-Pattern-Rules" class="headerlink" title="Suffix and Pattern Rules"></a>Suffix and Pattern Rules</h3><p>我们看到内置规则在使用时都有后缀，所以给出带有某个特定后缀的文件时，make命令知道应该用哪个规则来创建带有另一个不同后缀名的文件。</p>
+<ul>
+<li>最常见的一条规则是，通过一个以.c为后缀名的文件创建出一个以.o为后缀名的文件。</li>
+</ul>
+<p>要添加新的后缀规则，我们首先在makefile中添加一行，以告知make有关新后缀的信息； 然后，我们可以使用该新后缀编写一条规则。</p>
+<p>nmake uses the special syntax </p>
+<p> <em>.&lt;<strong>old_suffix</strong>&gt;.&lt;<strong>new_suffix</strong>&gt;:</em></p>
+<p>定义用于从具有相同基本名称但具有旧后缀的文件中创建具有新后缀的文件的一般规则。<br>这是我们制作文件的一部分，其中包含将.cpp文件转换为.o文件的新通用规则：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.SUFFIXES:    .cpp</span><br><span class="line">.cpp.o:</span><br><span class="line">  $(CC) -xc++ $(CFLAGS) -I$(INCLUDE) -c $&lt;</span><br></pre></td></tr></table></figure>
+<p>make的最新版本包括实现相同效果的替代语法，以及更多其他功能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%.cpp: %o</span><br><span class="line">   $(CC) -xc++ $(CFLAGS) -I$(INCLUDE) -c $&lt;</span><br></pre></td></tr></table></figure>
+<h3 id="Managing-Libraries-with-make"><a href="#Managing-Libraries-with-make" class="headerlink" title="Managing Libraries with make"></a>Managing Libraries with make</h3><p>在处理较大的项目时，通常可以使用库来管理多个编译产品。<br>语法为lib（file.o），这表示目标文件file.o，存储在库lib.a中。<br>make命令具有一个用于管理库的内置规则，该规则通常等效于以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.c.a:</span><br><span class="line">   $(CC) -c $(CFLAGS) $&lt;</span><br><span class="line">   $(AR) $(ARFLAGS) $@ $*.o</span><br></pre></td></tr></table></figure>
+<p>对于大型项目，一种比较方便的做法是用函数库来管理多个编译产品。</p>
+<p>$*不包括后缀名的当前依赖文件的名字</p>
+<p>宏 <code>\$(AR)</code> 和 <code>\$(ARFLAGS)</code> 通常分别默认为命令ar和选项rv。<br>简洁的语法告诉我们，要从.c文件到.a库，它必须应用两个规则：</p>
+<ul>
+<li>第一条规则说，它必须编译源文件并生成一个对象。</li>
+<li>第二条规则说使用ar命令修改库，添加新的目标文件。</li>
+</ul>
+<p><strong>Managing a Library</strong></p>
+<p>更改应用程序，使文件2.o和3.o保存在名为mylib.a的库中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">all: myapp</span><br><span class="line"># Which compiler</span><br><span class="line">CC &#x3D; gcc</span><br><span class="line"># Where to install</span><br><span class="line">INSTDIR &#x3D; &#x2F;usr&#x2F;local&#x2F;bin</span><br><span class="line"># Where are include files kept</span><br><span class="line">INCLUDE &#x3D; .</span><br><span class="line"># Options for development</span><br><span class="line">CFLAGS &#x3D; -g -Wall -ansi</span><br><span class="line"># Options for release</span><br><span class="line"># CFLAGS &#x3D; -O -Wall -ansi</span><br><span class="line"># Local Libraries</span><br><span class="line">MYLIB &#x3D; mylib.a</span><br><span class="line">myapp: main.o $(MYLIB)</span><br><span class="line">   $(CC) -o myapp main.o $(MYLIB)</span><br><span class="line">$(MYLIB): $(MYLIB)(2.o) $(MYLIB) 3.o</span><br><span class="line">main.o: main.c a.h</span><br><span class="line">2.o: 2.c a.h b.h</span><br><span class="line">3.o: 3.c b.h c.h</span><br><span class="line">clean:</span><br><span class="line">   -rm main.o 2.o 3.o $(MYLIB)</span><br><span class="line">install: myapp</span><br><span class="line">   @if [ -d $(INSTDIR) ]; \</span><br><span class="line">      then \</span><br><span class="line">      cp myapp $(INSTDIR); \</span><br><span class="line">      chmod a+x $(INSTDIR)&#x2F;myapp; \</span><br><span class="line">      chmod og-w $(INSTDIR)&#x2F;myapp; \</span><br><span class="line">      echo &quot;Installed in $(INSTDIR)&quot;; \</span><br><span class="line">   else \</span><br><span class="line">      echo &quot;Sorry, $(INSTDIR) does not exist&quot;; \</span><br><span class="line">   fi</span><br></pre></td></tr></table></figure>
+<h3 id="Makefiles-and-Subdirectories"><a href="#Makefiles-and-Subdirectories" class="headerlink" title="Makefiles and Subdirectories"></a>Makefiles and Subdirectories</h3><p>对于大型的项目，有时我们希望能把组成一个函数库的几个文件从主文件中分离出来，并将它们保存到一个子目录中。</p>
+<p>首先在子目录中编写出第二个makefile文件，它的作用是编译该子目录下的源文件并将它们保存到一个函数库中，然后将该库文件拷贝到上一级的主目录中。</p>
+<p>在主目录中的makefile文件包含一个用于制作函数库的规则，该规则会调用第二个makfile文件。</p>
+<p>Make命令调用这条规则来创建函数库时，它将切换到子目录mylibdirectory中，然后调用一个新的make命令来管理函数库。由于make会针对每个命令调用一个新的shell，使用第二个makefile文件的make命令本身又没有执行cd命令，但它又必须在一个不同的目录下创建函数库，为解决这一问题，我们用括号将这两个命令括起来，以使它们只被一个单独的shell处理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mylib.a:</span><br><span class="line">   (cdmylibdirctory;$(MAKE))</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NEU/" rel="tag"><i class="fa fa-tag"></i> NEU</a>
+          
+            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/09/17/CTF-show-unusualrsa4/" rel="next" title="CTF show unusualrsa4">
+                <i class="fa fa-chevron-left"></i> CTF show unusualrsa4
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/blog.png"
+                alt="SCERush" />
+            
+              <p class="site-author-name" itemprop="name">SCERush</p>
+              <p class="site-description motion-element" itemprop="description">基本上人生就算努力也不见得会有回报，一旦有所回报时，就当作是奇迹发生吧。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#INTRODUCTION"><span class="nav-number">1.</span> <span class="nav-text">INTRODUCTION</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux简介"><span class="nav-number">1.1.</span> <span class="nav-text">Linux简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#An-Introduction-to-UNIX-Linux-and-GNU"><span class="nav-number">1.1.1.</span> <span class="nav-text">An Introduction to UNIX, Linux, and GNU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UNIX-Philosophy"><span class="nav-number">1.1.2.</span> <span class="nav-text">UNIX Philosophy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-Is-Linux"><span class="nav-number">1.1.3.</span> <span class="nav-text">What Is Linux?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发行版简介"><span class="nav-number">1.1.4.</span> <span class="nav-text">发行版简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux编程"><span class="nav-number">1.2.</span> <span class="nav-text">Linux编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux程序"><span class="nav-number">1.2.1.</span> <span class="nav-text">Linux程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C程序"><span class="nav-number">1.2.2.</span> <span class="nav-text">C程序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发系统路线图"><span class="nav-number">1.3.</span> <span class="nav-text">开发系统路线图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">1.3.1.</span> <span class="nav-text">应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#头文件"><span class="nav-number">1.3.2.</span> <span class="nav-text">头文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#库文件"><span class="nav-number">1.3.3.</span> <span class="nav-text">库文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态库"><span class="nav-number">1.3.4.</span> <span class="nav-text">静态库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共享库"><span class="nav-number">1.3.5.</span> <span class="nav-text">共享库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux命令摘要"><span class="nav-number">1.4.</span> <span class="nav-text">Linux命令摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Starting-amp-Stopping"><span class="nav-number">1.4.1.</span> <span class="nav-text">Starting &amp; Stopping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Files-and-Directory"><span class="nav-number">1.4.2.</span> <span class="nav-text">Files and Directory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Finding-files-and-text-within-files"><span class="nav-number">1.4.3.</span> <span class="nav-text">Finding files and text within files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Moving-copying-deleting-amp-viewing-files"><span class="nav-number">1.4.4.</span> <span class="nav-text">Moving, copying, deleting &amp; viewing files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Installing-software-for-Linux"><span class="nav-number">1.4.5.</span> <span class="nav-text">Installing software for Linux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-Administration"><span class="nav-number">1.4.6.</span> <span class="nav-text">User Administration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件权限"><span class="nav-number">1.4.7.</span> <span class="nav-text">文件权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Process-Management"><span class="nav-number">1.4.8.</span> <span class="nav-text">Process Management</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#System-Info"><span class="nav-number">1.4.9.</span> <span class="nav-text">System Info</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vi使用指南"><span class="nav-number">1.5.</span> <span class="nav-text">Vi使用指南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Insert-Replace-mode"><span class="nav-number">1.5.1.</span> <span class="nav-text">Insert&#x2F;Replace mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Command-mode-Last-line-mode"><span class="nav-number">1.5.2.</span> <span class="nav-text">Command mode&#x2F;Last-line mode</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Debugging-and-Make"><span class="nav-number">2.</span> <span class="nav-text">Debugging and Make</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#错误类型"><span class="nav-number">2.1.</span> <span class="nav-text">错误类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一般调试技术"><span class="nav-number">2.2.</span> <span class="nav-text">一般调试技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#取样法"><span class="nav-number">2.2.1.</span> <span class="nav-text">取样法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用GDB调试"><span class="nav-number">2.3.</span> <span class="nav-text">使用GDB调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多个源文件的问题"><span class="nav-number">2.4.</span> <span class="nav-text">多个源文件的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#make命令和Makefiles"><span class="nav-number">2.5.</span> <span class="nav-text">make命令和Makefiles</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Syntax-of-Makefiles"><span class="nav-number">2.5.1.</span> <span class="nav-text">The Syntax of Makefiles</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Options-and-Parameters-to-make"><span class="nav-number">2.5.2.</span> <span class="nav-text">Options and Parameters to make</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Comments-in-a-Makefile"><span class="nav-number">2.5.3.</span> <span class="nav-text">Comments in a Makefile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Macros-宏-in-a-Makefile"><span class="nav-number">2.5.4.</span> <span class="nav-text">Macros(宏) in a Makefile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multiple-Targets"><span class="nav-number">2.5.5.</span> <span class="nav-text">Multiple Targets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Suffix-and-Pattern-Rules"><span class="nav-number">2.5.6.</span> <span class="nav-text">Suffix and Pattern Rules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Managing-Libraries-with-make"><span class="nav-number">2.5.7.</span> <span class="nav-text">Managing Libraries with make</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Makefiles-and-Subdirectories"><span class="nav-number">2.5.8.</span> <span class="nav-text">Makefiles and Subdirectories</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SCERush</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">34.9k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
