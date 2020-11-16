@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="CRYPTO,RSA,CTFshow," />
+  <meta name="keywords" content="C," />
 
 
 
@@ -86,18 +86,16 @@
 
 
 
-<meta name="description" content="在ctf.show中刷到一道题目，给出了两组e,p,q,c，但其中gcd(e,φ(n))!&#x3D;1，网上查了一下  https:&#x2F;&#x2F;blog.csdn.net&#x2F;chenzzhenguo&#x2F;article&#x2F;details&#x2F;94339659 https:&#x2F;&#x2F;www.anquanke.com&#x2F;post&#x2F;id&#x2F;164575#h2-2">
+<meta name="description" content="如果想把一个字符串读入程序，首先必须预留储存该字符串的空间，然后用输入函数获取该字符串。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RSA中e与φ(n)不互素">
-<meta property="og:url" content="http://yoursite.com/2020/08/17/RSA%E4%B8%ADe%E4%B8%8E%CF%86-n-%E4%B8%8D%E4%BA%92%E7%B4%A0/index.html">
+<meta property="og:title" content="C字符串输入输出">
+<meta property="og:url" content="http://yoursite.com/2020/11/16/C%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/index.html">
 <meta property="og:site_name" content="SCERush">
-<meta property="og:description" content="在ctf.show中刷到一道题目，给出了两组e,p,q,c，但其中gcd(e,φ(n))!&#x3D;1，网上查了一下  https:&#x2F;&#x2F;blog.csdn.net&#x2F;chenzzhenguo&#x2F;article&#x2F;details&#x2F;94339659 https:&#x2F;&#x2F;www.anquanke.com&#x2F;post&#x2F;id&#x2F;164575#h2-2">
-<meta property="article:published_time" content="2020-08-17T12:48:31.000Z">
-<meta property="article:modified_time" content="2020-09-17T08:43:27.148Z">
+<meta property="og:description" content="如果想把一个字符串读入程序，首先必须预留储存该字符串的空间，然后用输入函数获取该字符串。">
+<meta property="article:published_time" content="2020-11-16T12:15:08.000Z">
+<meta property="article:modified_time" content="2020-11-16T12:20:43.598Z">
 <meta property="article:author" content="SCERush">
-<meta property="article:tag" content="CRYPTO">
-<meta property="article:tag" content="RSA">
-<meta property="article:tag" content="CTFshow">
+<meta property="article:tag" content="C">
 <meta name="twitter:card" content="summary">
 
 
@@ -128,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/08/17/RSA中e与φ-n-不互素/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/11/16/C字符串输入输出/"/>
 
 
 
 
 
-  <title>RSA中e与φ(n)不互素 | SCERush</title>
+  <title>C字符串输入输出 | SCERush</title>
   
 
 
@@ -295,7 +293,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/17/RSA%E4%B8%ADe%E4%B8%8E%CF%86-n-%E4%B8%8D%E4%BA%92%E7%B4%A0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/16/C%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="SCERush">
@@ -312,7 +310,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">RSA中e与φ(n)不互素</h1>
+          <h1 class="post-title" itemprop="name headline">C字符串输入输出</h1>
         
 
         <div class="post-meta">
@@ -324,8 +322,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-17T20:48:31+08:00">
-                2020-08-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-16T20:15:08+08:00">
+                2020-11-16
               </time>
             
 
@@ -347,8 +345,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">学习</span>
+                  <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">笔记</span>
                   </a>
                 </span>
 
@@ -378,7 +376,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  460
+                  738
                 </span>
               
 
@@ -415,52 +413,58 @@
       
 
       
-        <p>在ctf.show中刷到一道题目，给出了两组e,p,q,c，但其中gcd(e,φ(n))!=1，网上查了一下</p>
-<blockquote>
-<p><a href="https://blog.csdn.net/chenzzhenguo/article/details/94339659" target="_blank" rel="noopener">https://blog.csdn.net/chenzzhenguo/article/details/94339659</a></p>
-<p><a href="https://www.anquanke.com/post/id/164575#h2-2" target="_blank" rel="noopener">https://www.anquanke.com/post/id/164575#h2-2</a></p>
-</blockquote>
+        <p><strong>如果想把一个字符串读入程序，首先必须预留储存该字符串的空间，然后用输入函数获取该字符串。</strong></p>
 <a id="more"></a>
-<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">e1 = <span class="number">14606334023791426</span></span><br><span class="line">p1 = <span class="number">121009772735460235364940622989433807619211926015494087453674747614331295040063679722422298286549493698150690694965106103822315378461970129912436074962111424616439032849788953648286506433464358834178903821069564798378666159882090757625817745990230736982709059859613843100974349380542982235135982530318438330859</span></span><br><span class="line">q1 = <span class="number">130968576816900149996914427770826228884925960001279609559095138835900329492765336419489982304805369724685145941218640504262821549441728192761733409684831633194346504685627189375724517070780334885673563409259345291959439026700006694655545512308390416859315892447092639503318475587220630455745460309886030186593</span></span><br><span class="line">c1 = <span class="number">11402389955595766056824801105373550411371729054679429421548608725777586555536302409478824585455648944737304660137306241012321255955693234304201530700362069004620531537922710568821152217381257446478619320278993539785699090234418603086426252498046106436360959622415398647198014716351359752734123844386459925553497427680448633869522591650121047156082228109421246662020164222925272078687550896012363926358633323439494967417041681357707006545728719651494384317497942177993032739778398001952201667284323691607312819796036779374423837576479275454953999865750584684592993292347483309178232523897058253412878901324740104919248</span></span><br><span class="line"></span><br><span class="line">e2 = <span class="number">13813369129257838</span></span><br><span class="line">p2 = <span class="number">121009772735460235364940622989433807619211926015494087453674747614331295040063679722422298286549493698150690694965106103822315378461970129912436074962111424616439032849788953648286506433464358834178903821069564798378666159882090757625817745990230736982709059859613843100974349380542982235135982530318438330859</span></span><br><span class="line">q2 = <span class="number">94582257784130735233174402362819395926641026753071039760251190444144495369829487705195913337502962816079184062352678128843179586054535283861793827497892600954650126991213176547276006780610945133603745974181504975165082485845571788686928859549252522952174376071500707863379238688200493621993937563296490615649</span></span><br><span class="line">c2 = <span class="number">7984888899827615209197324489527982755561403577403539988687419233579203660429542197972867526015619223510964699107198708420785278262082902359114040327940253582108364104049849773108799812000586446829979564395322118616382603675257162995702363051699403525169767736410365076696890117813211614468971386159587698853722658492385717150691206731593509168262529568464496911821756352254486299361607604338523750318977620039669792468240086472218586697386948479265417452517073901655900118259488507311321060895347770921790483894095085039802955700146474474606794444308825840221205073230671387989412399673375520605000270180367035526919</span></span><br></pre></td></tr></table></figure>
-<h1 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h1><p>其中p1=p2，gcd(e1, φ(n1)) = gcd(e1, φ(n2)) = 14</p>
-<script type="math/tex; mode=display">
-gcd(e,\varphi(n))=b \\
-ed\equiv 1\pmod {\varphi(n)} \\
-e = a * b \\
-abd\equiv 1\pmod {\varphi(n)} \\
-m^{ab}\equiv c \pmod n \\
-c^{bd}\equiv m^{abbd}\equiv m^b\pmod n</script><p>可以得到b=14，而此时，a与φ(n)正好互素</p>
-<p>可以通过逆元求到bd <code>bd=gmpy2.invert(e, φ(n))</code></p>
-<p>通过pow(c,bd,n)</p>
-<p>可以得到两组值：</p>
-<script type="math/tex; mode=display">
-res1 \equiv m^{14}\pmod {n1} \\
-res2 \equiv m^{14}\pmod {n2}</script><p>接着进一步推导</p>
-<script type="math/tex; mode=display">
-res1 \equiv m^{14}\pmod {p1} \\
-res1 \equiv m^{14}\pmod {q1} \\
-res2 \equiv m^{14}\pmod {q2}</script><p>这里就是可以使用中国剩余定理了</p>
-<p>可以解出一个特解m的值</p>
-<p>当模n1，n2无法解出时，考虑换成模q1*q2</p>
-<script type="math/tex; mode=display">
-res \equiv m^{14}\pmod {q1*q2}\\
-原理如下\\
-res1 = k1 * q1 + m^{14}\\
-res2 = k2 * q2 + m^{14}\\
-res1 * res2 = k1k2q1q2 + (k1q1 + k2q2 + m^{14})m^{14} \\
-两边同时模q1*q2即为上式</script><p>此时，该题目就被化简为一个新的RSA</p>
-<blockquote>
-<p>密文为刚刚求出的特解m</p>
-<p>公钥e=14</p>
-<p>模数分解为q1，q2</p>
-</blockquote>
-<p>而此时就可按照之前的思路进行求解</p>
-<script type="math/tex; mode=display">
-c\equiv m^e\pmod {q1q2} \\
-e = 2 * 7 \\
-2 * 7 * d \equiv 1 \pmod {q1q2} \\
-m^2\equiv c^{d*2}\pmod {q1q2}</script><p>先求得7的逆元，然后对m开方即可</p>
-<h1 id="完整脚本"><a href="#完整脚本" class="headerlink" title="完整脚本"></a>完整脚本</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> libnum <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">e1 = <span class="number">14606334023791426</span></span><br><span class="line">c1 = <span class="number">11402389955595766056824801105373550411371729054679429421548608725777586555536302409478824585455648944737304660137306241012321255955693234304201530700362069004620531537922710568821152217381257446478619320278993539785699090234418603086426252498046106436360959622415398647198014716351359752734123844386459925553497427680448633869522591650121047156082228109421246662020164222925272078687550896012363926358633323439494967417041681357707006545728719651494384317497942177993032739778398001952201667284323691607312819796036779374423837576479275454953999865750584684592993292347483309178232523897058253412878901324740104919248</span></span><br><span class="line">e2 = <span class="number">13813369129257838</span></span><br><span class="line">c2 = <span class="number">7984888899827615209197324489527982755561403577403539988687419233579203660429542197972867526015619223510964699107198708420785278262082902359114040327940253582108364104049849773108799812000586446829979564395322118616382603675257162995702363051699403525169767736410365076696890117813211614468971386159587698853722658492385717150691206731593509168262529568464496911821756352254486299361607604338523750318977620039669792468240086472218586697386948479265417452517073901655900118259488507311321060895347770921790483894095085039802955700146474474606794444308825840221205073230671387989412399673375520605000270180367035526919</span></span><br><span class="line">p = <span class="number">121009772735460235364940622989433807619211926015494087453674747614331295040063679722422298286549493698150690694965106103822315378461970129912436074962111424616439032849788953648286506433464358834178903821069564798378666159882090757625817745990230736982709059859613843100974349380542982235135982530318438330859</span></span><br><span class="line">q1 = <span class="number">130968576816900149996914427770826228884925960001279609559095138835900329492765336419489982304805369724685145941218640504262821549441728192761733409684831633194346504685627189375724517070780334885673563409259345291959439026700006694655545512308390416859315892447092639503318475587220630455745460309886030186593</span></span><br><span class="line">q2 = <span class="number">94582257784130735233174402362819395926641026753071039760251190444144495369829487705195913337502962816079184062352678128843179586054535283861793827497892600954650126991213176547276006780610945133603745974181504975165082485845571788686928859549252522952174376071500707863379238688200493621993937563296490615649</span></span><br><span class="line">n1 = p * q1</span><br><span class="line">n2 = p * q2</span><br><span class="line">f1 = (p - <span class="number">1</span>) * (q1 - <span class="number">1</span>)</span><br><span class="line">f2 = (p - <span class="number">1</span>) * (q2 - <span class="number">1</span>)</span><br><span class="line">tmp = <span class="number">14</span></span><br><span class="line"></span><br><span class="line">e1 = e1 // tmp</span><br><span class="line">e2 = e2 // tmp</span><br><span class="line">bd1 = invmod(e1, f1)</span><br><span class="line">bd2 = invmod(e2, f2)</span><br><span class="line"></span><br><span class="line">m1 = pow(c1, bd1, n1)</span><br><span class="line">m2 = pow(c2, bd2, n2)</span><br><span class="line">m3 = m1 % p</span><br><span class="line">m2 = m2 % q2</span><br><span class="line">m1 = m1 % q1</span><br><span class="line"></span><br><span class="line">m = solve_crt([m1, m2, m3], [q1, q2, p]) </span><br><span class="line">print(m)</span><br><span class="line">n = q1 * q2</span><br><span class="line">f = (q1 - <span class="number">1</span>) * (q2 - <span class="number">1</span>)</span><br><span class="line">m = m % n</span><br><span class="line">d2 = invmod(<span class="number">7</span>, f)</span><br><span class="line">m = pow(m, d2, n)</span><br><span class="line">print(n2s(gmpy2.iroot(m, <span class="number">2</span>)[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
+<h1 id="gets-函数和puts-函数"><a href="#gets-函数和puts-函数" class="headerlink" title="gets()函数和puts()函数"></a>gets()函数和puts()函数</h1><p>gets()函数读取整行输入，直至遇到换行符，然后丢弃换行符，存储其余字符，并在这些字符末尾添加一个空字符，使其成为一个C字符串。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">  <span class="function"><span class="keyword">char</span> *<span class="title">gets</span><span class="params">( <span class="keyword">char</span> *str )</span></span>;</span><br></pre></td></tr></table></figure>
+<p>puts()函数显示字符串，并在末尾添加换行符，成功返回非负值，失败返回EOF。puts(words)相当于printf(“%s\n”,words)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">puts</span><span class="params">( <span class="keyword">char</span> *str )</span></span>;</span><br></pre></td></tr></table></figure>
+<h1 id="fgets-函数和fputs-函数"><a href="#fgets-函数和fputs-函数" class="headerlink" title="fgets()函数和fputs()函数"></a>fgets()函数和fputs()函数</h1><p>该函数专门用于处理文件输入。</p>
+<p>fgets()函数的第2个参数指明了读入字符的最大数量。如果该参数是n，那么fgets()读入n-1个字符，或者遇到第一个换行符为止。如果fgets()函数读到一个换行符，会把换行符存储在字符串中（和gets()区别）。</p>
+<p>fgets()函数的第3个参数指明要读入的文件。如果是从键盘输入，将stdin（标准输入）作为参数。</p>
+<p>fgets()函数返回指向char的指针。如果正常读入，返回的地址和传入的第1个参数相同。如果读入异常，返回空指针（C语言中用宏NULL来表示）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">  <span class="function"><span class="keyword">char</span> *<span class="title">fgets</span><span class="params">( <span class="keyword">char</span> *str, <span class="keyword">int</span> num, FILE *stream )</span></span>;</span><br></pre></td></tr></table></figure>
+<p>fputs()函数，它不会在末尾添加换行符。如果是从屏幕输入，将stdout（标准输出）作为参数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">fputs</span><span class="params">( <span class="keyword">const</span> <span class="keyword">char</span> *str, FILE *stream )</span></span>;</span><br></pre></td></tr></table></figure>
+<h1 id="gets-s-函数"><a href="#gets-s-函数" class="headerlink" title="gets_s()函数"></a>gets_s()函数</h1><p>gets_s()只从标准输入中读取数据，所以不需要第三个参数。并且gets_s()读到换行符会丢弃它而不是存储它。</p>
+<p>如果gets_s()读到最大字符数都没有读到换行符，会执行以下几步。首先把目标数组中的首字符设置为空字符，读取并丢弃随后的输入直至读到换行符或者文件结尾，然后返回空指针。接着，调用依赖实现的“处理函数”，可能会中止或退出程序。</p>
+<p>以上的特性说明，只要输入行未超过最大字符数，gets_s()和gets()几乎一模一样，完全可以替换！</p>
+<h1 id="scanf-函数和printf-函数"><a href="#scanf-函数和printf-函数" class="headerlink" title="scanf()函数和printf()函数"></a>scanf()函数和printf()函数</h1><p>scanf()有两种方法确定输入结束：%5s，读取5个字符或者读到第一个空白停止。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>输入语句</th>
+<th>原输入序列</th>
+<th>name中的内容</th>
+<th>剩余输入序列</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scanf(“%s”,name);</td>
+<td>Fleebert▢Hup</td>
+<td>Fleebert</td>
+<td>▢Hup</td>
+</tr>
+<tr>
+<td>scanf(“%5s”,name);</td>
+<td>Fleebert▢Hup</td>
+<td>Fleeb</td>
+<td>bert▢Hup</td>
+</tr>
+<tr>
+<td>scanf(“%5s”,name);</td>
+<td>Ann▢Ular</td>
+<td>Ann</td>
+<td>▢Ular</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>注：▢表示空格</p>
+<p>printf()函数主要是使用其格式化功能。</p>
+<h1 id="自定义输入输出函数"><a href="#自定义输入输出函数" class="headerlink" title="自定义输入输出函数"></a>自定义输入输出函数</h1><p>不一定非要使用C库中的标准函数，如果无法使用这些函数或不想使用它们，完全可以在getchar()和putchar()的基础上自定义所需的函数。</p>
 
       
     </div>
@@ -478,11 +482,7 @@ m^2\equiv c^{d*2}\pmod {q1q2}</script><p>先求得7的逆元，然后对m开方�
       
         <div class="post-tags">
           
-            <a href="/tags/CRYPTO/" rel="tag"><i class="fa fa-tag"></i> CRYPTO</a>
-          
-            <a href="/tags/RSA/" rel="tag"><i class="fa fa-tag"></i> RSA</a>
-          
-            <a href="/tags/CTFshow/" rel="tag"><i class="fa fa-tag"></i> CTFshow</a>
+            <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C</a>
           
         </div>
       
@@ -495,8 +495,8 @@ m^2\equiv c^{d*2}\pmod {q1q2}</script><p>先求得7的逆元，然后对m开方�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/07/16/%E5%AF%86%E7%A0%81%E5%AD%A6%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="next" title="密码学实践（二）">
-                <i class="fa fa-chevron-left"></i> 密码学实践（二）
+              <a href="/2020/11/12/C%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BF%AE%E9%A5%B0%E7%AC%A6/" rel="next" title="C格式化修饰符">
+                <i class="fa fa-chevron-left"></i> C格式化修饰符
               </a>
             
           </div>
@@ -504,10 +504,6 @@ m^2\equiv c^{d*2}\pmod {q1q2}</script><p>先求得7的逆元，然后对m开方�
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/09/17/CTF-show-unusualrsa4/" rel="prev" title="CTF show unusualrsa4">
-                CTF show unusualrsa4 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -643,7 +639,7 @@ m^2\equiv c^{d*2}\pmod {q1q2}</script><p>先求得7的逆元，然后对m开方�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解题"><span class="nav-number">2.</span> <span class="nav-text">解题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整脚本"><span class="nav-number">3.</span> <span class="nav-text">完整脚本</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#gets-函数和puts-函数"><span class="nav-number">1.</span> <span class="nav-text">gets()函数和puts()函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fgets-函数和fputs-函数"><span class="nav-number">2.</span> <span class="nav-text">fgets()函数和fputs()函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gets-s-函数"><span class="nav-number">3.</span> <span class="nav-text">gets_s()函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#scanf-函数和printf-函数"><span class="nav-number">4.</span> <span class="nav-text">scanf()函数和printf()函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义输入输出函数"><span class="nav-number">5.</span> <span class="nav-text">自定义输入输出函数</span></a></li></ol></div>
             
 
           </div>
@@ -1185,26 +1181,6 @@ m^2\equiv c^{d*2}\pmod {q1q2}</script><p>先求得7的逆元，然后对m开方�
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 
