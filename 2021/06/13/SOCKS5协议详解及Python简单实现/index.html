@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="socks5,proxy," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="SOCKS协议SOCKS是一种网络传输协议，主要用于客户端与外网服务器之间通讯的中间传递。SOCKS是”SOCKet Secure”的缩写。 当防火墙后的客户端要访问外部的服务器时，就跟SOCKS代理服务器连接。这个代理服务器控制客户端访问外网的资格，允许的话，就将客户端的请求发往外部的服务器。 这个协议最初由David Koblas开发，而后由NEC的Ying-Da Lee将其扩展到SOCKS4">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SOCKS5协议详解及Python简单实现">
+<meta property="og:url" content="http://yoursite.com/2021/06/13/SOCKS5%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3%E5%8F%8APython%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="SCERush">
+<meta property="og:description" content="SOCKS协议SOCKS是一种网络传输协议，主要用于客户端与外网服务器之间通讯的中间传递。SOCKS是”SOCKet Secure”的缩写。 当防火墙后的客户端要访问外部的服务器时，就跟SOCKS代理服务器连接。这个代理服务器控制客户端访问外网的资格，允许的话，就将客户端的请求发往外部的服务器。 这个协议最初由David Koblas开发，而后由NEC的Ying-Da Lee将其扩展到SOCKS4">
+<meta property="article:published_time" content="2021-06-13T14:00:52.000Z">
+<meta property="article:modified_time" content="2021-06-13T14:03:27.068Z">
+<meta property="article:author" content="SCERush">
+<meta property="article:tag" content="socks5">
+<meta property="article:tag" content="proxy">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/06/13/SOCKS5协议详解及Python简单实现/"/>
+
+
+
+
+
+  <title>SOCKS5协议详解及Python简单实现 | SCERush</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SCERush</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/06/13/SOCKS5%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3%E5%8F%8APython%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="SCERush">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SCERush">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SOCKS5协议详解及Python简单实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-13T22:00:52+08:00">
+                2021-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/network/" itemprop="url" rel="index">
+                    <span itemprop="name">network</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="SOCKS协议"><a href="#SOCKS协议" class="headerlink" title="SOCKS协议"></a>SOCKS协议</h1><p>SOCKS是一种网络传输协议，主要用于客户端与外网服务器之间通讯的中间传递。SOCKS是”SOCKet Secure”的缩写。</p>
+<p>当防火墙后的客户端要访问外部的服务器时，就跟SOCKS代理服务器连接。这个代理服务器控制客户端访问外网的资格，允许的话，就将客户端的请求发往外部的服务器。</p>
+<p>这个协议最初由David Koblas开发，而后由NEC的Ying-Da Lee将其扩展到SOCKS4。最新协议是SOCKS5，与前一版本相比，增加支持UDP、验证，以及IPv6。</p>
+<p>根据OSI模型，SOCKS是会话层的协议，位于表示层与传输层之间。</p>
+<p>SOCKS协议不提供加密。</p>
+<a id="more"></a>
+<h1 id="SOCKS5协议"><a href="#SOCKS5协议" class="headerlink" title="SOCKS5协议"></a>SOCKS5协议</h1><h2 id="协商"><a href="#协商" class="headerlink" title="协商"></a>协商</h2><ol>
+<li>客户端连接到 SOCKS 服务端，发送的协议版本与认证方法数据包格式：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+----------+----------+</span><br><span class="line">|VER | NMETHODS | METHODS  |</span><br><span class="line">+----+----------+----------+</span><br><span class="line">| 1  |    1     | 1 to 255 |</span><br><span class="line">+----+----------+----------+</span><br></pre></td></tr></table></figure>
+<ul>
+<li>VER 是指协议版本，因为是 socks5，所以值是 0x05,一个字节</li>
+<li>NMETHODS 是指有多少个可以使用的方法，也就是客户端支持的认证方法，一个字节</li>
+<li>METHODS 就是方法值，1-255个字节，有多少个方法就有多少个byte</li>
+</ul>
+<ol>
+<li>服务端要从给定的方法列表中选择一个方法并返回选择报文：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+--------+</span><br><span class="line">|VER | METHOD |</span><br><span class="line">+----+--------+</span><br><span class="line">| 1  |   1    |</span><br><span class="line">+----+--------+</span><br></pre></td></tr></table></figure>
+<p>VER与METHOD的取值同上</p>
+<p>目前已定义方法如下：</p>
+<ul>
+<li>0x00 NO AUTHENTICATION REQUIRED 不需要认证</li>
+<li>0x01 GSSAPI 参考：<a href="https://en.wikipedia.org/wiki/Generic_Security_Services_Application_Program_Interface" target="_blank" rel="noopener">GSSAPI</a></li>
+<li>0x02 USERNAME/PASSWORD 用户名密码认证</li>
+<li>0x03 to 0x7F IANA ASSIGNED 一般不用。INNA保留。</li>
+<li>0x80 to 0xFE RESERVED FOR PRIVATE METHODS 保留作私有用处。</li>
+<li>0xFF NO ACCEPTABLE METHODS 不接受任何方法/没有合适的方法</li>
+</ul>
+<h2 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h2><p>一旦认证方法对应的协商完成，客户端就可以发送请求细节了。如果认证方法为了完整性或者可信性的校验，需要对后续请求报文进行封装，则后续请求报文都要按照对应规定进行封装。</p>
+<p>SOCKS 请求为如下格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+-----+-------+------+----------+----------+</span><br><span class="line">|VER | CMD |  RSV  | ATYP | DST.ADDR | DST.PORT |</span><br><span class="line">+----+-----+-------+------+----------+----------+</span><br><span class="line">| 1  |  1  | X&#39;00&#39; |  1   | Variable |    2     |</span><br><span class="line">+----+-----+-------+------+----------+----------+</span><br></pre></td></tr></table></figure>
+<ul>
+<li>VER 还是版本，取值是 0x05</li>
+<li>CMD 是指要做啥，取值如下：<ul>
+<li>CONNECT 0x01 连接</li>
+<li>BIND 0x02 端口监听(也就是在Server上监听一个端口)</li>
+<li>UDP ASSOCIATE 0x03 使用UDP</li>
+</ul>
+</li>
+<li>RSV 是保留位，值是 0x00</li>
+<li>ATYP 是目标地址类型，有如下取值：<ul>
+<li>0x01 IPv4</li>
+<li>0x03 域名</li>
+<li>0x04 IPv6</li>
+</ul>
+</li>
+<li>DST.ADDR 就是目标地址的值了，如果是IPv4，那么就是4 bytes，如果是IPv6那么就是16 bytes，如果是域名，那么第一个字节代表接下来有多少个字节是表示目标地址</li>
+<li>DST.PORT 两个字节代表端口号</li>
+</ul>
+<p>SOCKS 服务端会根据请求类型和源、目标地址，执行对应操作，并且返回对应的一个或多个报文信息。</p>
+<h2 id="回复"><a href="#回复" class="headerlink" title="回复"></a>回复</h2><p>客户端与服务端建立连接并完成认证之后就会发送请求信息，服务端执行对应请求并返回如下格式的报文：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+-----+-------+------+----------+----------+</span><br><span class="line">|VER | REP |  RSV  | ATYP | BND.ADDR | BND.PORT |</span><br><span class="line">+----+-----+-------+------+----------+----------+</span><br><span class="line">| 1  |  1  | X&#39;00&#39; |  1   | Variable |    2     |</span><br><span class="line">+----+-----+-------+------+----------+----------+</span><br></pre></td></tr></table></figure>
+<ul>
+<li>VER 还是版本，值是 0x05</li>
+<li>REP 是状态码，取值如下：<ul>
+<li>0x00 succeeded</li>
+<li>0x01 general SOCKS server failure</li>
+<li>0x02 connection not allowed by ruleset</li>
+<li>0x03 Network unreachable</li>
+<li>0x04 Host unreachable</li>
+<li>0x05 Connection refused</li>
+<li>0x06 TTL expired</li>
+<li>0x07 Command not supported</li>
+<li>0x08 Address type not supported</li>
+<li>0x09 to 0xff unassigned</li>
+</ul>
+</li>
+<li>RSV 保留位，取值为 0x00</li>
+<li>ATYP 是目标地址类型，有如下取值：<ul>
+<li>0x01 IPv4</li>
+<li>0x03 域名</li>
+<li>0x04 IPv6</li>
+</ul>
+</li>
+<li>DST.ADDR 就是目标地址的值了，如果是IPv4，那么就是4 bytes，如果是IPv6那么就是16 bytes，如果是域名，那么第一个字节代表接下来有多少个字节是表示目标地址</li>
+<li>DST.PORT 两个字节代表端口号</li>
+</ul>
+<h2 id="数据转发"><a href="#数据转发" class="headerlink" title="数据转发"></a>数据转发</h2><ul>
+<li>到了这个阶段基本就是数据转发了，tcp就直接转发，udp还须要做点工作。<ul>
+<li>当一个响应（REP值不为<code>X00</code>）指示失败的时候，SOCKS服务器必须在发送这个响应后立刻断开这条TCP连接。这必须发生在检测到引起失败的原因之后的10秒内。</li>
+<li>如果响应码（REP值为<code>X00</code>）指示成功，而且这次请求是BIND或者CONNECT，那么客户端可以立刻开始数据传输。如果选择的认证方法支持针对完整性、认证或私密性目的封装，要传输的数据应该包装在所依赖的认证方法的封装中。同样地，当针对客户端的响应数据到达SOCKS服务器的时候，服务器也必须根据使用的认证方法来封装数据。</li>
+</ul>
+</li>
+<li>一个基于UDP的客户端必须将它的数据报发送到UDP中继服务器的指定端口——该端口在针对UDP ASSOCIATE的响应中的BND.PORT域指明。如果选择的认证方法提供了针对认证、完整性或私密性目的的封装，数据报必须使用恰当的封装方式进行包装。每一个UDP数据报都随身携带了一个UDP请求头：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+------+------+----------+----------+----------+</span><br><span class="line">|RSV | FRAG | ATYP | DST.ADDR | DST.PORT |   DATA   |</span><br><span class="line">+----+------+------+----------+----------+----------+</span><br><span class="line">| 2  |  1   |  1   | Variable |    2     | Variable |</span><br><span class="line">+----+------+------+----------+----------+----------+</span><br></pre></td></tr></table></figure>
+<ul>
+<li>RSV　保留字段，应当置为 X‘0000’</li>
+<li>FRAG　当前帧序号</li>
+<li>ATYP　地址类型<ul>
+<li>IPV4　X‘01’</li>
+<li>域名　X‘03’</li>
+<li>IPV6　X‘04’</li>
+</ul>
+</li>
+<li>DST.ADDR　目的地址</li>
+<li>DST.PORT　目的端口</li>
+<li>DATA　用户数据</li>
+</ul>
+<p>当一个UDP中继服务器决定中继一个UDP数据报的时候，它会默默的做——不会给客户端返回任何通知。同样的，如果它不能中继数据报那它就会丢弃数据报。当一个UDP中继服务器从远端主机收到一个响应数据报文的时候，它必须根据使用上述的UDP请求头对该响应报文进行封装，然后再进行所依赖的认证方法的封装处理。</p>
+<h1 id="SOCKS5-服务器（Python）"><a href="#SOCKS5-服务器（Python）" class="headerlink" title="SOCKS5 服务器（Python）"></a>SOCKS5 服务器（Python）</h1><p>不需要认证：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> select</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">from</span> socketserver <span class="keyword">import</span> StreamRequestHandler, ThreadingTCPServer</span><br><span class="line"></span><br><span class="line">SOCKS_VERSION = <span class="number">5</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_failed_reply</span><span class="params">(address_type, error_number)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> struct.pack(<span class="string">"!BBBBIH"</span>, SOCKS_VERSION, error_number, <span class="number">0</span>, address_type, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exchange_loop</span><span class="params">(client, remote)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 等待数据</span></span><br><span class="line">        r, w, e = select.select([client, remote], [], [])</span><br><span class="line">        <span class="keyword">if</span> client <span class="keyword">in</span> r:</span><br><span class="line">            data = client.recv(<span class="number">4096</span>)</span><br><span class="line">            <span class="keyword">if</span> remote.send(data) &lt;= <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> remote <span class="keyword">in</span> r:</span><br><span class="line">            data = remote.recv(<span class="number">4096</span>)</span><br><span class="line">            <span class="keyword">if</span> client.send(data) &lt;= <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SocksProxy</span><span class="params">(StreamRequestHandler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'Accepting connection from &#123;&#125;'</span>.format(self.client_address))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 协商</span></span><br><span class="line">        <span class="comment"># 从客户端读取并解包两个字节的数据</span></span><br><span class="line">        header = self.connection.recv(<span class="number">2</span>)</span><br><span class="line">        version, nmethods = struct.unpack(<span class="string">"!BB"</span>, header)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 设置socks5协议，METHODS字段的数目大于0</span></span><br><span class="line">        <span class="keyword">assert</span> version == SOCKS_VERSION</span><br><span class="line">        <span class="keyword">assert</span> nmethods &gt; <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 接受支持的方法</span></span><br><span class="line">        methods = self.get_available_methods(nmethods)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 无需认证</span></span><br><span class="line">        <span class="keyword">if</span> <span class="number">0</span> <span class="keyword">not</span> <span class="keyword">in</span> set(methods):</span><br><span class="line">            self.server.close_request(self.request)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 发送协商响应数据包</span></span><br><span class="line">        self.connection.sendall(struct.pack(<span class="string">"!BB"</span>, SOCKS_VERSION, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 请求</span></span><br><span class="line">        version, cmd, _, address_type = struct.unpack(<span class="string">"!BBBB"</span>, self.connection.recv(<span class="number">4</span>))</span><br><span class="line">        <span class="keyword">assert</span> version == SOCKS_VERSION</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> address_type == <span class="number">1</span>:  <span class="comment"># IPv4</span></span><br><span class="line">            address = socket.inet_ntoa(self.connection.recv(<span class="number">4</span>))</span><br><span class="line">        <span class="keyword">elif</span> address_type == <span class="number">3</span>:  <span class="comment"># Domain name</span></span><br><span class="line">            domain_length = self.connection.recv(<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">            address = self.connection.recv(domain_length)</span><br><span class="line">            <span class="comment"># address = socket.gethostbyname(address.decode("UTF-8"))  # 将域名转化为IP，这一行可以去掉</span></span><br><span class="line">        <span class="keyword">elif</span> address_type == <span class="number">4</span>:  <span class="comment"># IPv6</span></span><br><span class="line">            addr_ip = self.connection.recv(<span class="number">16</span>)</span><br><span class="line">            address = socket.inet_ntop(socket.AF_INET6, addr_ip)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.server.close_request(self.request)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        port = struct.unpack(<span class="string">'!H'</span>, self.connection.recv(<span class="number">2</span>))[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 响应，只支持CONNECT请求</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> cmd == <span class="number">1</span>:  <span class="comment"># CONNECT</span></span><br><span class="line">                remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">                remote.connect((address, port))</span><br><span class="line">                bind_address = remote.getsockname()</span><br><span class="line">                print(<span class="string">'Connected to &#123;&#125; &#123;&#125;'</span>.format(address, port))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                self.server.close_request(self.request)</span><br><span class="line">            addr = struct.unpack(<span class="string">"!I"</span>, socket.inet_aton(bind_address[<span class="number">0</span>]))[<span class="number">0</span>]</span><br><span class="line">            port = bind_address[<span class="number">1</span>]</span><br><span class="line">            <span class="comment"># reply = struct.pack("!BBBBIH", SOCKS_VERSION, 0, 0, address_type, addr, port)</span></span><br><span class="line">            <span class="comment"># 注意：按照标准协议，返回的应该是对应的address_type，但是实际测试发现，当address_type=3，也就是说是域名类型时，会出现卡死情况，但是将address_type该为1，则不管是IP类型和域名类型都能正常运行</span></span><br><span class="line">            reply = struct.pack(<span class="string">"!BBBBIH"</span>, SOCKS_VERSION, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, addr, port)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            print(err)</span><br><span class="line">            <span class="comment"># 响应拒绝连接的错误</span></span><br><span class="line">            reply = generate_failed_reply(address_type, <span class="number">5</span>)</span><br><span class="line">        self.connection.sendall(reply)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 建立连接成功，开始交换数据</span></span><br><span class="line">        <span class="keyword">if</span> reply[<span class="number">1</span>] == <span class="number">0</span> <span class="keyword">and</span> cmd == <span class="number">1</span>:</span><br><span class="line">            exchange_loop(self.connection, remote)</span><br><span class="line">        self.server.close_request(self.request)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_available_methods</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        methods = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            methods.append(ord(self.connection.recv(<span class="number">1</span>)))</span><br><span class="line">        <span class="keyword">return</span> methods</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 使用socketserver库的多线程服务器ThreadingTCPServer启动代理</span></span><br><span class="line">    <span class="keyword">with</span> ThreadingTCPServer((<span class="string">'127.0.0.1'</span>, <span class="number">9011</span>), SocksProxy) <span class="keyword">as</span> server:</span><br><span class="line">        server.serve_forever()</span><br></pre></td></tr></table></figure>
+<p>需要认证：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> select</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">from</span> socketserver <span class="keyword">import</span> StreamRequestHandler, ThreadingTCPServer</span><br><span class="line"></span><br><span class="line">logging.basicConfig(level=logging.DEBUG)</span><br><span class="line">SOCKS_VERSION = <span class="number">5</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_failed_reply</span><span class="params">(address_type, error_number)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> struct.pack(<span class="string">"!BBBBIH"</span>, SOCKS_VERSION, error_number, <span class="number">0</span>, address_type, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exchange_loop</span><span class="params">(client, remote)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 等待数据</span></span><br><span class="line">        r, w, e = select.select([client, remote], [], [])</span><br><span class="line">        <span class="keyword">if</span> client <span class="keyword">in</span> r:</span><br><span class="line">            data = client.recv(<span class="number">4096</span>)</span><br><span class="line">            <span class="keyword">if</span> remote.send(data) &lt;= <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> remote <span class="keyword">in</span> r:</span><br><span class="line">            data = remote.recv(<span class="number">4096</span>)</span><br><span class="line">            <span class="keyword">if</span> client.send(data) &lt;= <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SocksProxy</span><span class="params">(StreamRequestHandler)</span>:</span></span><br><span class="line">    username = <span class="string">'username'</span></span><br><span class="line">    password = <span class="string">'password'</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle</span><span class="params">(self)</span>:</span></span><br><span class="line">        logging.info(<span class="string">'Accepting connection from %s:%s'</span> % self.client_address)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 协商</span></span><br><span class="line">        <span class="comment"># 从客户端读取并解包两个字节的数据</span></span><br><span class="line">        header = self.connection.recv(<span class="number">2</span>)</span><br><span class="line">        version, nmethods = struct.unpack(<span class="string">"!BB"</span>, header)</span><br><span class="line">       </span><br><span class="line">        <span class="comment"># 设置socks5协议，METHODS字段的数目大于0</span></span><br><span class="line">        <span class="keyword">assert</span> version == SOCKS_VERSION</span><br><span class="line">        <span class="keyword">assert</span> nmethods &gt; <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 接受支持的方法</span></span><br><span class="line">        methods = self.get_available_methods(nmethods)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 检查是否支持用户名/密码认证方式，不支持则断开连接</span></span><br><span class="line">        <span class="keyword">if</span> <span class="number">2</span> <span class="keyword">not</span> <span class="keyword">in</span> set(methods):</span><br><span class="line">            self.server.close_request(self.request)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 发送协商响应数据包</span></span><br><span class="line">        self.connection.sendall(struct.pack(<span class="string">"!BB"</span>, SOCKS_VERSION, <span class="number">2</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 校验用户名和密码</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.verify_credentials():</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 请求</span></span><br><span class="line">        version, cmd, _, address_type = struct.unpack(<span class="string">"!BBBB"</span>, self.connection.recv(<span class="number">4</span>))</span><br><span class="line">        <span class="keyword">assert</span> version == SOCKS_VERSION</span><br><span class="line">        <span class="keyword">if</span> address_type == <span class="number">1</span>:  <span class="comment"># IPv4</span></span><br><span class="line">            address = socket.inet_ntoa(self.connection.recv(<span class="number">4</span>))</span><br><span class="line">        <span class="keyword">elif</span> address_type == <span class="number">3</span>:  <span class="comment"># 域名</span></span><br><span class="line">            domain_length = self.connection.recv(<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">            address = self.connection.recv(domain_length)</span><br><span class="line">        <span class="keyword">elif</span> address_type == <span class="number">4</span>:  <span class="comment"># IPv6</span></span><br><span class="line">            addr_ip = self.connection.recv(<span class="number">16</span>)</span><br><span class="line">            address = socket.inet_ntop(socket.AF_INET6, addr_ip)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.server.close_request(self.request)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        port = struct.unpack(<span class="string">'!H'</span>, self.connection.recv(<span class="number">2</span>))[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 响应，只支持CONNECT请求</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> cmd == <span class="number">1</span>:  <span class="comment"># CONNECT</span></span><br><span class="line">                remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">                remote.connect((address, port))</span><br><span class="line">                bind_address = remote.getsockname()</span><br><span class="line">                logging.info(<span class="string">'Connected to %s %s'</span> % (address, port))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                self.server.close_request(self.request)</span><br><span class="line">            addr = struct.unpack(<span class="string">"!I"</span>, socket.inet_aton(bind_address[<span class="number">0</span>]))[<span class="number">0</span>]</span><br><span class="line">            port = bind_address[<span class="number">1</span>]</span><br><span class="line">            reply = struct.pack(<span class="string">"!BBBBIH"</span>, SOCKS_VERSION, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, addr, port)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> err:</span><br><span class="line">            logging.error(err)</span><br><span class="line">            <span class="comment"># 响应拒绝连接的错误</span></span><br><span class="line">            reply = generate_failed_reply(address_type, <span class="number">5</span>)</span><br><span class="line">        self.connection.sendall(reply)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 建立连接成功，开始交换数据</span></span><br><span class="line">        <span class="keyword">if</span> reply[<span class="number">1</span>] == <span class="number">0</span> <span class="keyword">and</span> cmd == <span class="number">1</span>:</span><br><span class="line">            exchange_loop(self.connection, remote)</span><br><span class="line">        self.server.close_request(self.request)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_available_methods</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        methods = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            methods.append(ord(self.connection.recv(<span class="number">1</span>)))</span><br><span class="line">        <span class="keyword">return</span> methods</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">verify_credentials</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""校验用户名和密码"""</span></span><br><span class="line">        version = ord(self.connection.recv(<span class="number">1</span>))</span><br><span class="line">        <span class="keyword">assert</span> version == <span class="number">1</span></span><br><span class="line">        username_len = ord(self.connection.recv(<span class="number">1</span>))</span><br><span class="line">        username = self.connection.recv(username_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line">        password_len = ord(self.connection.recv(<span class="number">1</span>))</span><br><span class="line">        password = self.connection.recv(password_len).decode(<span class="string">'utf-8'</span>)</span><br><span class="line">        <span class="keyword">if</span> username == self.username <span class="keyword">and</span> password == self.password:</span><br><span class="line">            <span class="comment"># 验证成功, status = 0</span></span><br><span class="line">            response = struct.pack(<span class="string">"!BB"</span>, version, <span class="number">0</span>)</span><br><span class="line">            self.connection.sendall(response)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="comment"># 验证失败, status != 0</span></span><br><span class="line">        response = struct.pack(<span class="string">"!BB"</span>, version, <span class="number">0xFF</span>)</span><br><span class="line">        self.connection.sendall(response)</span><br><span class="line">        self.server.close_request(self.request)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 使用socketserver库的多线程服务器ThreadingTCPServer启动代理</span></span><br><span class="line">    <span class="keyword">with</span> ThreadingTCPServer((<span class="string">'127.0.0.1'</span>, <span class="number">9011</span>), SocksProxy) <span class="keyword">as</span> server:</span><br><span class="line">        server.serve_forever()</span><br></pre></td></tr></table></figure>
+<p>客户端</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> socks</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">socks.set_default_proxy(socks.SOCKS5, <span class="string">"127.0.0.1"</span>, <span class="number">9011</span>, username=<span class="literal">None</span>, password=<span class="literal">None</span>)</span><br><span class="line">socket.socket = socks.socksocket</span><br><span class="line">print(requests.get(<span class="string">'https://www.baidu.com'</span>).text)</span><br></pre></td></tr></table></figure>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://zh.wikipedia.org/wiki/SOCKS" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/SOCKS</a></p>
+<p><a href="https://www.ietf.org/rfc/rfc1928.txt" target="_blank" rel="noopener">https://www.ietf.org/rfc/rfc1928.txt</a></p>
+<p><a href="https://rushter.com/blog/python-socks-server/" target="_blank" rel="noopener">https://rushter.com/blog/python-socks-server/</a></p>
+<p><a href="https://www.quarkay.com/code/383/socks5-protocol-rfc-chinese-traslation" target="_blank" rel="noopener">RFC 1928 - SOCKS5 协议中文文档</a></p>
+<p><a href="https://hatboy.github.io/2018/04/28/Python%E7%BC%96%E5%86%99socks5%E6%9C%8D%E5%8A%A1%E5%99%A8/#" target="_blank" rel="noopener">Python编写socks5服务器</a></p>
+<p><a href="https://jiajunhuang.com/articles/2019_06_06-socks5.md.html" target="_blank" rel="noopener">socks5 协议详解</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/socks5/" rel="tag"><i class="fa fa-tag"></i> socks5</a>
+          
+            <a href="/tags/proxy/" rel="tag"><i class="fa fa-tag"></i> proxy</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/09/Linux%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%EF%BC%88%E4%B8%89%EF%BC%89/" rel="next" title="Linux程序设计（三）">
+                <i class="fa fa-chevron-left"></i> Linux程序设计（三）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/blog.png"
+                alt="SCERush" />
+            
+              <p class="site-author-name" itemprop="name">SCERush</p>
+              <p class="site-description motion-element" itemprop="description">基本上人生就算努力也不见得会有回报，一旦有所回报时，就当作是奇迹发生吧。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SOCKS协议"><span class="nav-number">1.</span> <span class="nav-text">SOCKS协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SOCKS5协议"><span class="nav-number">2.</span> <span class="nav-text">SOCKS5协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#协商"><span class="nav-number">2.1.</span> <span class="nav-text">协商</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#请求"><span class="nav-number">2.2.</span> <span class="nav-text">请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回复"><span class="nav-number">2.3.</span> <span class="nav-text">回复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据转发"><span class="nav-number">2.4.</span> <span class="nav-text">数据转发</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SOCKS5-服务器（Python）"><span class="nav-number">3.</span> <span class="nav-text">SOCKS5 服务器（Python）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SCERush</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">50.5k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
