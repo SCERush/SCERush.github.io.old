@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>中文标签测试</title>
+      <link href="/2021/06/21/%E4%B8%AD%E6%96%87%E6%A0%87%E7%AD%BE%E6%B5%8B%E8%AF%95/"/>
+      <url>/2021/06/21/%E4%B8%AD%E6%96%87%E6%A0%87%E7%AD%BE%E6%B5%8B%E8%AF%95/</url>
+      
+        <content type="html"><![CDATA[<p>这是一个测试文件</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 中文 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>docker常用命令</title>
       <link href="/2021/06/14/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
       <url>/2021/06/14/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
@@ -400,9 +419,9 @@
       
         <tags>
             
-            <tag> MISC </tag>
-            
             <tag> CRYPTO </tag>
+            
+            <tag> MISC </tag>
             
         </tags>
       
@@ -485,9 +504,9 @@
       
         <tags>
             
-            <tag> MISC </tag>
-            
             <tag> CRYPTO </tag>
+            
+            <tag> MISC </tag>
             
         </tags>
       
@@ -512,11 +531,11 @@
       
         <tags>
             
-            <tag> MISC </tag>
-            
             <tag> CRYPTO </tag>
             
             <tag> BUU </tag>
+            
+            <tag> MISC </tag>
             
         </tags>
       
@@ -595,9 +614,9 @@
       
         <tags>
             
-            <tag> MISC </tag>
-            
             <tag> BUU </tag>
+            
+            <tag> MISC </tag>
             
         </tags>
       
@@ -622,9 +641,9 @@
       
         <tags>
             
-            <tag> MISC </tag>
-            
             <tag> BUU </tag>
+            
+            <tag> MISC </tag>
             
         </tags>
       
@@ -649,9 +668,9 @@
       
         <tags>
             
-            <tag> MISC </tag>
-            
             <tag> BUU </tag>
+            
+            <tag> MISC </tag>
             
         </tags>
       
