@@ -16,6 +16,10 @@
             
             <tag> 中文 </tag>
             
+            <tag> 中English </tag>
+            
+            <tag> English中 </tag>
+            
         </tags>
       
     </entry>
@@ -64,11 +68,11 @@
       
         <tags>
             
-            <tag> python </tag>
-            
             <tag> socks5 </tag>
             
             <tag> proxy </tag>
+            
+            <tag> python </tag>
             
         </tags>
       
@@ -419,9 +423,9 @@
       
         <tags>
             
-            <tag> CRYPTO </tag>
-            
             <tag> MISC </tag>
+            
+            <tag> CRYPTO </tag>
             
         </tags>
       
@@ -448,9 +452,9 @@
             
             <tag> RSA </tag>
             
-            <tag> Algorithm </tag>
-            
             <tag> python </tag>
+            
+            <tag> Algorithm </tag>
             
         </tags>
       
@@ -504,9 +508,9 @@
       
         <tags>
             
-            <tag> CRYPTO </tag>
-            
             <tag> MISC </tag>
+            
+            <tag> CRYPTO </tag>
             
         </tags>
       
@@ -531,11 +535,11 @@
       
         <tags>
             
+            <tag> MISC </tag>
+            
             <tag> CRYPTO </tag>
             
             <tag> BUU </tag>
-            
-            <tag> MISC </tag>
             
         </tags>
       
@@ -614,9 +618,9 @@
       
         <tags>
             
-            <tag> BUU </tag>
-            
             <tag> MISC </tag>
+            
+            <tag> BUU </tag>
             
         </tags>
       
@@ -641,9 +645,9 @@
       
         <tags>
             
-            <tag> BUU </tag>
-            
             <tag> MISC </tag>
+            
+            <tag> BUU </tag>
             
         </tags>
       
@@ -668,9 +672,9 @@
       
         <tags>
             
-            <tag> BUU </tag>
-            
             <tag> MISC </tag>
+            
+            <tag> BUU </tag>
             
         </tags>
       
