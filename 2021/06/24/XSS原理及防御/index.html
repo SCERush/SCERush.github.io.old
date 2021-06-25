@@ -86,14 +86,14 @@
 
 
 
-<meta name="description" content="XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaScript，但实际上也可以包括Java、 VBScript、ActiveX、 Flash 或者甚至是普通的HTML。攻击成功后，攻击者可能得到包括但不限于更高的权限（如执行一些操作）、私密网页内容、会话和cookie等各种内容。  XS">
+<meta name="description" content="XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaScript，但实际上也可以包括Java、 VBScript、ActiveX、 Flash 或者甚至是普通的HTML。攻击成功后，攻击者可能得到包括但不限于更高的权限（如执行一些操作）、私密网页内容、会话和cookie等各种内容。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XSS原理及防御">
 <meta property="og:url" content="http://yoursite.com/2021/06/24/XSS%E5%8E%9F%E7%90%86%E5%8F%8A%E9%98%B2%E5%BE%A1/index.html">
 <meta property="og:site_name" content="SCERush">
-<meta property="og:description" content="XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaScript，但实际上也可以包括Java、 VBScript、ActiveX、 Flash 或者甚至是普通的HTML。攻击成功后，攻击者可能得到包括但不限于更高的权限（如执行一些操作）、私密网页内容、会话和cookie等各种内容。  XS">
+<meta property="og:description" content="XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaScript，但实际上也可以包括Java、 VBScript、ActiveX、 Flash 或者甚至是普通的HTML。攻击成功后，攻击者可能得到包括但不限于更高的权限（如执行一些操作）、私密网页内容、会话和cookie等各种内容。">
 <meta property="article:published_time" content="2021-06-24T14:54:31.000Z">
-<meta property="article:modified_time" content="2021-06-24T14:55:40.879Z">
+<meta property="article:modified_time" content="2021-06-24T15:04:44.391Z">
 <meta property="article:author" content="SCERush">
 <meta property="article:tag" content="xss">
 <meta property="article:tag" content="web">
@@ -418,6 +418,7 @@
         <blockquote>
 <p>XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaScript，但实际上也可以包括Java、 VBScript、ActiveX、 Flash 或者甚至是普通的HTML。攻击成功后，攻击者可能得到包括但不限于更高的权限（如执行一些操作）、私密网页内容、会话和cookie等各种内容。</p>
 </blockquote>
+<a id="more"></a>
 <h1 id="XSS简介"><a href="#XSS简介" class="headerlink" title="XSS简介"></a>XSS简介</h1><p>XSS全称是Cross Site Scripting（为了和CSS进行区分，就叫XSS）即跨站脚本，是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。</p>
 <h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="反射型-XSS"><a href="#反射型-XSS" class="headerlink" title="反射型 XSS"></a>反射型 XSS</h2><p>反射型 XSS 的攻击步骤：</p>
 <ol>
@@ -538,11 +539,11 @@
 <p>一个 <code>URL</code> 的组成如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Protocal][Host][Path][Search][Hash]</span><br></pre></td></tr></table></figure>
 <p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;localhost:3000&#x2F;a&#x2F;b&#x2F;c?search&#x3D;123#666aaa</span><br><span class="line">[Protocal]&#96; 对应 &#96;http:&#x2F;&#x2F;</span><br><span class="line">[Host]&#96; 对应 &#96;localhost:3000</span><br><span class="line">[Path]&#96; 对应 &#96;&#x2F;a&#x2F;b&#x2F;c</span><br><span class="line">[Search]&#96; 对应 &#96;?search&#x3D;123</span><br><span class="line">[Hash]&#96; 对应 &#96;#666aaa</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.evil.com&#x2F;a&#x2F;b&#x2F;c&#x2F;test?abc&#x3D;123#ssss</span><br><span class="line">[Protocal] 对应 https:&#x2F;&#x2F;</span><br><span class="line">[Host] 对应 www.evil.com</span><br><span class="line">[Path] 对应 &#x2F;a&#x2F;b&#x2F;c&#x2F;test</span><br><span class="line">[Search] 对应 ?abc&#x3D;123</span><br><span class="line">[Hash] 对应 #ssss</span><br></pre></td></tr></table></figure>
 <p>一般来说，如果变量是整个 <code>URL</code> ，则应该先检查变量是否以 <code>http</code> 开头，在此之后再对里面的变量进行 <code>URLEncode</code> 。</p>
 <h2 id="富文本处理"><a href="#富文本处理" class="headerlink" title="富文本处理"></a>富文本处理</h2><p>在一些网站，网站允许用户富含 <code>HTML</code> 标签的代码，比如文本里面要有图片、视频之类，这些文本展现出来全都是依靠 <code>HTML</code> 代码来实现。</p>
 <p>那么，我们需要如何区分安全的 <code>富文本</code> 和 <code>XSS</code> 攻击呢？</p>
-<p>我正好在华为做过相关的富文本过滤操作，基本的思想就是：</p>
+<p>基本的思想就是：</p>
 <ol>
 <li>首先进行输入检查，保证用户输入的是完整的 <code>HTML</code> 代码，而不是有拼接的代码</li>
 <li>通过 <code>htmlParser</code> 解析出 <code>HTML</code> 代码的标签、属性、事件</li>
