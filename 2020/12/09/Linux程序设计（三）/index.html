@@ -530,7 +530,7 @@
 <li>摩托罗拉处理器将以字节顺序4-3-2-1存储整数。</li>
 </ul>
 <p>如果简单地逐字节复制用于整数的内存，则两台不同的计算机将无法在整数值上达成共识。</p>
-<p><img src="/picture/6.png" alt=""></p>
+<p><img src="/picture/6.png" alt></p>
 <p>对于整数而言，最有意义的位是最高位。<br><code>big_endian</code>(网络字节顺序)，最有意义的字节放在一个字的最前面。<br><code>small_endian</code>,最有意义的字节放在一个字的最后面。</p>
 <p>为了使不同类型的计算机能够就通过网络传输的多字节整数的值达成共识，我们需要定义网络顺序。<br>客户端和服务器程序必须使用 <code>netinet/in.h</code> 中定义的函数在传输之前将其内部整数表示形式转换为网络顺序。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> <span class="title">htonl</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> hostlong)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> short <span class="keyword">int</span> <span class="title">htons</span><span class="params">(<span class="keyword">unsigned</span> short <span class="keyword">int</span> hostshort)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> <span class="title">ntohl</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> netlong)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> short <span class="keyword">int</span> <span class="title">ntohs</span><span class="params">(<span class="keyword">unsigned</span> short <span class="keyword">int</span> netshort)</span></span>;</span><br></pre></td></tr></table></figure>
@@ -708,7 +708,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -804,7 +804,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">64.4k</span>
+    <span title="Site words total count">68.1k</span>
   
 </div>
 
