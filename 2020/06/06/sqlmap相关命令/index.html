@@ -92,6 +92,7 @@
 <meta property="og:url" content="http://yoursite.com/2020/06/06/sqlmap%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="SCERush">
 <meta property="og:description" content="sqlmap版本：1.4.6 借鉴了网上几位大佬的总结，自己也加了一些">
+<meta property="og:locale">
 <meta property="article:published_time" content="2020-06-06T10:03:00.000Z">
 <meta property="article:modified_time" content="2021-06-21T10:30:54.589Z">
 <meta property="article:author" content="SCERush">
@@ -104,7 +105,7 @@
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
@@ -143,7 +144,7 @@
 
 
 
-<meta name="generator" content="Hexo 4.2.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
@@ -297,7 +298,7 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/06/sqlmap%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="SCERush">
+      <meta itemprop="name" content="">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/blog.png">
     </span>
@@ -416,7 +417,7 @@
       
         <p>sqlmap版本：1.4.6</p>
 <p>借鉴了网上几位大佬的总结，自己也加了一些</p>
-<a id="more"></a>
+<span id="more"></span>
 <h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><pre><code>-h,--help  显示基本帮助信息并退出
 -hh        显示高级帮助信息并退出
 --version  显示程序版本信息并退出
@@ -434,11 +435,11 @@
 <ol>
 <li><p>get方法<br>-u：指定url  （?id=1）<br>-l：从Brupsuite proxy或WebScarab proxy中读取http请求日志文件<br>-x：从sitemap.xml站点地图文件中读取目标探测<br>-m：从多行文本格式文件读取多个目标，对多个目标进行探测<br>-r：丛文本文件中读取http请求作为SQL注入探测的目标<br>-c：从配置文件sqlmap.conf中读取目标探测<br>-g：google搜索出来的结果 （-g “inurl:\”.php?id=1\””）\”只是将双引号内的”特殊字符进行转义</p>
 </li>
-<li><p>post方法<br>-data：-u “<a href="http://xxx.xxx.xxx" target="_blank" rel="noopener">http://xxx.xxx.xxx</a>“ —data=”post请求抓取的源代码” </p>
+<li><p>post方法<br>-data：-u “<a target="_blank" rel="noopener" href="http://xxx.xxx.xxx">http://xxx.xxx.xxx</a>“ —data=”post请求抓取的源代码” </p>
 </li>
 </ol>
 <h2 id="请求参数"><a href="#请求参数" class="headerlink" title="请求参数"></a>请求参数</h2><h2 id="HTTP数据"><a href="#HTTP数据" class="headerlink" title="HTTP数据"></a>HTTP数据</h2><ol>
-<li><p>数据段： -data<br>get/post都适用<br>对于post还可以使用链接并将post抓取的源代码用—data，并输入抓取的源代码<br>sqlmap -u <a href="http://&quot;链接" target="_blank" rel="noopener">http://&quot;链接</a>“ —data=”post请求抓取的源代码” —dbs，常用于post请求。</p>
+<li><p>数据段： -data<br>get/post都适用<br>对于post还可以使用链接并将post抓取的源代码用—data，并输入抓取的源代码<br>sqlmap -u <a target="_blank" rel="noopener" href="http://&quot;链接">http://&quot;链接</a>“ —data=”post请求抓取的源代码” —dbs，常用于post请求。</p>
 </li>
 <li><p>cookie头<br>—cookie：-u “url” —cookie=”…” —level 2（需要注意的是，当level默认为1的时候，默认不扫cookie的内容，必须是level大于等于2才能扫cookie里的内容）</p>
 </li>
@@ -454,7 +455,7 @@
 <h2 id="身份验证"><a href="#身份验证" class="headerlink" title="身份验证"></a>身份验证</h2><ol>
 <li><p>HTTP协议认证<br>Basic    基本身份验证<br>Digest   摘要式身份认证<br>NTLM     NTLM身份验证（windows）<br>sqlmap -u “…”  —auth-type Basic —auth-cred “user:pass” ，指明验证类型为Basic，并说明用户名和密码</p>
 </li>
-<li><p>http(s)代理<br>主动请求时会被记录，被发现屏蔽，这时我们需要个代理，就用到了—proxy参数了。<br>—proxy=”<a href="http://127.0.0.1:8087" target="_blank" rel="noopener">http://127.0.0.1:8087</a>“<br>—proxy-cred=”name:pass”  需做身份验证时<br>—proxy-file 用于设置文件中的多条代理<br>—ignore-proxy 忽略系统级代理，通常用于扫描本地网络目标（若在操作系统设置了代理，后续的一切工作都经过代理）</p>
+<li><p>http(s)代理<br>主动请求时会被记录，被发现屏蔽，这时我们需要个代理，就用到了—proxy参数了。<br>—proxy=”<a target="_blank" rel="noopener" href="http://127.0.0.1:8087">http://127.0.0.1:8087</a>“<br>—proxy-cred=”name:pass”  需做身份验证时<br>—proxy-file 用于设置文件中的多条代理<br>—ignore-proxy 忽略系统级代理，通常用于扫描本地网络目标（若在操作系统设置了代理，后续的一切工作都经过代理）</p>
 </li>
 <li><p>基于客户端证书（比较少见，在以前的网银中比较常见）<br>当Web服务器需要客户端证书进行身份验证时，需要提供两个文件:key_file，cert_file。<br>key_file是格式为PEM文件，包含着你的私钥，cert_file是格式为PEM的连接文件。<br>—auth-cert (name:password)<br>—auth-file（HTTP authentication PEM cert/private key file）<br>如：—auth-file=”ca.PEM”,含有私钥的PEM格式证书文件或PEM格式的证书链文件</p>
 </li>
@@ -468,7 +469,7 @@
 </li>
 <li><p>设定重试时间<br>—retries  http(s)连接超时重传次数，默认3次</p>
 </li>
-<li><p>设定随记改变的参数值<br>—randomize 长度、类型与原始值保持一致的前提下，值当每次请求随记取值的参数名<br>sqlmap -u “<a href="http://1.1.1.1/a.php?id=1" target="_blank" rel="noopener">http://1.1.1.1/a.php?id=1</a>“ —randomize=”id”</p>
+<li><p>设定随记改变的参数值<br>—randomize 长度、类型与原始值保持一致的前提下，值当每次请求随记取值的参数名<br>sqlmap -u “<a target="_blank" rel="noopener" href="http://1.1.1.1/a.php?id=1">http://1.1.1.1/a.php?id=1</a>“ —randomize=”id”</p>
 </li>
 <li><p>利用正则表达式过滤目标网址<br>—scope  使用brup抓取的日志文件，但日志文件比较大，你只想检测日志中的一个站点或者某一个特征是否存在sql注入<br>过滤日志内容，通过正则表达式筛选扫描对象<br>sqlmap -l burp.lpg —scope=”(www)?.baidu.(com|net|org)”<br>sqlmap -l burp.lpg —scope=”(19)?.168.20.(1|10|100)”</p>
 </li>
@@ -506,7 +507,7 @@
 <li><p>关闭字符转义机制<br>—no-escape<br>关闭使用char替换字符串功能<br>出于混淆和避免出错的目的，payload中用单引号界定字符串时，sqlmap使用char()编码逃避的方法替换字符串<br>select ‘foo’ -&gt;select char(102)+char(111)+char(111)</p>
 </li>
 <li><p>自定义注入负载位置<br>—prefix /  —sufix<br>在某些情况下，只有当用户提供要附加早注入负载的特定位置时，易受攻击的参数才可被利用。当用户一斤知道查询语法并希望通过直接提供注入有效负载的前缀和后缀来检测和利用SQL注入式使用<br>例如：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$query = <span class="string">"SELECT * FROM users WHERE id = ('.$_GET['id'].') LIMIT 0,1"</span>;</span><br><span class="line"><span class="comment">// python sqlmap.py -u "http://xxx.xxx.xxx/?id=1" -p id --prefix "')" --suffix "AND ('abc'='abc"</span></span><br><span class="line">$query = <span class="string">"SELECT * FROM users WHERE id = ('1') &lt;PAYLOAD&gt; AND ('abc'='abc') LIMIT 0,1"</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$query</span> = <span class="string">&quot;SELECT * FROM users WHERE id = (&#x27;.<span class="subst">$_GET</span>[&#x27;id&#x27;].&#x27;) LIMIT 0,1&quot;</span>;</span><br><span class="line"><span class="comment">// python sqlmap.py -u &quot;http://xxx.xxx.xxx/?id=1&quot; -p id --prefix &quot;&#x27;)&quot; --suffix &quot;AND (&#x27;abc&#x27;=&#x27;abc&quot;</span></span><br><span class="line"><span class="variable">$query</span> = <span class="string">&quot;SELECT * FROM users WHERE id = (&#x27;1&#x27;) &lt;PAYLOAD&gt; AND (&#x27;abc&#x27;=&#x27;abc&#x27;) LIMIT 0,1&quot;</span>;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>tamper脚本<br>—tamper<br>sqlmap本身不会回校发送的有效负载，出来单引号之间的字符串被CHAR()类似的表示形式所取代之外。<br>sqlmap通过tamper脚本来绕过WAF等防御措施，可以在tamper文件夹下找到所有sqlmap自带的tamper脚本。<br>例：—tamper “xxx.py,xx.py”</p>
 </li>
@@ -621,7 +622,7 @@
 <li><p>分析和现实数据库内建报错信息<br>—parse-errors  将会分析和现实数据库内建报错信息</p>
 </li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">-s SESSIONFILE      保存和恢复检索会话文件的所有数据</span><br><span class="line">-t TRAFFICFILE      记录所有HTTP流量到一个文本文件中</span><br><span class="line">-z MNEMONICS        使用短记忆法 (e.g.&quot;flu,bat,ban,tec&#x3D;EU&quot;)</span><br><span class="line">--alert&#x3D;ALERT       发现SQL注入时，运行主机操作系统命令</span><br><span class="line">--answers&#x3D;ANSWERS   设置预定义的答案(e.g. &quot;quit&#x3D;N,follow&#x3D;N&quot;)</span><br><span class="line">--base64&#x3D;BASE64P..  包含Base64编码数据的参数</span><br><span class="line">--batch             从不询问用户输入，使用所有默认配置。</span><br><span class="line">--beep              发现sql注入时，发出蜂鸣声。</span><br><span class="line">--binary-fields&#x3D;..  结果字段具有二进制值(e.g.&quot;digest&quot;)</span><br><span class="line">--charset&#x3D;CHARSET   强制字符编码</span><br><span class="line">--check-internet    Check Internet connection before assessing the target</span><br><span class="line">--cleanup           清除sqlmap注入时在DBMS中产生的udf与表。</span><br><span class="line">--crawl&#x3D;CRAWLDEPTH  从目标URL爬行网站</span><br><span class="line">--crawl-exclude&#x3D;..  正则表达式从爬行页中排除</span><br><span class="line">--csv-del&#x3D;CSVDEL    限定使用CSV输出 (default&quot;,&quot;)</span><br><span class="line">--dependencies      Check formissing (non-core) sqlmap dependencies</span><br><span class="line">--disable-coloring  默认彩色输出，禁掉彩色输出。</span><br><span class="line">--dump-format&#x3D;DU..  转储数据格式(CSV(default), HTML or SQLITE)</span><br><span class="line">--eta               显示每个输出的预计到达时间</span><br><span class="line">--flush-session     刷新当前目标的会话文件</span><br><span class="line">--forms             解析和测试目标URL表单</span><br><span class="line">--fresh-queries     忽略在会话文件中存储的查询结果</span><br><span class="line">--gpage&#x3D;GOOGLEPAGE  使用前100个URL地址作为注入测试，结合此选项，可以指定页面的URL测试</span><br><span class="line">--hex               使用DBMS Hex函数数据检索</span><br><span class="line">--identify-waf      进行WAF&#x2F;IPS&#x2F;IDS保护测试，目前大约支持30种产品的识别</span><br><span class="line">--mobile            有时服务端只接收移动端的访问，此时可以设定一个手机的User-Agent来模仿手机登陆。</span><br><span class="line">--offline           Work inoffline mode (only use session data)</span><br><span class="line">--output-dir&#x3D;OUT..  自定义输出目录路径</span><br><span class="line">--parse-errors      解析和显示响应数据库错误信息</span><br><span class="line">--purge-output      从输出目录安全删除所有内容，有时需要删除结果文件，而不被恢复，可以使用此参数，原有文件将会被随机的一些文件覆盖。</span><br><span class="line">--save&#x3D;SAVECONFIG   保存选项到INI配置文件</span><br><span class="line">--scope&#x3D;SCOPE       从提供的代理日志中使用正则表达式过滤目标</span><br><span class="line">--skip-waf          跳过WAF／IPS &#x2F; IDS启发式检测保护</span><br><span class="line">--smart             进行积极的启发式测试，快速判断为注入的报错点进行注入</span><br><span class="line">--sqlmap-shell      互动提示一个sqlmapshell</span><br><span class="line">--test-filter&#x3D;TE..  选择测试的有效载荷和&#x2F;或标题(e.g. ROW)</span><br><span class="line">--test-skip&#x3D;TEST..  跳过试验载荷和&#x2F;或标题(e.g.BENCHMARK)</span><br><span class="line">--tmp-dir&#x3D;TMPDIR    用于存储临时文件的本地目录</span><br><span class="line">--update            更新sqlmap</span><br><span class="line">--web-root&#x3D;WEBROOT  Web服务器的文档根目录(e.g.&quot;&#x2F;var&#x2F;www&quot;)</span><br><span class="line">--wizard            新手用户简单的向导使用，可以一步一步教你如何输入针对目标注入</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">-s SESSIONFILE      保存和恢复检索会话文件的所有数据</span><br><span class="line">-t TRAFFICFILE      记录所有HTTP流量到一个文本文件中</span><br><span class="line">-z MNEMONICS        使用短记忆法 (e.g.&quot;flu,bat,ban,tec=EU&quot;)</span><br><span class="line">--alert=ALERT       发现SQL注入时，运行主机操作系统命令</span><br><span class="line">--answers=ANSWERS   设置预定义的答案(e.g. &quot;quit=N,follow=N&quot;)</span><br><span class="line">--base64=BASE64P..  包含Base64编码数据的参数</span><br><span class="line">--batch             从不询问用户输入，使用所有默认配置。</span><br><span class="line">--beep              发现sql注入时，发出蜂鸣声。</span><br><span class="line">--binary-fields=..  结果字段具有二进制值(e.g.&quot;digest&quot;)</span><br><span class="line">--charset=CHARSET   强制字符编码</span><br><span class="line">--check-internet    Check Internet connection before assessing the target</span><br><span class="line">--cleanup           清除sqlmap注入时在DBMS中产生的udf与表。</span><br><span class="line">--crawl=CRAWLDEPTH  从目标URL爬行网站</span><br><span class="line">--crawl-exclude=..  正则表达式从爬行页中排除</span><br><span class="line">--csv-del=CSVDEL    限定使用CSV输出 (default&quot;,&quot;)</span><br><span class="line">--dependencies      Check formissing (non-core) sqlmap dependencies</span><br><span class="line">--disable-coloring  默认彩色输出，禁掉彩色输出。</span><br><span class="line">--dump-format=DU..  转储数据格式(CSV(default), HTML or SQLITE)</span><br><span class="line">--eta               显示每个输出的预计到达时间</span><br><span class="line">--flush-session     刷新当前目标的会话文件</span><br><span class="line">--forms             解析和测试目标URL表单</span><br><span class="line">--fresh-queries     忽略在会话文件中存储的查询结果</span><br><span class="line">--gpage=GOOGLEPAGE  使用前100个URL地址作为注入测试，结合此选项，可以指定页面的URL测试</span><br><span class="line">--hex               使用DBMS Hex函数数据检索</span><br><span class="line">--identify-waf      进行WAF/IPS/IDS保护测试，目前大约支持30种产品的识别</span><br><span class="line">--mobile            有时服务端只接收移动端的访问，此时可以设定一个手机的User-Agent来模仿手机登陆。</span><br><span class="line">--offline           Work inoffline mode (only use session data)</span><br><span class="line">--output-dir=OUT..  自定义输出目录路径</span><br><span class="line">--parse-errors      解析和显示响应数据库错误信息</span><br><span class="line">--purge-output      从输出目录安全删除所有内容，有时需要删除结果文件，而不被恢复，可以使用此参数，原有文件将会被随机的一些文件覆盖。</span><br><span class="line">--save=SAVECONFIG   保存选项到INI配置文件</span><br><span class="line">--scope=SCOPE       从提供的代理日志中使用正则表达式过滤目标</span><br><span class="line">--skip-waf          跳过WAF／IPS / IDS启发式检测保护</span><br><span class="line">--smart             进行积极的启发式测试，快速判断为注入的报错点进行注入</span><br><span class="line">--sqlmap-shell      互动提示一个sqlmapshell</span><br><span class="line">--test-filter=TE..  选择测试的有效载荷和/或标题(e.g. ROW)</span><br><span class="line">--test-skip=TEST..  跳过试验载荷和/或标题(e.g.BENCHMARK)</span><br><span class="line">--tmp-dir=TMPDIR    用于存储临时文件的本地目录</span><br><span class="line">--update            更新sqlmap</span><br><span class="line">--web-root=WEBROOT  Web服务器的文档根目录(e.g.&quot;/var/www&quot;)</span><br><span class="line">--wizard            新手用户简单的向导使用，可以一步一步教你如何输入针对目标注入</span><br></pre></td></tr></table></figure>
 <h1 id="tamper中部分脚本"><a href="#tamper中部分脚本" class="headerlink" title="tamper中部分脚本"></a>tamper中部分脚本</h1><div class="table-container">
 <table>
 <thead>
@@ -878,10 +879,10 @@
             
               <img class="site-author-image" itemprop="image"
                 src="/images/blog.png"
-                alt="SCERush" />
+                alt="" />
             
-              <p class="site-author-name" itemprop="name">SCERush</p>
-              <p class="site-description motion-element" itemprop="description">基本上人生就算努力也不见得会有回报，一旦有所回报时，就当作是奇迹发生吧。</p>
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
           <nav class="site-state motion-element">
@@ -946,7 +947,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#选项"><span class="nav-number">1.</span> <span class="nav-text">选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获取目标"><span class="nav-number">2.</span> <span class="nav-text">获取目标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#请求参数"><span class="nav-number">2.1.</span> <span class="nav-text">请求参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP数据"><span class="nav-number">2.2.</span> <span class="nav-text">HTTP数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#身份验证"><span class="nav-number">2.3.</span> <span class="nav-text">身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用技巧"><span class="nav-number">2.4.</span> <span class="nav-text">使用技巧</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#性能优化"><span class="nav-number">3.</span> <span class="nav-text">性能优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注入"><span class="nav-number">4.</span> <span class="nav-text">注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义检测参数"><span class="nav-number">5.</span> <span class="nav-text">自定义检测参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注入技术"><span class="nav-number">6.</span> <span class="nav-text">注入技术</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#枚举信息"><span class="nav-number">7.</span> <span class="nav-text">枚举信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#暴力破解"><span class="nav-number">8.</span> <span class="nav-text">暴力破解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件系统访问"><span class="nav-number">9.</span> <span class="nav-text">文件系统访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#操作系统访问"><span class="nav-number">10.</span> <span class="nav-text">操作系统访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows注册表访问"><span class="nav-number">11.</span> <span class="nav-text">Windows注册表访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常规参数-amp-其它"><span class="nav-number">12.</span> <span class="nav-text">常规参数&amp;其它</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tamper中部分脚本"><span class="nav-number">13.</span> <span class="nav-text">tamper中部分脚本</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%89%E9%A1%B9"><span class="nav-number">1.</span> <span class="nav-text">选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%9B%AE%E6%A0%87"><span class="nav-number">2.</span> <span class="nav-text">获取目标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">请求参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP%E6%95%B0%E6%8D%AE"><span class="nav-number">2.2.</span> <span class="nav-text">HTTP数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-number">2.3.</span> <span class="nav-text">身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">2.4.</span> <span class="nav-text">使用技巧</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">性能优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E5%85%A5"><span class="nav-number">4.</span> <span class="nav-text">注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A3%80%E6%B5%8B%E5%8F%82%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">自定义检测参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E5%85%A5%E6%8A%80%E6%9C%AF"><span class="nav-number">6.</span> <span class="nav-text">注入技术</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE%E4%BF%A1%E6%81%AF"><span class="nav-number">7.</span> <span class="nav-text">枚举信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3"><span class="nav-number">8.</span> <span class="nav-text">暴力破解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BF%E9%97%AE"><span class="nav-number">9.</span> <span class="nav-text">文件系统访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AE%BF%E9%97%AE"><span class="nav-number">10.</span> <span class="nav-text">操作系统访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows%E6%B3%A8%E5%86%8C%E8%A1%A8%E8%AE%BF%E9%97%AE"><span class="nav-number">11.</span> <span class="nav-text">Windows注册表访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%84%E5%8F%82%E6%95%B0-amp-%E5%85%B6%E5%AE%83"><span class="nav-number">12.</span> <span class="nav-text">常规参数&amp;其它</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tamper%E4%B8%AD%E9%83%A8%E5%88%86%E8%84%9A%E6%9C%AC"><span class="nav-number">13.</span> <span class="nav-text">tamper中部分脚本</span></a></li></ol></div>
             
 
           </div>
@@ -987,7 +988,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">68.1k</span>
+    <span title="Site words total count">70.9k</span>
   
 </div>
 

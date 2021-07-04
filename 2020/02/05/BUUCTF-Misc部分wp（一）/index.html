@@ -92,6 +92,7 @@
 <meta property="og:url" content="http://yoursite.com/2020/02/05/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
 <meta property="og:site_name" content="SCERush">
 <meta property="og:description" content="最近开始刷BUUCTF，感觉题目比较基础，而且这还有许多比赛题目的复现。这里将记录一些简单的MISC题目，较难的题目将单独写出来。">
+<meta property="og:locale">
 <meta property="article:published_time" content="2020-02-05T06:06:52.000Z">
 <meta property="article:modified_time" content="2020-06-11T09:46:26.903Z">
 <meta property="article:author" content="SCERush">
@@ -104,7 +105,7 @@
 <script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    root: '/',
+    root: '',
     scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
@@ -143,7 +144,7 @@
 
 
 
-<meta name="generator" content="Hexo 4.2.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
@@ -297,7 +298,7 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/05/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%B8%80%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="SCERush">
+      <meta itemprop="name" content="">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/blog.png">
     </span>
@@ -414,11 +415,11 @@
       
 
       
-        <p>最近开始刷<a href="https://buuoj.cn/" target="_blank" rel="noopener">BUUCTF</a>，感觉题目比较基础，而且这还有许多比赛题目的复现。<br>这里将记录一些简单的MISC题目，较难的题目将单独写出来。</p>
-<a id="more"></a>
+        <p>最近开始刷<a target="_blank" rel="noopener" href="https://buuoj.cn/">BUUCTF</a>，感觉题目比较基础，而且这还有许多比赛题目的复现。<br>这里将记录一些简单的MISC题目，较难的题目将单独写出来。</p>
+<span id="more"></span>
 <h2 id="1-金三胖"><a href="#1-金三胖" class="headerlink" title="1.金三胖"></a>1.金三胖</h2><p>题目给出了一张gif图，放入Stegsolve中逐帧查看，得到flag</p>
 <h2 id="2-二维码"><a href="#2-二维码" class="headerlink" title="2.二维码"></a>2.二维码</h2><p>一张二维码，首先扫描一下，明显不是flag，在kali中binwalk分析一波<br>发现一个压缩包，使用foremost命令或者binwalk -e命令将压缩包提取出来发现是一个密码为四位数字的压缩包<br>fcrackzip -b -c1 -l 4 -u爆破得到flag</p>
-<h2 id="3-N种解决方法"><a href="#3-N种解决方法" class="headerlink" title="3.N种解决方法"></a>3.N种解决方法</h2><p>下载后发现是一个exe文件，但打不开，使用任意一个文本编译器打开发现是将图片转base64了，把内容复制再转回图片<a href="http://tool.chinaz.com/tools/imgtobase" target="_blank" rel="noopener" title="http://tool.chinaz.com/tools/imgtobase">http://tool.chinaz.com/tools/imgtobase</a>，是一个二维码，扫码得到flag</p>
+<h2 id="3-N种解决方法"><a href="#3-N种解决方法" class="headerlink" title="3.N种解决方法"></a>3.N种解决方法</h2><p>下载后发现是一个exe文件，但打不开，使用任意一个文本编译器打开发现是将图片转base64了，把内容复制再转回图片<a target="_blank" rel="noopener" href="http://tool.chinaz.com/tools/imgtobase" title="http://tool.chinaz.com/tools/imgtobase">http://tool.chinaz.com/tools/imgtobase</a>，是一个二维码，扫码得到flag</p>
 <h2 id="4-大白"><a href="#4-大白" class="headerlink" title="4.大白"></a>4.大白</h2><p>题目说屏幕太小了<br>估计是改了图片长宽，用winhex打开图片，将01 00改为02 00（对于png文件，其第二行第六列是高度位，改这一位即可）<br>得到flag</p>
 <h2 id="5-基础破解"><a href="#5-基础破解" class="headerlink" title="5.基础破解"></a>5.基础破解</h2><p>暴力破解，使用ARCHPR破解，得到flag</p>
 <h2 id="6-你竟然赶我走"><a href="#6-你竟然赶我走" class="headerlink" title="6.你竟然赶我走"></a>6.你竟然赶我走</h2><p>winhex下分析，发现flag  </p>
@@ -440,11 +441,11 @@
 <h2 id="22-隐藏的钥匙"><a href="#22-隐藏的钥匙" class="headerlink" title="22.隐藏的钥匙"></a>22.隐藏的钥匙</h2><p>winhex下打开文件，搜索发现flag是base64编码，在线解码一下得到flag</p>
 <h2 id="23-来首歌吧"><a href="#23-来首歌吧" class="headerlink" title="23.来首歌吧"></a>23.来首歌吧</h2><p>得到一段音频，使用Audacity分析，发现摩斯密码，解码得到flag</p>
 <h2 id="24-后门查杀"><a href="#24-后门查杀" class="headerlink" title="24.后门查杀"></a>24.后门查杀</h2><p>webshell会报病毒，随便拿杀毒软件一个扫描一下，就得到目的文件<br>文件打开就得到flag</p>
-<h2 id="25-神秘龙卷风"><a href="#25-神秘龙卷风" class="headerlink" title="25.神秘龙卷风"></a>25.神秘龙卷风</h2><p>解压得到一压缩包，提示说密码四位数，ARCHPR破解，打开文件发现是Brainfuck编码，<a href="https://www.splitbrain.org/services/ook" target="_blank" rel="noopener">在线解码</a></p>
-<h2 id="26-面具下的flag"><a href="#26-面具下的flag" class="headerlink" title="26.面具下的flag"></a>26.面具下的flag</h2><p>解压得到的图片binwalk分析发现压缩包，foremost解压后得到一个flag.vmdk的文件（老实说vmdk我也没怎么见过，于是就看了看网上的wp），使用7z解压<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7z x flag.vmdk</span><br></pre></td></tr></table></figure><br>解压后得到flag的两部分，ook与Brainfuck<a href="https://www.splitbrain.org/services/ook" target="_blank" rel="noopener">在线解码</a><br>（不太明白为什么7z能解压vmdk文件，而且有趣的是我在Windows下解压不能解压出flag后半段密码，在kali下却能。。。）</p>
+<h2 id="25-神秘龙卷风"><a href="#25-神秘龙卷风" class="headerlink" title="25.神秘龙卷风"></a>25.神秘龙卷风</h2><p>解压得到一压缩包，提示说密码四位数，ARCHPR破解，打开文件发现是Brainfuck编码，<a target="_blank" rel="noopener" href="https://www.splitbrain.org/services/ook">在线解码</a></p>
+<h2 id="26-面具下的flag"><a href="#26-面具下的flag" class="headerlink" title="26.面具下的flag"></a>26.面具下的flag</h2><p>解压得到的图片binwalk分析发现压缩包，foremost解压后得到一个flag.vmdk的文件（老实说vmdk我也没怎么见过，于是就看了看网上的wp），使用7z解压<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7z x flag.vmdk</span><br></pre></td></tr></table></figure><br>解压后得到flag的两部分，ook与Brainfuck<a target="_blank" rel="noopener" href="https://www.splitbrain.org/services/ook">在线解码</a><br>（不太明白为什么7z能解压vmdk文件，而且有趣的是我在Windows下解压不能解压出flag后半段密码，在kali下却能。。。）</p>
 <h2 id="27-webshell后门"><a href="#27-webshell后门" class="headerlink" title="27.webshell后门"></a>27.webshell后门</h2><p>和后门查杀那题一样，杀毒软件一扫完事~~~</p>
 <h2 id="28-被劫持的神秘礼物"><a href="#28-被劫持的神秘礼物" class="headerlink" title="28.被劫持的神秘礼物"></a>28.被劫持的神秘礼物</h2><p>wireshark打开查询TCP流，发现账号密码，串一起再md5  </p>
-<h2 id="29-刷新过的图片"><a href="#29-刷新过的图片" class="headerlink" title="29.刷新过的图片"></a>29.刷新过的图片</h2><p>（知识盲区，唉~~~）<br>F5隐写，参考论文：<a href="https://wenku.baidu.com/view/c9150e29b4daa58da0114a39.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/c9150e29b4daa58da0114a39.html</a><br>解题时就直接使用：F5-steganography<br>解压出来一个output.txt，打开一看PK开头，估计是zip，改后缀名，解压后得到flag</p>
+<h2 id="29-刷新过的图片"><a href="#29-刷新过的图片" class="headerlink" title="29.刷新过的图片"></a>29.刷新过的图片</h2><p>（知识盲区，唉~~~）<br>F5隐写，参考论文：<a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/c9150e29b4daa58da0114a39.html">https://wenku.baidu.com/view/c9150e29b4daa58da0114a39.html</a><br>解题时就直接使用：F5-steganography<br>解压出来一个output.txt，打开一看PK开头，估计是zip，改后缀名，解压后得到flag</p>
 <h2 id="30-穿越时空的思恋"><a href="#30-穿越时空的思恋" class="headerlink" title="30.穿越时空的思恋"></a>30.穿越时空的思恋</h2><p>又是一段音频，Audacity分析，发现摩斯密码，解码得到flag</p>
 
       
@@ -554,10 +555,10 @@
             
               <img class="site-author-image" itemprop="image"
                 src="/images/blog.png"
-                alt="SCERush" />
+                alt="" />
             
-              <p class="site-author-name" itemprop="name">SCERush</p>
-              <p class="site-description motion-element" itemprop="description">基本上人生就算努力也不见得会有回报，一旦有所回报时，就当作是奇迹发生吧。</p>
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
           <nav class="site-state motion-element">
@@ -622,7 +623,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-金三胖"><span class="nav-number">1.</span> <span class="nav-text">1.金三胖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-二维码"><span class="nav-number">2.</span> <span class="nav-text">2.二维码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-N种解决方法"><span class="nav-number">3.</span> <span class="nav-text">3.N种解决方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-大白"><span class="nav-number">4.</span> <span class="nav-text">4.大白</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-基础破解"><span class="nav-number">5.</span> <span class="nav-text">5.基础破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-你竟然赶我走"><span class="nav-number">6.</span> <span class="nav-text">6.你竟然赶我走</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-LSB"><span class="nav-number">7.</span> <span class="nav-text">7.LSB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-乌镇峰会种图"><span class="nav-number">8.</span> <span class="nav-text">8.乌镇峰会种图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-rar"><span class="nav-number">9.</span> <span class="nav-text">9.rar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-ningen"><span class="nav-number">10.</span> <span class="nav-text">10.ningen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-文件中的秘密"><span class="nav-number">11.</span> <span class="nav-text">11.文件中的秘密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-wireshark"><span class="nav-number">12.</span> <span class="nav-text">12.wireshark</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-镜子里面的世界"><span class="nav-number">13.</span> <span class="nav-text">13.镜子里面的世界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-小明的保险箱"><span class="nav-number">14.</span> <span class="nav-text">14.小明的保险箱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-爱因斯坦"><span class="nav-number">15.</span> <span class="nav-text">15.爱因斯坦</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-被嗅探的流量"><span class="nav-number">16.</span> <span class="nav-text">16.被嗅探的流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-假如给我三天光明"><span class="nav-number">17.</span> <span class="nav-text">17.假如给我三天光明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-easycap"><span class="nav-number">18.</span> <span class="nav-text">18.easycap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-FLAG"><span class="nav-number">19.</span> <span class="nav-text">19.FLAG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-另外一个世界"><span class="nav-number">20.</span> <span class="nav-text">20.另外一个世界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#21-荷兰宽带数据泄露"><span class="nav-number">21.</span> <span class="nav-text">21.荷兰宽带数据泄露</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-隐藏的钥匙"><span class="nav-number">22.</span> <span class="nav-text">22.隐藏的钥匙</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-来首歌吧"><span class="nav-number">23.</span> <span class="nav-text">23.来首歌吧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#24-后门查杀"><span class="nav-number">24.</span> <span class="nav-text">24.后门查杀</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#25-神秘龙卷风"><span class="nav-number">25.</span> <span class="nav-text">25.神秘龙卷风</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#26-面具下的flag"><span class="nav-number">26.</span> <span class="nav-text">26.面具下的flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#27-webshell后门"><span class="nav-number">27.</span> <span class="nav-text">27.webshell后门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#28-被劫持的神秘礼物"><span class="nav-number">28.</span> <span class="nav-text">28.被劫持的神秘礼物</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#29-刷新过的图片"><span class="nav-number">29.</span> <span class="nav-text">29.刷新过的图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#30-穿越时空的思恋"><span class="nav-number">30.</span> <span class="nav-text">30.穿越时空的思恋</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%87%91%E4%B8%89%E8%83%96"><span class="nav-number">1.</span> <span class="nav-text">1.金三胖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BA%8C%E7%BB%B4%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">2.二维码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-N%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">3.N种解决方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%A4%A7%E7%99%BD"><span class="nav-number">4.</span> <span class="nav-text">4.大白</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%9F%BA%E7%A1%80%E7%A0%B4%E8%A7%A3"><span class="nav-number">5.</span> <span class="nav-text">5.基础破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E4%BD%A0%E7%AB%9F%E7%84%B6%E8%B5%B6%E6%88%91%E8%B5%B0"><span class="nav-number">6.</span> <span class="nav-text">6.你竟然赶我走</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-LSB"><span class="nav-number">7.</span> <span class="nav-text">7.LSB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E4%B9%8C%E9%95%87%E5%B3%B0%E4%BC%9A%E7%A7%8D%E5%9B%BE"><span class="nav-number">8.</span> <span class="nav-text">8.乌镇峰会种图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-rar"><span class="nav-number">9.</span> <span class="nav-text">9.rar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-ningen"><span class="nav-number">10.</span> <span class="nav-text">10.ningen</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-%E6%96%87%E4%BB%B6%E4%B8%AD%E7%9A%84%E7%A7%98%E5%AF%86"><span class="nav-number">11.</span> <span class="nav-text">11.文件中的秘密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-wireshark"><span class="nav-number">12.</span> <span class="nav-text">12.wireshark</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-%E9%95%9C%E5%AD%90%E9%87%8C%E9%9D%A2%E7%9A%84%E4%B8%96%E7%95%8C"><span class="nav-number">13.</span> <span class="nav-text">13.镜子里面的世界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-%E5%B0%8F%E6%98%8E%E7%9A%84%E4%BF%9D%E9%99%A9%E7%AE%B1"><span class="nav-number">14.</span> <span class="nav-text">14.小明的保险箱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6"><span class="nav-number">15.</span> <span class="nav-text">15.爱因斯坦</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-%E8%A2%AB%E5%97%85%E6%8E%A2%E7%9A%84%E6%B5%81%E9%87%8F"><span class="nav-number">16.</span> <span class="nav-text">16.被嗅探的流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-%E5%81%87%E5%A6%82%E7%BB%99%E6%88%91%E4%B8%89%E5%A4%A9%E5%85%89%E6%98%8E"><span class="nav-number">17.</span> <span class="nav-text">17.假如给我三天光明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-easycap"><span class="nav-number">18.</span> <span class="nav-text">18.easycap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-FLAG"><span class="nav-number">19.</span> <span class="nav-text">19.FLAG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-%E5%8F%A6%E5%A4%96%E4%B8%80%E4%B8%AA%E4%B8%96%E7%95%8C"><span class="nav-number">20.</span> <span class="nav-text">20.另外一个世界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#21-%E8%8D%B7%E5%85%B0%E5%AE%BD%E5%B8%A6%E6%95%B0%E6%8D%AE%E6%B3%84%E9%9C%B2"><span class="nav-number">21.</span> <span class="nav-text">21.荷兰宽带数据泄露</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-%E9%9A%90%E8%97%8F%E7%9A%84%E9%92%A5%E5%8C%99"><span class="nav-number">22.</span> <span class="nav-text">22.隐藏的钥匙</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-%E6%9D%A5%E9%A6%96%E6%AD%8C%E5%90%A7"><span class="nav-number">23.</span> <span class="nav-text">23.来首歌吧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#24-%E5%90%8E%E9%97%A8%E6%9F%A5%E6%9D%80"><span class="nav-number">24.</span> <span class="nav-text">24.后门查杀</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#25-%E7%A5%9E%E7%A7%98%E9%BE%99%E5%8D%B7%E9%A3%8E"><span class="nav-number">25.</span> <span class="nav-text">25.神秘龙卷风</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#26-%E9%9D%A2%E5%85%B7%E4%B8%8B%E7%9A%84flag"><span class="nav-number">26.</span> <span class="nav-text">26.面具下的flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#27-webshell%E5%90%8E%E9%97%A8"><span class="nav-number">27.</span> <span class="nav-text">27.webshell后门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#28-%E8%A2%AB%E5%8A%AB%E6%8C%81%E7%9A%84%E7%A5%9E%E7%A7%98%E7%A4%BC%E7%89%A9"><span class="nav-number">28.</span> <span class="nav-text">28.被劫持的神秘礼物</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#29-%E5%88%B7%E6%96%B0%E8%BF%87%E7%9A%84%E5%9B%BE%E7%89%87"><span class="nav-number">29.</span> <span class="nav-text">29.刷新过的图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#30-%E7%A9%BF%E8%B6%8A%E6%97%B6%E7%A9%BA%E7%9A%84%E6%80%9D%E6%81%8B"><span class="nav-number">30.</span> <span class="nav-text">30.穿越时空的思恋</span></a></li></ol></div>
             
 
           </div>
@@ -663,7 +664,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">68.1k</span>
+    <span title="Site words total count">70.9k</span>
   
 </div>
 
