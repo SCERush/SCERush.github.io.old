@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web,security,XSS," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaScript，但实际上也可以包括Java、 VBScript、ActiveX、 Flash 或者甚至是普通的HTML。攻击成功后，攻击者可能得到包括但不限于更高的权限（如执行一些操作）、私密网页内容、会话和cookie等各种内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSS原理及防御">
+<meta property="og:url" content="https://scerush.github.io/2021/06/24/xss-yuan-li-ji-fang-yu/index.html">
+<meta property="og:site_name" content="SCERush">
+<meta property="og:description" content="XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaScript，但实际上也可以包括Java、 VBScript、ActiveX、 Flash 或者甚至是普通的HTML。攻击成功后，攻击者可能得到包括但不限于更高的权限（如执行一些操作）、私密网页内容、会话和cookie等各种内容。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-06-24T14:54:31.000Z">
+<meta property="article:modified_time" content="2021-07-02T02:21:51.629Z">
+<meta property="article:author" content="SCERush">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="security">
+<meta property="article:tag" content="XSS">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://scerush.github.io/2021/06/24/xss-yuan-li-ji-fang-yu/"/>
+
+
+
+
+
+  <title>XSS原理及防御 | SCERush</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SCERush</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://scerush.github.io/2021/06/24/xss-yuan-li-ji-fang-yu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SCERush">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">XSS原理及防御</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-24T22:54:31+08:00">
+                2021-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>XSS攻击通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序。这些恶意网页程序通常是JavaScript，但实际上也可以包括Java、 VBScript、ActiveX、 Flash 或者甚至是普通的HTML。攻击成功后，攻击者可能得到包括但不限于更高的权限（如执行一些操作）、私密网页内容、会话和cookie等各种内容。</p>
+</blockquote>
+<span id="more"></span>
+<h1 id="XSS简介"><a href="#XSS简介" class="headerlink" title="XSS简介"></a>XSS简介</h1><p>XSS全称是Cross Site Scripting（为了和CSS进行区分，就叫XSS）即跨站脚本，是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。</p>
+<h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="反射型-XSS"><a href="#反射型-XSS" class="headerlink" title="反射型 XSS"></a>反射型 XSS</h2><p>反射型 XSS 的攻击步骤：</p>
+<ol>
+<li>攻击者构造出特殊的 URL，其中包含恶意代码。</li>
+<li>用户打开带有恶意代码的 URL 时，网站服务端将恶意代码从 URL 中取出，拼接在 HTML 中返回给浏览器。</li>
+<li>用户浏览器接收到响应后解析执行，混在其中的恶意代码也被执行。</li>
+<li>恶意代码窃取用户数据并发送到攻击者的网站，或者冒充用户的行为，调用目标网站接口执行攻击者指定的操作。</li>
+</ol>
+<p>反射型 XSS 漏洞常见于通过 URL 传递参数的功能，如网站搜索、跳转等。</p>
+<p>由于需要用户主动打开恶意的 URL 才能生效，攻击者往往会结合多种手段诱导用户点击。</p>
+<p>POST 的内容也可以触发反射型 XSS，只不过其触发条件比较苛刻（需要构造表单提交页面，并引导用户点击），所以非常少见。</p>
+<h2 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h2><p>存储型 XSS 的攻击步骤：</p>
+<ol>
+<li>攻击者将恶意代码提交到目标网站的数据库中。</li>
+<li>用户打开目标网站时，网站服务端将恶意代码从数据库取出，拼接在 HTML 中返回给浏览器。</li>
+<li>用户浏览器接收到响应后解析执行，混在其中的恶意代码也被执行。</li>
+<li>恶意代码窃取用户数据并发送到攻击者的网站，或者冒充用户的行为，调用目标网站接口执行攻击者指定的操作。</li>
+</ol>
+<p>这种攻击常见于带有用户保存数据的网站功能，如论坛发帖、商品评论、用户私信等。</p>
+<p>反射型 XSS 跟存储型 XSS 的区别是：反射型 XSS 的恶意代码存在 URL 里，存储型 XSS 的恶意代码存在数据库里。</p>
+<h2 id="DOM-型-XSS"><a href="#DOM-型-XSS" class="headerlink" title="DOM 型 XSS"></a>DOM 型 XSS</h2><p>DOM 型 XSS 的攻击步骤：</p>
+<ol>
+<li>攻击者构造出特殊的 URL，其中包含恶意代码。</li>
+<li>用户打开带有恶意代码的 URL。</li>
+<li>用户浏览器接收到响应后解析执行，前端 JavaScript 取出 URL 中的恶意代码并执行。</li>
+<li>恶意代码窃取用户数据并发送到攻击者的网站，或者冒充用户的行为，调用目标网站接口执行攻击者指定的操作。</li>
+</ol>
+<p>DOM 型 XSS 跟前两种 XSS 的区别：DOM 型 XSS 攻击中，取出和执行恶意代码由浏览器端完成，属于前端 JavaScript 自身的安全漏洞，而其他两种 XSS 都属于服务端的安全漏洞。</p>
+<h1 id="攻击方式"><a href="#攻击方式" class="headerlink" title="攻击方式"></a>攻击方式</h1><p>常用的XSS攻击手段和目的有：</p>
+<ol>
+<li><p>盗用cookie，获取敏感信息。</p>
+</li>
+<li><p>利用植入Flash，通过crossdomain权限设置进一步获取更高权限；或者利用Java等得到类似的操作。</p>
+</li>
+<li><p>利用iframe、frame、XMLHttpRequest或上述Flash等方式，以（被攻击）用户的身份执行一些管理动作，或执行一些一般的如发微博、加好友、发私信等操作。</p>
+</li>
+<li><p>利用可被攻击的域受到其他域信任的特点，以受信任来源的身份请求一些平时不允许的操作，如进行不当的投票活动。</p>
+</li>
+<li><p>在访问量极大的一些页面上的XSS可以攻击一些小型网站，实现DDoS攻击的效果</p>
+</li>
+</ol>
+<h1 id="XSS防御"><a href="#XSS防御" class="headerlink" title="XSS防御"></a>XSS防御</h1><h2 id="防御XSS的七条原则"><a href="#防御XSS的七条原则" class="headerlink" title="防御XSS的七条原则"></a>防御XSS的七条原则</h2><ol>
+<li>不要在页面中插入任何不可信数据，除非这些数已经据根据下面几个原则进行了编码</li>
+<li>在将不可信数据插入到HTML标签之间时，对这些数据进行HTML Entity编码</li>
+<li>在将不可信数据插入到HTML属性里时，对这些数据进行HTML属性编码</li>
+<li>在将不可信数据插入到SCRIPT里时，对这些数据进行SCRIPT编码</li>
+<li>在将不可信数据插入到Style属性里时，对这些数据进行CSS编码</li>
+<li>在将不可信数据插入到HTML URL里时，对这些数据进行URL编码</li>
+<li>使用富文本时，使用XSS规则引擎进行编码过滤</li>
+</ol>
+<h2 id="HttpOnly"><a href="#HttpOnly" class="headerlink" title="HttpOnly"></a>HttpOnly</h2><p><code>HttpOnly</code> 最早是由微软提出，并在 <code>IE 6</code> 中实现的，至今已经逐渐成为一个标准，各大浏览器都支持此标准。具体含义就是，如果某个 <code>Cookie</code> 带有 <code>HttpOnly</code> 属性，那么这一条 <code>Cookie</code> 将被禁止读取，也就是说，<code>JavaScript</code> 读取不到此条 <code>Cookie</code>，不过在与服务端交互的时候，<code>Http Request</code> 包中仍然会带上这个 <code>Cookie</code> 信息，即我们的正常交互不受影响。</p>
+<h2 id="输入检查"><a href="#输入检查" class="headerlink" title="输入检查"></a>输入检查</h2><p><strong>记住一点：不要相信任何输入的内容。</strong></p>
+<p>无论是不是做了安全校验，都必须进行过滤操作，而且需要后台配合过滤，如果后端的检查校验还做得不好，那就可能被攻破。</p>
+<p>输入检查在更多的时候被用于格式检验，例如用户名只能以字母和数字组合，手机号码只能有 11 位且全部为数字，否则即为非法。</p>
+<p>这些格式检查类似于白名单效果，限制输入允许的字符，让一下特殊字符的攻击失效。</p>
+<p>目前网上有很多开源的 <code>XSS Filter</code> ，这些 <code>XSS Filter</code> 目前来说还是有些效果的，能只能检验输入内容，高级一点的还会匹配 <code>XSS</code> 特征，例如内容是否包含了 <code>&lt;script&gt;</code>，<code>javascript</code> 等敏感字符，但是这些 <code>XSS Filter</code> 只是获取到了用户的输入内容，并不了解其上下文含义，很多时候会误过滤。</p>
+<h2 id="输出检查"><a href="#输出检查" class="headerlink" title="输出检查"></a>输出检查</h2><p>不要以为在输入的时候进行过滤就万事大吉了，恶意攻击者们可能会层层绕过防御机制进行 <code>XSS</code> 攻击，一般来说，所有需要输出到 <code>HTML</code> 页面的变量，全部需要使用编码或者转义来防御。</p>
+<h3 id="HTMLEncode"><a href="#HTMLEncode" class="headerlink" title="HTMLEncode"></a>HTMLEncode</h3><p>针对 <code>HTML</code> 代码的编码方式是 <code>HTMLEncode</code>，它的作用是将字符串转换成 <code>HTMLEntities</code>。</p>
+<p>目前来说，为了对抗 <code>XSS</code> ，以下转义内容是必不可少的：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>特殊字符</th>
+<th>实体编码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&amp;</td>
+<td><code>&amp;amp;</code></td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td><code>&amp;lt;</code></td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td><code>&amp;gt;</code></td>
+</tr>
+<tr>
+<td>“</td>
+<td><code>&amp;quot;</code></td>
+</tr>
+<tr>
+<td>‘</td>
+<td><code>&amp;#x27;</code></td>
+</tr>
+<tr>
+<td>/</td>
+<td><code>&amp;#x2F;</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="JavaScriptEncode"><a href="#JavaScriptEncode" class="headerlink" title="JavaScriptEncode"></a>JavaScriptEncode</h3><p><code>JavaScriptEncode</code> 与 <code>HTMLEncode</code> 的编码方式不同，它需要用 <code>\</code> 对特殊字符进行转义。</p>
+<p>在对抗 <code>XSS</code> 时，还要求输出的变量必须在引号内部，以免造成安全问题，可是很多开发者并没有这种习惯，这样只能使用更为严格的 <code>JavaScriptEncode</code> 来保证数据安全：除了数字，字符之外的所有字符，小于127的字符编码都使用十六进制 <code>\xHH</code> 的方式进行编码，大于用unicode（非常严格模式）。</p>
+<h1 id="正确的防御-XSS"><a href="#正确的防御-XSS" class="headerlink" title="正确的防御 XSS"></a>正确的防御 XSS</h1><p><code>XSS</code> 的本质还是一种 <code>HTML 注入</code>，用户的数据被当成了 <code>HTML</code> 代码一部分来执行，从而混淆了原本的语意，产生了新的语意。</p>
+<p>如果网站使用了 <code>MVC(MVVM)</code> 结构，那么 <code>XSS</code> 就会发生在 <code>View</code> 层，也就是变量拼接到页面时产生的，所以在用户提交数据的时候进行输入检查，并不是真正在被攻击的地方做防御.</p>
+<p>想要根治XSS问题，可以列出所有XSS可能发生的场景，再一一解决。</p>
+<h2 id="在-HTML-标签中输出"><a href="#在-HTML-标签中输出" class="headerlink" title="在 HTML 标签中输出"></a>在 <code>HTML</code> 标签中输出</h2><p>在 <code>HTML</code> 标签中直接输出变量，没有做任何处理，会导致 <code>XSS</code>。</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>#</span> <span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>#</span> <span class="token special-attr"><span class="token attr-name">onerror</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token value javascript language-javascript"><span class="token function">alert</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">/</span></span></span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这种方式的解决方案是，所有需要输出到页面的元素全部通过 <code>HTMLEncode</code>。</p>
+<h2 id="在-HTML-属性中输出"><a href="#在-HTML-属性中输出" class="headerlink" title="在 HTML 属性中输出"></a>在 <code>HTML</code> 属性中输出</h2><p>在和 <code>HTML</code> 标签中输出攻击方式类似，只不过输出的内容会自动闭合标签。</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>$var<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>#</span> <span class="token punctuation">></span></span>$var<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- ">&lt;img src=# onerror=alert(1)>&lt;" --></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>#</span> <span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>#</span> <span class="token special-attr"><span class="token attr-name">onerror</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token value javascript language-javascript"><span class="token function">alert</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span></span></span></span> <span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这种方式的防御方法仍然是 <code>HTMLEncode</code> 。</p>
+<h2 id="在-lt-script-gt-标签中输出"><a href="#在-lt-script-gt-标签中输出" class="headerlink" title="在 &lt;script&gt; 标签中输出"></a>在 <code>&lt;script&gt;</code> 标签中输出</h2><p>假设我们的变量都在引号内部：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">></span>
+<span class="token keyword">var</span> x <span class="token operator">=</span> <span class="token string">"$var"</span><span class="token punctuation">;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span>
+
+<span class="token operator">&lt;</span>script<span class="token operator">></span>
+<span class="token keyword">var</span> x <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token string">""</span><span class="token punctuation">;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>攻击者只需要闭合标签就能实行攻击，目前的防御方法为 <code>JavaScriptEncode</code>。</p>
+<h2 id="在-CSS-中输出"><a href="#在-CSS-中输出" class="headerlink" title="在 CSS 中输出"></a>在 <code>CSS</code> 中输出</h2><p>在 <code>CSS</code> 中或者 <code>style</code> 标签或者 <code>style attribute</code> 中形成的攻击花样非常多，总体上类似于下面几个例子：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">&lt;style><span class="token atrule"><span class="token rule">@import</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'http:xxxxx'</span><span class="token punctuation">)</span></span>&lt;/style>
+&lt;style>@import <span class="token string">'http:xxxxx'</span>&lt;/style>
+&lt;style>li</span> <span class="token punctuation">&#123;</span><span class="token property">list-style-image</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'xxxxxx'</span><span class="token punctuation">)</span></span><span class="token punctuation">&#125;</span><span class="token selector">&lt;/style>
+&lt;style>body</span> <span class="token punctuation">&#123;</span><span class="token property">binding</span><span class="token punctuation">:</span><span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'xxxxxxxxxx'</span><span class="token punctuation">)</span></span><span class="token punctuation">&#125;</span>&lt;/style>
+&lt;div style=<span class="token string">'background-image: url(xxxx)'</span>>&lt;/div>
+&lt;div style=<span class="token string">'width: expression(xxxxx)'</span>>&lt;/div><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>要解决 <code>CSS</code> 的攻击问题，一方面要严格控制用户将变量输入<code>style</code> 标签内，另一方面不要引用未知的 <code>CSS</code> 文件，如果一定有用户改变 <code>CSS</code> 变量这种需求的话，可以使用 <code>OWASP ESAPI</code> 中的 <code>encodeForCSS()</code> 函数。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> safe <span class="token operator">=</span> ESAPI<span class="token punctuation">.</span><span class="token function">encoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">encodeForCSS</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">getParameter</span><span class="token punctuation">(</span><span class="token string">"input"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="在-URL-中输出"><a href="#在-URL-中输出" class="headerlink" title="在 URL 中输出"></a>在 <code>URL</code> 中输出</h2><p>在地址张输出也比较复杂。一般来说 <code>URL</code> 的 <code>path</code> 或者 <code>search</code> 中进行攻击直接使用 <code>URLEncode</code> 即可。<code>URLEncode</code> 会将字符串转换为 <code>%HH</code> 的形式，类似空格就是 <code>%20</code>。</p>
+<p>可能的攻击方法就是：</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token comment">&lt;!-- 原始 URL --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://localhost/?test=$var<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- 攻击 URL --></span>
+&lt;a href="http://localhost/?test=" onclick=alert(1)"">test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- URLEncode --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://localhost/?test=%22%20onclick%3balert%281%29%22<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果整个 <code>URL</code> 被用户控制，这时url的Protocal和Host是不能被URLEncode转义的。</p>
+<p>一个 <code>URL</code> 的组成如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">[Protocal][Host][Path][Search][Hash]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>例如：</p>
+<pre class="line-numbers language-none"><code class="language-none">https:&#x2F;&#x2F;www.evil.com&#x2F;a&#x2F;b&#x2F;c&#x2F;test?abc&#x3D;123#ssss
+[Protocal] 对应 https:&#x2F;&#x2F;
+[Host] 对应 www.evil.com
+[Path] 对应 &#x2F;a&#x2F;b&#x2F;c&#x2F;test
+[Search] 对应 ?abc&#x3D;123
+[Hash] 对应 #ssss<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一般来说，如果变量是整个 <code>URL</code> ，则应该先检查变量是否以 <code>http</code> 开头，在此之后再对里面的变量进行 <code>URLEncode</code> 。</p>
+<h2 id="富文本处理"><a href="#富文本处理" class="headerlink" title="富文本处理"></a>富文本处理</h2><p>在一些网站，网站允许用户富含 <code>HTML</code> 标签的代码，比如文本里面要有图片、视频之类，这些文本展现出来全都是依靠 <code>HTML</code> 代码来实现。</p>
+<p>那么，我们需要如何区分安全的 <code>富文本</code> 和 <code>XSS</code> 攻击呢？</p>
+<p>基本的思想就是：</p>
+<ol>
+<li>首先进行输入检查，保证用户输入的是完整的 <code>HTML</code> 代码，而不是有拼接的代码</li>
+<li>通过 <code>htmlParser</code> 解析出 <code>HTML</code> 代码的标签、属性、事件</li>
+<li><code>富文本</code> 的 <code>事件</code> 肯定要被禁止，因为<code>富文本</code> 并不需要 <code>事件</code> 这种东西，另外一些危险的标签也需要禁止，例如： <code>&lt;iframe&gt;</code>，<code>&lt;script&gt;</code>，<code>&lt;base&gt;</code>，<code>&lt;form&gt;</code> 等</li>
+<li>利用白名单机制，只允许安全的标签嵌入，例如：<code>&lt;a&gt;</code>，<code>&lt;img&gt;</code>，<code>div</code>等，白名单不仅仅适用于标签，也适用于<code>属性</code></li>
+<li>过滤用户 <code>CSS</code> ，检查是否有危险代码</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/XSS%E6%94%BB%E5%87%BB">XSS攻击 百度百科</a></p>
+<p><a target="_blank" rel="noopener" href="https://tech.meituan.com/2018/09/27/fe-security.html">如何防止XSS攻击</a></p>
+<p><a target="_blank" rel="noopener" href="https://sking7.github.io/articles/430468050.html">防御XSS的七条原则</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903684900388871">XSS的防御</a></p>
+<p>《白帽子讲web安全》</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web/" rel="tag"><i class="fa fa-tag"></i> web</a>
+          
+            <a href="/tags/security/" rel="tag"><i class="fa fa-tag"></i> security</a>
+          
+            <a href="/tags/XSS/" rel="tag"><i class="fa fa-tag"></i> XSS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/06/21/sql-zhu-ru-shi-zhan/" rel="next" title="sql注入实战">
+                <i class="fa fa-chevron-left"></i> sql注入实战
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/06/30/wen-jian-shang-chuan-lou-dong-yuan-li-ji-fang-yu/" rel="prev" title="文件上传漏洞原理及防御">
+                文件上传漏洞原理及防御 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/blog.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">XSS简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS%E5%88%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">XSS分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E5%9E%8B-XSS"><span class="nav-number">2.1.</span> <span class="nav-text">反射型 XSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8BXSS"><span class="nav-number">2.2.</span> <span class="nav-text">存储型XSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM-%E5%9E%8B-XSS"><span class="nav-number">2.3.</span> <span class="nav-text">DOM 型 XSS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%96%B9%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">攻击方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS%E9%98%B2%E5%BE%A1"><span class="nav-number">4.</span> <span class="nav-text">XSS防御</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1XSS%E7%9A%84%E4%B8%83%E6%9D%A1%E5%8E%9F%E5%88%99"><span class="nav-number">4.1.</span> <span class="nav-text">防御XSS的七条原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HttpOnly"><span class="nav-number">4.2.</span> <span class="nav-text">HttpOnly</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A3%80%E6%9F%A5"><span class="nav-number">4.3.</span> <span class="nav-text">输入检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%A3%80%E6%9F%A5"><span class="nav-number">4.4.</span> <span class="nav-text">输出检查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTMLEncode"><span class="nav-number">4.4.1.</span> <span class="nav-text">HTMLEncode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScriptEncode"><span class="nav-number">4.4.2.</span> <span class="nav-text">JavaScriptEncode</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%A3%E7%A1%AE%E7%9A%84%E9%98%B2%E5%BE%A1-XSS"><span class="nav-number">5.</span> <span class="nav-text">正确的防御 XSS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-HTML-%E6%A0%87%E7%AD%BE%E4%B8%AD%E8%BE%93%E5%87%BA"><span class="nav-number">5.1.</span> <span class="nav-text">在 HTML 标签中输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-HTML-%E5%B1%9E%E6%80%A7%E4%B8%AD%E8%BE%93%E5%87%BA"><span class="nav-number">5.2.</span> <span class="nav-text">在 HTML 属性中输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-lt-script-gt-%E6%A0%87%E7%AD%BE%E4%B8%AD%E8%BE%93%E5%87%BA"><span class="nav-number">5.3.</span> <span class="nav-text">在 &lt;script&gt; 标签中输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-CSS-%E4%B8%AD%E8%BE%93%E5%87%BA"><span class="nav-number">5.4.</span> <span class="nav-text">在 CSS 中输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-URL-%E4%B8%AD%E8%BE%93%E5%87%BA"><span class="nav-number">5.5.</span> <span class="nav-text">在 URL 中输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%8C%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86"><span class="nav-number">5.6.</span> <span class="nav-text">富文本处理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SCERush</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">68.4k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

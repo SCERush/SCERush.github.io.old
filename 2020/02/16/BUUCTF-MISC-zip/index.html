@@ -89,7 +89,7 @@
 <meta name="description" content="在刷BUU时碰到这题(题目地址)，题目给出了许多压缩包，但是没有一点头绪，看了看别人的wp才知道是crc爆破，在此记录一下这个知识点。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BUUCTF MISC zip">
-<meta property="og:url" content="http://yoursite.com/2020/02/16/BUUCTF-MISC-zip/index.html">
+<meta property="og:url" content="https://scerush.github.io/2020/02/16/buuctf-misc-zip/index.html">
 <meta property="og:site_name" content="SCERush">
 <meta property="og:description" content="在刷BUU时碰到这题(题目地址)，题目给出了许多压缩包，但是没有一点头绪，看了看别人的wp才知道是crc爆破，在此记录一下这个知识点。">
 <meta property="og:locale">
@@ -128,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/02/16/BUUCTF-MISC-zip/"/>
+  <link rel="canonical" href="https://scerush.github.io/2020/02/16/buuctf-misc-zip/"/>
 
 
 
@@ -295,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/BUUCTF-MISC-zip/">
+    <link itemprop="mainEntityOfPage" href="https://scerush.github.io/2020/02/16/buuctf-misc-zip/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -378,7 +378,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  438
+                  426
                 </span>
               
 
@@ -418,7 +418,32 @@
         <p>在刷BUU时碰到这题(<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#zip">题目地址</a>)，题目给出了许多压缩包，但是没有一点头绪，看了看别人的wp才知道是crc爆破，在此记录一下这个知识点。</p>
 <span id="more"></span>
 <h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>CRC全称Cyclic Redundancy Check，也就是循环冗余校验码，是一种能力相当强的检错、纠错码，并且实现编码和检码的电路比较简单，常用于串行传送（二进制位串沿一条信号线逐位传送）的辅助存储器与主机的数据通信和计算机网络中。<br>总而言之，就是每一个文件都有它唯一的CRC32值，即便数据中一个bit发生变化，也会导致CRC32值不同。若是知道一段数据的长度和CRC32值，便可穷举数据，与其CRC32对照，以此达到暴力猜解的目的。但通常只适用于较小文本文件。<br>自己写的脚本总出错，于是借用了大佬的脚本<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011377996/article/details/79360820">https://blog.csdn.net/u011377996/article/details/79360820</a>  </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CrackCrc</span>(<span class="params">crc</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> dic: </span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> dic:</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> dic:</span><br><span class="line">                <span class="keyword">for</span> h <span class="keyword">in</span> dic:</span><br><span class="line">                    s = i + j + k + h</span><br><span class="line">                    <span class="keyword">if</span> crc == (binascii.crc32(s.encode())):</span><br><span class="line">                        f.write(s)</span><br><span class="line">                        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CrackZip</span>():</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">68</span>):</span><br><span class="line">            file = <span class="string">&#x27;out&#x27;</span>+<span class="built_in">str</span>(i)+<span class="string">&#x27;.zip&#x27;</span></span><br><span class="line">            crc = zipfile.ZipFile(file,<span class="string">&#x27;r&#x27;</span>).getinfo(<span class="string">&#x27;data.txt&#x27;</span>).CRC</span><br><span class="line">            CrackCrc(crc)</span><br><span class="line"></span><br><span class="line">dic = string.ascii_letters + string.digits + <span class="string">&#x27;+/=&#x27;</span></span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;out.txt&#x27;</span>,<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">CrackZip()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;CRC32碰撞完成&quot;</span>)</span><br><span class="line">f.close</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> zipfile
+<span class="token keyword">import</span> string
+<span class="token keyword">import</span> binascii
+
+<span class="token keyword">def</span> <span class="token function">CrackCrc</span><span class="token punctuation">(</span>crc<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> dic<span class="token punctuation">:</span> 
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> dic<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> k <span class="token keyword">in</span> dic<span class="token punctuation">:</span>
+                <span class="token keyword">for</span> h <span class="token keyword">in</span> dic<span class="token punctuation">:</span>
+                    s <span class="token operator">=</span> i <span class="token operator">+</span> j <span class="token operator">+</span> k <span class="token operator">+</span> h
+                    <span class="token keyword">if</span> crc <span class="token operator">==</span> <span class="token punctuation">(</span>binascii<span class="token punctuation">.</span>crc32<span class="token punctuation">(</span>s<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+                        <span class="token keyword">return</span>
+
+<span class="token keyword">def</span> <span class="token function">CrackZip</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">68</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token builtin">file</span> <span class="token operator">=</span> <span class="token string">'out'</span><span class="token operator">+</span><span class="token builtin">str</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">'.zip'</span>
+            crc <span class="token operator">=</span> zipfile<span class="token punctuation">.</span>ZipFile<span class="token punctuation">(</span><span class="token builtin">file</span><span class="token punctuation">,</span><span class="token string">'r'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>getinfo<span class="token punctuation">(</span><span class="token string">'data.txt'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>CRC
+            CrackCrc<span class="token punctuation">(</span>crc<span class="token punctuation">)</span>
+
+dic <span class="token operator">=</span> string<span class="token punctuation">.</span>ascii_letters <span class="token operator">+</span> string<span class="token punctuation">.</span>digits <span class="token operator">+</span> <span class="token string">'+/='</span>
+
+f <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'out.txt'</span><span class="token punctuation">,</span><span class="token string">'w'</span><span class="token punctuation">)</span>
+CrackZip<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"CRC32碰撞完成"</span><span class="token punctuation">)</span>
+f<span class="token punctuation">.</span>close<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>碰撞完成后得到一串base64编码，解码一看，要修复文件<br>查了点资料后发现这是一个rar压缩包 <a target="_blank" rel="noopener" href="https://blog.csdn.net/vevenlcf/article/details/51538837">https://blog.csdn.net/vevenlcf/article/details/51538837</a>，<br>修改一下文件，在文件前面加上补上52 61 72 21 1A 07 00 后保存<br>打开压缩包一看，在备注处看到flag</p>
 
       
@@ -452,7 +477,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/02/12/BUUCTF-Misc%E9%83%A8%E5%88%86wp%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="next" title="BUUCTF Misc部分wp（二）">
+              <a href="/2020/02/12/buuctf-misc-bu-fen-wp-er/" rel="next" title="BUUCTF Misc部分wp（二）">
                 <i class="fa fa-chevron-left"></i> BUUCTF Misc部分wp（二）
               </a>
             
@@ -462,7 +487,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/02/21/BUUCTF-Crypto%E9%83%A8%E5%88%86wp/" rel="prev" title="BUUCTF Crypto部分wp">
+              <a href="/2020/02/21/buuctf-crypto-bu-fen-wp/" rel="prev" title="BUUCTF Crypto部分wp">
                 BUUCTF Crypto部分wp <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -641,7 +666,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">70.9k</span>
+    <span title="Site words total count">68.4k</span>
   
 </div>
 
